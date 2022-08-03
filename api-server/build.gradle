@@ -11,6 +11,7 @@ description 'Server API implementation'
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'io.freefair.lombok'
+    apply plugin: 'com.github.johnrengelman.shadow'
 
     dependencies {
         // in-house

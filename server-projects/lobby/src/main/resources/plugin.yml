@@ -5,7 +5,3 @@ api-version: 1.19
 prefix: [ LOBBYPLUGIN ]
 authors: [ TheNarbox ]
 description: Lobby plugin for Mejs.cz
-commands:
-  sudo:
-    description: |
-      Sudo command for LobbyPlugin.

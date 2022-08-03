@@ -1,0 +1,39 @@
+plugins {
+    id 'java-library'
+    id 'io.freefair.lombok'
+}
+
+group 'com.thenarbox'
+version '1.0-SNAPSHOT'
+description 'Server API implementation'
+
+// Apply plugins to subprojects
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'io.freefair.lombok'
+
+    dependencies {
+        // in-house
+        implementation project(':api-server')
+    }
+}
+
+// Configure all projects
+allprojects {
+
+    repositories {
+        mavenCentral()
+        // PaperMC repository
+        maven {
+            url = "https://repo.papermc.io/repository/maven-public/"
+        }
+    }
+
+    dependencies {
+        // in-house
+        implementation project(':common')
+
+        // paper
+        compileOnly 'io.papermc.paper:paper-api:1.19.1-R0.1-SNAPSHOT'
+    }
+}

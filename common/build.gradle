@@ -1,0 +1,21 @@
+plugins {
+    id 'java-library'
+    id 'io.freefair.lombok'
+}
+
+group 'com.thenarbox'
+version '1.0-SNAPSHOT'
+description 'Common API implementation'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
+allprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'io.freefair.lombok'
+}

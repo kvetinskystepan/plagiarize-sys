@@ -1,0 +1,7 @@
+name: AuthPlugin
+version: '${project.version}'
+main: com.thenarbox.authplugin.AuthPlugin
+api-version: 1.19
+prefix: [ AUTHPLUGIN ]
+authors: [ TheNarbox ]
+description: Auth system for Mejs.cz

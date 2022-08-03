@@ -1,0 +1,39 @@
+plugins {
+    id 'java-library'
+    id 'io.freefair.lombok'
+}
+
+group 'com.thenarbox'
+version '1.0-SNAPSHOT'
+description 'Proxy API implementation'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
+// Apply plugins to subprojects
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'io.freefair.lombok'
+}
+
+// Configure all projects
+allprojects {
+
+    repositories {
+        mavenCentral()
+        // todo: bungeecord repository
+    }
+
+    dependencies {
+        // in-house
+        implementation project(':common')
+
+        // bungee
+        // todo: bungeecord dependency
+    }
+}

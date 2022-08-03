@@ -1,0 +1,22 @@
+pluginManagement {
+    plugins {
+        id 'io.freefair.lombok' version '6.5.0.3'
+    }
+}
+rootProject.name = 'plagiarize-sys'
+
+// commons
+include ':common'
+// apis
+include 'api-proxy'
+include 'api-server'
+
+// serverside projects
+include ':api-server:auth'
+project(':api-server:auth').projectDir = file("server-projects/auth")
+include ':api-server:lobby'
+project(':api-server:lobby').projectDir = file("server-projects/lobby")
+
+// proxyside projects
+include ':api-proxy:proxy'
+

@@ -1,6 +1,5 @@
 package com.thenarbox.api;
 
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;

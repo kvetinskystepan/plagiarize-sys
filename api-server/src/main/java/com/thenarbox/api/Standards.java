@@ -54,13 +54,13 @@ public class Standards {
 
                     if (commandLabel.equalsIgnoreCase("sudo")) {
                         if (args.length < 2) {
-                            sender.sendMessage(ChatColor.DARK_RED + "✖ " + ChatColor.GOLD + "/sudo <hráč> <příkaz|zpráva>");
+                            sender.sendMessage(ChatColor.DARK_RED + "✖ " + ChatColor.WHITE + "Syntaxe příkazu: /sudo <hráč> <příkaz|zpráva>");
                             return true;
                         }
                         if (args.length == 2) {
                             Player toPlayer = Bukkit.getPlayer(args[0]);
                             if (toPlayer == null) {
-                                sender.sendMessage(ChatColor.DARK_RED + "✖ " + "Hráč nebyl nalezen.");
+                                sender.sendMessage(ChatColor.DARK_RED + "✖ " + ChatColor.WHITE + "Hráč nebyl nalezen." + " [" + args[0] + "]");
                                 return true;
                             }
                             if (args[1].startsWith("/"))

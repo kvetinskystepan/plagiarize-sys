@@ -10,7 +10,7 @@ public class ChatNotice {
     public ChatNotice() {
     }
 
-    public String ChatErrorNotice(Component component){
+    public static String ChatErrorNotice(Component component){
         return ChatColor.DARK_RED + "✖ " + component;
     }
 

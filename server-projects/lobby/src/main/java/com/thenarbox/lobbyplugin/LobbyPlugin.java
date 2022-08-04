@@ -1,6 +1,7 @@
 package com.thenarbox.lobbyplugin;
 
 import com.thenarbox.api.Standards;
+import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.lobbyplugin.listeners.CommandMechanic;
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.Bukkit;
@@ -41,6 +42,8 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
                 .registerEvents(this, this);
         getServer().getPluginManager()
                 .registerEvents(new CommandMechanic(), this);
+        getServer().getPluginManager()
+                .registerEvents(new DoubleJump(), this);
 
         Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
             @Override

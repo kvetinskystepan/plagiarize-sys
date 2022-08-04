@@ -10,8 +10,16 @@ public class ChatNotice {
     public ChatNotice() {
     }
 
-    public static String ChatErrorNotice(String text){
-        return ChatColor.DARK_RED + "✖ " + text;
+    public static String chatErrorNotice(String text){
+        return ChatColor.DARK_RED + "✖ " + ChatColor.GRAY + "| " + ChatColor.WHITE + text;
+    }
+
+    public static String chatSuccessNotice(String text){
+        return ChatColor.GREEN + "✔ " + ChatColor.GRAY + "| " + ChatColor.WHITE + text;
+    }
+
+    public static String chatWarningNotice(String text){
+        return ChatColor.YELLOW + "⚠ " + ChatColor.GRAY + "| " + ChatColor.WHITE + text;
     }
 
 }

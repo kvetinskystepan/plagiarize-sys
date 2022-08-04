@@ -35,6 +35,7 @@ public class Standards {
             world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
             world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
             world.setFullTime(6000);
+            world.getWorldBorder().reset();
         } else {
             log.warn("Default world not found.");
         }
@@ -55,13 +56,13 @@ public class Standards {
 
                     if (commandLabel.equalsIgnoreCase("sudo")) {
                         if (args.length < 2) {
-                            sender.sendMessage(ChatNotice.ChatErrorNotice(ChatColor.WHITE + "Syntaxe příkazu: /sudo <hráč> <příkaz|zpráva>"));
+                            sender.sendMessage(ChatNotice.chatErrorNotice(ChatColor.WHITE + "Syntaxe příkazu: /sudo <hráč> <příkaz|zpráva>"));
                             return true;
                         }
                         if (args.length == 2) {
                             Player toPlayer = Bukkit.getPlayer(args[0]);
                             if (toPlayer == null) {
-                                sender.sendMessage(ChatNotice.ChatErrorNotice(ChatColor.WHITE + "Hráč nebyl nalezen. + [ "+ args[0] +" ]"));
+                                sender.sendMessage(ChatNotice.chatErrorNotice(ChatColor.WHITE + "Hráč nebyl nalezen. + [ "+ args[0] +" ]"));
                                 return true;
                             }
                             sender.sendMessage(args.length + " delka");

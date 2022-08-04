@@ -1,6 +1,6 @@
 package com.thenarbox.api;
 
-import lombok.Getter;
+import com.thenarbox.api.ChatNotice;
 import lombok.extern.log4j.Log4j2;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -57,13 +57,13 @@ public class Standards {
 
                     if (commandLabel.equalsIgnoreCase("sudo")) {
                         if (args.length < 2) {
-                            sender.sendMessage(ChatColor.DARK_RED + "✖ " + ChatColor.WHITE + "Syntaxe příkazu: /sudo <hráč> <příkaz|zpráva>");
+                            sender.sendMessage(ChatNotice.ChatErrorNotice(Component.text(ChatColor.WHITE + "Syntaxe příkazu: /sudo <hráč> <příkaz|zpráva>")));
                             return true;
                         }
                         if (args.length == 2) {
                             Player toPlayer = Bukkit.getPlayer(args[0]);
                             if (toPlayer == null) {
-                                sender.sendMessage(ChatColor.DARK_RED + "✖ " + ChatColor.WHITE + "Hráč nebyl nalezen." + " [" + args[0] + "]");
+                                sender.sendMessage(ChatNotice.ChatErrorNotice(Component.text("ChatColor.WHITE + Hráč nebyl nalezen. + [ "+ args[0] +" ]")));
                                 return true;
                             }
                             if (args[1].startsWith("/"))

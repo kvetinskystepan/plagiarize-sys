@@ -1,7 +1,6 @@
 package com.thenarbox.lobbyplugin.extenders;
 
 import com.thenarbox.api.Standards;
-import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -12,13 +11,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 
-import java.util.concurrent.locks.StampedLock;
-
-
 public class DoubleJump
         implements Listener {
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onPlayerFly(PlayerToggleFlightEvent e) {
         Player p = e.getPlayer();

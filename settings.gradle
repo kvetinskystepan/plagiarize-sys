@@ -20,4 +20,5 @@ project(':api-server:lobby').projectDir = file("server-projects/lobby")
 
 // proxyside projects
 include ':api-proxy:proxy'
+project(':api-proxy:proxy').projectDir = file("proxy-projects/proxy")
 

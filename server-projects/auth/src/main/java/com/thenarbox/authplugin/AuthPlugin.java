@@ -95,6 +95,10 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
+        if (player.getName().startsWith("MCSTORM")){
+            player.kickPlayer("Connect to our server by your real nickname and don't use bots or other software to join us.");
+            return;
+        }
         player.hidePlayer(player);
         Bukkit.getOnlinePlayers().forEach(online -> {
             player.hidePlayer(online);

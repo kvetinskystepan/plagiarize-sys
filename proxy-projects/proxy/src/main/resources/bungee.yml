@@ -1,0 +1,5 @@
+name: ProxySystem
+version: '${version}'
+main: com.thenarbox.proxysystem.ProxySystem
+author: TheNarbox
+description: ProxySystem for proxy server [bungeecord]

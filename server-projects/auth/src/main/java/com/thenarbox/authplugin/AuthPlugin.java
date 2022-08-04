@@ -1,8 +1,6 @@
 package com.thenarbox.authplugin;
 
 import com.thenarbox.api.Standards;
-import com.thenarbox.authplugin.scoreboard.BoardService;
-import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -26,10 +24,6 @@ import java.util.Date;
 @Log4j2(topic = "AuthPlugin")
 public final class AuthPlugin extends JavaPlugin implements Listener {
 
-    @Getter
-    private final BoardService boardService
-            = new BoardService(this);
-
     @Override
     public void onEnable() {
         log.info("AuthPlugin is enabled!");
@@ -39,9 +33,6 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
             Standards.worlds();
             Standards.commands();
         }
-
-        getBoardService()
-                .initialize();
 
         getServer().getPluginManager()
                 .registerEvents(this, this);
@@ -53,9 +44,6 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         log.info("AuthPlugin is disabled!");
-
-        getBoardService()
-                .terminate();
 
         HandlerList.unregisterAll();
     }

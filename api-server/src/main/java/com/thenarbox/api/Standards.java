@@ -2,6 +2,7 @@ package com.thenarbox.api;
 
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameRule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -45,25 +46,21 @@ public class Standards {
 
         // sudo command
         {
-            Bukkit.getCommandMap().register("narbox", new Command("sudo") {
+            Bukkit.getCommandMap().register("sudo", new Command("sudo") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
                     if (!(sender instanceof Player))
                         return false;
 
                     if (commandLabel.equalsIgnoreCase("sudo")) {
-                        if (args.length == 0) {
-                            sender.sendMessage("/sudo <player>");
-                            return true;
-                        }
-                        if (args.length == 1) {
-                            sender.sendMessage("/sudo <player> <command>");
+                        if (args.length < 2) {
+                            sender.sendMessage(ChatColor.DARK_RED + "✖ " + ChatColor.GOLD + "/sudo <hráč> <příkaz|zpráva>");
                             return true;
                         }
                         if (args.length == 2) {
                             Player toPlayer = Bukkit.getPlayer(args[0]);
                             if (toPlayer == null) {
-                                sender.sendMessage("Player not found");
+                                sender.sendMessage(ChatColor.DARK_RED + "✖ " + "Hráč nebyl nalezen.");
                                 return true;
                             }
                             if (args[1].startsWith("/"))
@@ -75,17 +72,6 @@ public class Standards {
                     return true;
                 }
             });
-
-
-            // test commands
-            {
-                Bukkit.getCommandMap().register("narbox", new Command("test") {
-                    @Override
-                    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-                        return true;
-                    }
-                });
-            }
         }
     }
 

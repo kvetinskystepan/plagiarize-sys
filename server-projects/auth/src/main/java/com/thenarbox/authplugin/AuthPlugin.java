@@ -28,7 +28,6 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     public void onEnable() {
         log.info("AuthPlugin is enabled!");
 
-        // Register standards
         {
             Standards.worlds();
             Standards.commands();
@@ -48,7 +47,6 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         log.info("AuthPlugin is disabled!");
-
         HandlerList.unregisterAll();
     }
 
@@ -105,11 +103,11 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
             player.hidePlayer(online);
             online.hidePlayer(player);
         });
+        player.teleport(new Location(Bukkit.getWorld("world"), -48.5, 65.5, 34.5, -50, 0));
         player.setGameMode(getServer().getDefaultGameMode());
         player.setMaxHealth(20);
         player.setFoodLevel(20);
         e.setJoinMessage(null);
-        player.teleport(new Location(Bukkit.getWorld("world"), -48.5, 65.5, 34.5, -50, 0));
     }
 
     @EventHandler

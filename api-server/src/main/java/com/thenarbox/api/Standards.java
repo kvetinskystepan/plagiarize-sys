@@ -46,6 +46,40 @@ public class Standards {
      */
     public static void commands() {
 
+        {
+            Bukkit.getCommandMap().register("fly", new Command("fly") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof Player))
+                        return false;
+
+                    if (commandLabel.equalsIgnoreCase("fly")) {
+                        if (args.length == 0) {
+                            ((Player) sender).setFlying(true);
+                            sender.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo zapnuto."));
+                            return false;
+                        }
+                        else if (args.length == 1){
+                            Player toPlayer = Bukkit.getPlayer(args[0]);
+                            if (toPlayer != null) {
+                                toPlayer.setFlying(true);
+                                toPlayer.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo zapnuto."));
+                                sender.sendMessage(ChatNotice.chatSuccessNotice("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));
+                            }
+                            else {
+                                sender.sendMessage(ChatNotice.chatErrorNotice(ChatColor.WHITE + "Hráč " + args[0] + " není online."));
+                            }
+                            return false;
+                        }
+                        else {
+                            sender.sendMessage(ChatNotice.chatErrorNotice(ChatColor.WHITE + "Syntaxe příkazu: /fly [hráč]"));
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+
         // sudo command
         {
             Bukkit.getCommandMap().register("sudo", new Command("sudo") {

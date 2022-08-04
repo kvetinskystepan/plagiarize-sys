@@ -1,6 +1,8 @@
 package com.thenarbox.api;
 
 import lombok.extern.log4j.Log4j2;
+import net.kyori.adventure.text.Component;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameRule;
@@ -9,9 +11,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+
+import static org.bukkit.Bukkit.getServer;
 
 
 /**
@@ -22,11 +27,19 @@ public class Standards {
 
     public static ArrayList<Player> flyingPlayers = new ArrayList<Player>();
 
+    private static Permission perms = null;
+
+    public static boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        perms = rsp.getProvider();
+        return perms != null;
+    }
+
     /**
      * Handle world standards.
      */
     public static void worlds() {
-        final var world = Bukkit.getServer()
+        final var world = getServer()
                 .getWorld("world");
 
         if(world != null) {
@@ -60,18 +73,23 @@ public class Standards {
                         return false;
 
                     final Player player = (Player) sender;
-                    if (commandLabel.equalsIgnoreCase("fly")) {
+
+                    if (!perms.playerInGroup(player, "admin")) {
+                        ChatNotice.error(player, Component.text("Na tuto akci nemáš dostatečná oprávnění"));
+                    }
+
+                        if (commandLabel.equalsIgnoreCase("fly")) {
 
                         if (args.length == 0) {
                             if (flyingPlayers.contains(player)) {
                                 player.setFlying(false);
                                 flyingPlayers.remove(player);
-                                sender.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo vypnuto."));
+                                ChatNotice.success(player, Component.text("Létání bylo vypnuto."));
                             }
                             else {
                                 flyingPlayers.add(player);
                                 player.setFlying(true);
-                                sender.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo zapnuto."));
+                                ChatNotice.success(player, Component.text("Létání bylo zapnuto."));
                             }
                         }
                         else if (args.length == 1){
@@ -80,18 +98,18 @@ public class Standards {
                                 if (flyingPlayers.contains(toPlayer)) {
                                     toPlayer.setFlying(false);
                                     flyingPlayers.remove(toPlayer);
-                                    toPlayer.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo vypnuto."));
-                                    sender.sendMessage(ChatNotice.chatSuccessNotice("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo vypnuto."));
+                                    ChatNotice.success(toPlayer, Component.text("Létání bylo vypnuto."));
+                                    ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo vypnuto."));
                                 }
                                 else {
                                     flyingPlayers.add(toPlayer);
                                     toPlayer.setFlying(true);
-                                    toPlayer.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo zapnuto."));
-                                    sender.sendMessage(ChatNotice.chatSuccessNotice("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));
+                                    ChatNotice.success(toPlayer, Component.text("Létání bylo zapnuto."));
+                                    ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));
                                 }
                             }
                             else {
-                                sender.sendMessage(ChatNotice.chatErrorNotice(ChatColor.WHITE + "Hráč " + args[0] + " není online."));
+                                ChatNotice.error(player, Component.text(ChatColor.WHITE + "Hráč " + args[0] + " není online."));
                             }
                         }
                     }

@@ -27,13 +27,13 @@ import java.util.Date;
 
 @Log4j2(topic = "LobbyPlugin")
 public class LobbyPlugin extends JavaPlugin implements Listener {
-
     @Override
     public void onEnable() {
         System.out.println("LobbyPlugin is enabled!");
         {
             Standards.worlds();
             Standards.commands();
+            Standards.setupPermissions();
         }
 
         getServer().getPluginManager()

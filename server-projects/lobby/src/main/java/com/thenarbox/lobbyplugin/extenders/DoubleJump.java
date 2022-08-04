@@ -1,5 +1,6 @@
 package com.thenarbox.lobbyplugin.extenders;
 
+import com.thenarbox.api.Standards;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -11,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 
+import java.util.concurrent.locks.StampedLock;
+
 
 public class DoubleJump
         implements Listener {
@@ -19,6 +22,8 @@ public class DoubleJump
     @EventHandler
     public void onPlayerFly(PlayerToggleFlightEvent e) {
         Player p = e.getPlayer();
+        if(Standards.flyingPlayers.contains(p))
+            return;
         if (p.getGameMode() != GameMode.CREATIVE) {
             e.setCancelled(true);
             p.setAllowFlight(false);
@@ -30,10 +35,10 @@ public class DoubleJump
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
-        if ((e.getPlayer().getGameMode() != GameMode.CREATIVE)
-                && (p.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR)) {
+        if(Standards.flyingPlayers.contains(p))
+            return;
+        if ((e.getPlayer().getGameMode() != GameMode.CREATIVE) && (p.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR)) {
             p.setAllowFlight(true);
         }
     }
-
 }

@@ -10,6 +10,10 @@ public class ChatNotice {
     public ChatNotice() {
     }
 
+    public static String chatInfoNotice(String text){
+        return ChatColor.GOLD + "✎ " + ChatColor.WHITE + text;
+    }
+
     public static String chatErrorNotice(String text){
         return ChatColor.DARK_RED + "✖ " + ChatColor.GRAY + "| " + ChatColor.WHITE + text;
     }

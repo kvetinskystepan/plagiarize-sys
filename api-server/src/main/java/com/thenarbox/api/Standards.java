@@ -7,7 +7,11 @@ import org.bukkit.GameRule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 
 /**
@@ -15,6 +19,8 @@ import org.jetbrains.annotations.NotNull;
  */
 @Log4j2(topic = "Standards")
 public class Standards {
+
+    public static ArrayList<Player> flyingPlayers = new ArrayList<Player>();
 
     /**
      * Handle world standards.
@@ -53,67 +59,52 @@ public class Standards {
                     if (!(sender instanceof Player))
                         return false;
 
+                    final Player player = (Player) sender;
                     if (commandLabel.equalsIgnoreCase("fly")) {
+
                         if (args.length == 0) {
-                            ((Player) sender).setFlying(true);
-                            sender.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo zapnuto."));
-                            return false;
+                            if (flyingPlayers.contains(player)) {
+                                player.setFlying(false);
+                                flyingPlayers.remove(player);
+                                sender.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo vypnuto."));
+                            }
+                            else {
+                                flyingPlayers.add(player);
+                                player.setFlying(true);
+                                sender.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo zapnuto."));
+                            }
                         }
                         else if (args.length == 1){
                             Player toPlayer = Bukkit.getPlayer(args[0]);
                             if (toPlayer != null) {
-                                toPlayer.setFlying(true);
-                                toPlayer.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo zapnuto."));
-                                sender.sendMessage(ChatNotice.chatSuccessNotice("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));
+                                if (flyingPlayers.contains(toPlayer)) {
+                                    toPlayer.setFlying(false);
+                                    flyingPlayers.remove(toPlayer);
+                                    toPlayer.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo vypnuto."));
+                                    sender.sendMessage(ChatNotice.chatSuccessNotice("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo vypnuto."));
+                                }
+                                else {
+                                    flyingPlayers.add(toPlayer);
+                                    toPlayer.setFlying(true);
+                                    toPlayer.sendMessage(ChatNotice.chatSuccessNotice("Létání bylo zapnuto."));
+                                    sender.sendMessage(ChatNotice.chatSuccessNotice("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));
+                                }
                             }
                             else {
                                 sender.sendMessage(ChatNotice.chatErrorNotice(ChatColor.WHITE + "Hráč " + args[0] + " není online."));
                             }
-                            return false;
-                        }
-                        else {
-                            sender.sendMessage(ChatNotice.chatErrorNotice(ChatColor.WHITE + "Syntaxe příkazu: /fly [hráč]"));
                         }
                     }
                     return true;
                 }
             });
         }
+    }
 
-        // sudo command
-        {
-            Bukkit.getCommandMap().register("sudo", new Command("sudo") {
-                @Override
-                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-                    if (!(sender instanceof Player))
-                        return false;
-
-                    if (commandLabel.equalsIgnoreCase("sudo")) {
-                        if (args.length < 2) {
-                            sender.sendMessage(ChatNotice.chatErrorNotice(ChatColor.WHITE + "Syntaxe příkazu: /sudo <hráč> <příkaz|zpráva>"));
-                            return true;
-                        }
-                        if (args.length == 2) {
-                            Player toPlayer = Bukkit.getPlayer(args[0]);
-                            if (toPlayer == null) {
-                                sender.sendMessage(ChatNotice.chatErrorNotice(ChatColor.WHITE + "Hráč nebyl nalezen. + [ "+ args[0] +" ]"));
-                                return true;
-                            }
-                            sender.sendMessage(args.length + " delka");
-                            final StringBuilder sb = new StringBuilder();
-                            for (int i = 1; i < args.length; i++) {
-                                sb.append(args[i]).append(" ");
-                            }
-
-                            if (args[1].startsWith("/"))
-                                toPlayer.performCommand(sb.toString());
-                            else
-                                toPlayer.chat(sb.toString());
-                        }
-                    }
-                    return true;
-                }
-            });
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e){
+        if (flyingPlayers.contains(e.getPlayer())) {
+            flyingPlayers.remove(e.getPlayer());
         }
     }
 

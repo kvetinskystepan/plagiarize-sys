@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'io.freefair.lombok'
+    id 'com.github.johnrengelman.shadow'
 }
 
 group 'com.thenarbox'
@@ -19,6 +20,7 @@ dependencies {
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'io.freefair.lombok'
+    apply plugin: 'com.github.johnrengelman.shadow'
 }
 
 // Configure all projects

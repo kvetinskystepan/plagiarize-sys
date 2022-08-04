@@ -1,6 +1,5 @@
 package com.thenarbox.lobbyplugin;
 
-import com.destroystokyo.paper.event.block.TNTPrimeEvent;
 import com.thenarbox.api.Standards;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.lobbyplugin.listeners.CommandMechanic;
@@ -8,7 +7,6 @@ import lombok.extern.log4j.Log4j2;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -18,7 +16,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,8 +31,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         System.out.println("LobbyPlugin is enabled!");
-
-        // Register standards
         {
             Standards.worlds();
             Standards.commands();
@@ -55,6 +50,12 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             }
         }, 0, 20);
 
+    }
+
+    @Override
+    public void onDisable() {
+        System.out.println("LobbyPlugin is now disabled.");
+        HandlerList.unregisterAll();
     }
 
     public void sendTablistToPlayers() {
@@ -95,12 +96,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         e.setCancelled(true);
     }
 
-    @Override
-    public void onDisable() {
-        System.out.println("LobbyPlugin is now disabled.");
-        HandlerList.unregisterAll();
-    }
-
     @EventHandler
     public void VineGrow(BlockSpreadEvent e) {
         e.setCancelled(true);
@@ -125,18 +120,16 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     public void onDrop(PlayerDropItemEvent e){
         e.setCancelled(true);
     }
-
     @EventHandler
     public void noPvP(EntityDamageByEntityEvent e){
         e.setCancelled(true);
     }
 
     @EventHandler
-    public void onBoom(final EntityExplodeEvent e) {
+    public void onTnT(final EntityExplodeEvent e) {
         final Entity entity = e.getEntity();
         if (entity != null && entity instanceof TNTPrimed) {
             e.blockList().clear();
         }
     }
-
 }

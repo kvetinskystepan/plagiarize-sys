@@ -57,19 +57,25 @@ public class Standards {
 
                     if (commandLabel.equalsIgnoreCase("sudo")) {
                         if (args.length < 2) {
-                            sender.sendMessage(ChatNotice.ChatErrorNotice(Component.text(ChatColor.WHITE + "Syntaxe příkazu: /sudo <hráč> <příkaz|zpráva>")));
+                            sender.sendMessage(ChatNotice.ChatErrorNotice(ChatColor.WHITE + "Syntaxe příkazu: /sudo <hráč> <příkaz|zpráva>"));
                             return true;
                         }
                         if (args.length == 2) {
                             Player toPlayer = Bukkit.getPlayer(args[0]);
                             if (toPlayer == null) {
-                                sender.sendMessage(ChatNotice.ChatErrorNotice(Component.text("ChatColor.WHITE + Hráč nebyl nalezen. + [ "+ args[0] +" ]")));
+                                sender.sendMessage(ChatNotice.ChatErrorNotice(ChatColor.WHITE + "Hráč nebyl nalezen. + [ "+ args[0] +" ]"));
                                 return true;
                             }
+                            sender.sendMessage(args.length + " delka");
+                            final StringBuilder sb = new StringBuilder();
+                            for (int i = 1; i < args.length; i++) {
+                                sb.append(args[i]).append(" ");
+                            }
+
                             if (args[1].startsWith("/"))
-                                toPlayer.performCommand(args[1]);
+                                toPlayer.performCommand(sb.toString());
                             else
-                                toPlayer.chat(args[1]);
+                                toPlayer.chat(sb.toString());
                         }
                     }
                     return true;

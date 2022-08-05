@@ -14,8 +14,7 @@ public final class ProxySystem extends Plugin implements Listener {
         ProxyServer.getInstance().getPluginManager().registerListener(this, new PrivateMessages());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new Motd());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new CommandMechanic());
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new CommandMechanic());
-
+        CommandMechanic.Commands();
     }
 
 

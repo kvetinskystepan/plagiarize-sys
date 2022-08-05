@@ -36,6 +36,11 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             Standards.setupPermissions();
         }
 
+        if(!getServer().getPluginManager().isPluginEnabled("Vault")){
+            log.error("Vault is not enabled! Disabling LobbyPlugin...");
+            getServer().getPluginManager().disablePlugin(this);
+        }
+
         getServer().getPluginManager()
                 .registerEvents(this, this);
         getServer().getPluginManager()

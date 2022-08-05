@@ -66,7 +66,7 @@ public class Standards {
     public static void commands() {
 
         {
-            Bukkit.getCommandMap().register("fly", new Command("fly") {
+            Bukkit.getCommandMap().register("lobby", new Command("fly") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
                     if (!(sender instanceof Player))
@@ -74,11 +74,12 @@ public class Standards {
 
                     final Player player = (Player) sender;
 
-                    if (!perms.playerInGroup(player, "admin")) {
-                        ChatNotice.error(player, Component.text("Na tuto akci nemáš dostatečná oprávnění"));
-                    }
-
                         if (commandLabel.equalsIgnoreCase("fly")) {
+
+                            if (!perms.playerInGroup(player, "admin")) {
+                                ChatNotice.error(player, Component.text("Na tuto akci nemáš dostatečná oprávnění"));
+                                return false;
+                            }
 
                         if (args.length == 0) {
                             if (flyingPlayers.contains(player)) {

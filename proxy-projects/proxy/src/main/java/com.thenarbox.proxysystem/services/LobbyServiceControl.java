@@ -10,7 +10,7 @@ public class LobbyServiceControl implements Listener {
 
     Server server = (Server) ProxyServer.getInstance().getServers().get("Lobby-1");
 
-    public boolean isOnline(){
+  /*  public boolean isOnline(){
         final boolean[] isOnline = {false};
         ProxyServer.getInstance().getServerInfo("Lobby-1").ping(new Callback<ServerPing>() {
 
@@ -23,5 +23,5 @@ public class LobbyServiceControl implements Listener {
             }
         });
         return isOnline[0];
-    }
+    }*/
 }

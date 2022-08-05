@@ -1,14 +1,12 @@
 package com.thenarbox.proxysystem.services;
 
-import com.google.common.util.concurrent.Service;
 import net.md_5.bungee.api.Callback;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.connection.Server;
+import net.md_5.bungee.api.plugin.Listener;
 
-import java.net.Proxy;
-
-public class LobbyServiceControl extends Service.Listener {
+public class LobbyServiceControl implements Listener {
 
     Server server = (Server) ProxyServer.getInstance().getServers().get("Lobby-1");
 

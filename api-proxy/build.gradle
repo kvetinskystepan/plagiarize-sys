@@ -12,10 +12,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation 'net.kyori:adventure-text-serializer-bungeecord:4.1.2'
-}
-
 // Apply plugins to subprojects
 subprojects {
     apply plugin: 'java-library'
@@ -34,6 +30,7 @@ allprojects {
     dependencies {
         implementation project(':common')
         implementation 'net.kyori:adventure-text-serializer-bungeecord:4.1.2'
+        implementation 'net.kyori:adventure-text-serializer-plain:4.9.3'
         compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
     }
 }

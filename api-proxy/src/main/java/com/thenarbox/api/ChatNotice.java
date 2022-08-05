@@ -1,6 +1,7 @@
 package com.thenarbox.api;
 
 import lombok.extern.log4j.Log4j2;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.kyori.adventure.text.Component;

@@ -1,4 +1,4 @@
-package com.thenarbox.proxysystem.listeners;
+package com.thenarbox.proxysystem.services;
 
 import com.google.common.util.concurrent.Service;
 import net.md_5.bungee.api.Callback;

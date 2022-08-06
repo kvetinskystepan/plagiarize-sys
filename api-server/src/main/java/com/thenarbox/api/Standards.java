@@ -66,6 +66,21 @@ public class Standards {
     public static void commands() {
 
         {
+
+            Bukkit.getCommandMap().register("", new Command("restart") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof Player))
+                        return false;
+
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        ChatNotice.warning(player, Component.text("Server se bude restartovat. Vyčkejte prosím na znovuspuštění. Omlouváme se za komplikace."));
+                        player.performCommand("lobby");
+                    }
+                    Bukkit.getServer().shutdown();
+                    return true;
+                }
+            });
             Bukkit.getCommandMap().register("", new Command("fly") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {

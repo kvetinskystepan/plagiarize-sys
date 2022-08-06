@@ -39,16 +39,24 @@ public final class ProxySystem extends Plugin implements Listener {
         ProxyServer.getInstance().getScheduler().schedule(this, new Runnable() {
             @Override
             public void run() {
-                sendTablistToPlayers();
+                try {
+                    tab();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }, 20, TimeUnit.SECONDS);
+        }, 0, 30, TimeUnit.MILLISECONDS);
     }
 
-    public void sendTablistToPlayers() {
-        String pattern = "HH:mm:ss";
-        DateFormat df = new SimpleDateFormat(pattern);
-        Date today = Calendar.getInstance().getTime();
+    String pattern = "HH:mm:ss";
+    DateFormat df = new SimpleDateFormat(pattern);
+    Date today = Calendar.getInstance().getTime();
+    public void tab() {
         for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
+            final var playerServer = player.getServer();
+            if(playerServer == null)
+                return;
             player.setTabHeader(new TextComponent("\n" + ChatColor.translateAlternateColorCodes('&', "&6&lMejs.cz") + "\n" + "\n" + ChatColor.GRAY + "discord.mejs.cz" + "\n" + "\n" + ChatColor.WHITE + "Čas: " + ChatColor.GOLD + df.format(today) + "\n"), new TextComponent("\n" + "  " + ChatColor.WHITE + "Hráčů: " + ChatColor.GOLD + ProxyServer.getInstance().getPlayers().size() + ChatColor.GRAY + " | " + ChatColor.WHITE + "Server: " + ChatColor.GOLD + player.getServer().getInfo().getMotd() + ChatColor.GRAY + " | " + ChatColor.WHITE + "Ping: " + ChatColor.GOLD + player.getPing() + "  "));
         }
     }

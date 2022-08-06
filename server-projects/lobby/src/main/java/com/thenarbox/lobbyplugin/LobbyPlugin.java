@@ -7,7 +7,9 @@ import lombok.extern.log4j.Log4j2;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
@@ -17,7 +19,13 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.DateFormat;
@@ -58,10 +66,19 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
-        e.getPlayer().setGameMode(GameMode.ADVENTURE);
-        e.getPlayer().setMaxHealth(20);
-        e.getPlayer().setFoodLevel(20);
-        e.getPlayer().setWalkSpeed(0.4f);
+        Player player = e.getPlayer();
+        player.getInventory().clear();
+
+        ItemStack item = new ItemStack(org.bukkit.Material.COMPASS);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "Hlavní menu");
+        item.setItemMeta(meta);
+        player.getInventory().addItem(item);
+
+        player.setGameMode(GameMode.ADVENTURE);
+        player.setMaxHealth(20);
+        player.setFoodLevel(20);
+        player.setWalkSpeed(0.4f);
         e.setJoinMessage(null);
     }
     @EventHandler
@@ -79,11 +96,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent e){
-        e.setCancelled(true);
-    }
-
-    @EventHandler
     public void VineGrow(BlockSpreadEvent e) {
         e.setCancelled(true);
     }
@@ -91,6 +103,24 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void noFood(FoodLevelChangeEvent e){
         e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void interact(PlayerInteractEvent e){
+        Player player = e.getPlayer();
+        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                Inventory inv = Bukkit.createInventory(null, 36, ChatColor.GOLD + "Hlavní menu");
+                player.openInventory(inv);
+        }
+        else {
+            e.setCancelled(true);
+        }
+
+    }
+
+    @EventHandler
+    public void inventory(InventoryClickEvent e){
+            e.setCancelled(true);
     }
 
     @EventHandler

@@ -64,17 +64,19 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         HandlerList.unregisterAll();
     }
 
+    ItemStack item;
+    {
+        item = new ItemStack(org.bukkit.Material.COMPASS);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "Hlavní menu");
+        item.setItemMeta(meta);
+    }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
         player.getInventory().clear();
-
-        ItemStack item = new ItemStack(org.bukkit.Material.COMPASS);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "Hlavní menu");
-        item.setItemMeta(meta);
         player.getInventory().addItem(item);
-
         player.setGameMode(GameMode.ADVENTURE);
         player.setMaxHealth(20);
         player.setFoodLevel(20);
@@ -109,13 +111,18 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     public void interact(PlayerInteractEvent e){
         Player player = e.getPlayer();
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (player.getItemInHand().getType().equals(Material.COMPASS)) {
                 Inventory inv = Bukkit.createInventory(null, 36, ChatColor.GOLD + "Hlavní menu");
                 player.openInventory(inv);
+                e.setCancelled(true);
+            }
+            else {
+                e.setCancelled(true);
+            }
         }
         else {
             e.setCancelled(true);
         }
-
     }
 
     @EventHandler

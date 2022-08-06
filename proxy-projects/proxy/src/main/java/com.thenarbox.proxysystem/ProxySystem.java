@@ -49,10 +49,11 @@ public final class ProxySystem extends Plugin implements Listener {
         }, 0, 30, TimeUnit.MILLISECONDS);
     }
 
-    String pattern = "HH:mm:ss";
-    DateFormat df = new SimpleDateFormat(pattern);
-    Date today = Calendar.getInstance().getTime();
+
     public void tab() {
+        String pattern = "HH:mm:ss";
+        DateFormat df = new SimpleDateFormat(pattern);
+        Date today = Calendar.getInstance().getTime();
         for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
             final var playerServer = player.getServer();
             if(playerServer == null)

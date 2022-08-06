@@ -21,23 +21,8 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         log.info("SurvivalPlugin has been enabled.");
 
         getServer().getPluginManager().registerEvents(this, this);
-        Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
-            @Override
-            public void run() {
-                sendTablistToPlayers();
-            }
-        }, 0, 20);
     }
 
-    public void sendTablistToPlayers() {
-        String pattern = "HH:mm:ss";
-        DateFormat df = new SimpleDateFormat(pattern);
-        Date today = Calendar.getInstance().getTime();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.setPlayerListHeader("\n" + ChatColor.translateAlternateColorCodes('&', "&6&lMejs.cz") + "\n" + "\n" + ChatColor.GRAY + "discord.mejs.cz" + "\n" + "\n" + ChatColor.WHITE + "Čas: " + ChatColor.GOLD + df.format(today) + "\n");
-            player.setPlayerListFooter("\n" + "  " + ChatColor.WHITE + "Hráčů: " + ChatColor.GOLD + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.WHITE + "Server: " + ChatColor.GOLD + getServer().getMotd() + ChatColor.GRAY + " | " + ChatColor.WHITE + "Ping: " + ChatColor.GOLD + player.getPing() + "  ");
-        }
-    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){

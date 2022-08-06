@@ -3,9 +3,21 @@ import com.thenarbox.proxysystem.listeners.CommandMechanic;
 import com.thenarbox.proxysystem.messages.PrivateMessages;
 import com.thenarbox.proxysystem.motd.Motd;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.w3c.dom.Text;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public final class ProxySystem extends Plugin implements Listener {
 
@@ -23,6 +35,22 @@ public final class ProxySystem extends Plugin implements Listener {
         ProxyServer.getInstance().getPluginManager().registerListener(this, new Motd());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new CommandMechanic());
         CommandMechanic.Commands();
+
+        ProxyServer.getInstance().getScheduler().schedule(this, new Runnable() {
+            @Override
+            public void run() {
+                sendTablistToPlayers();
+            }
+        }, 20, TimeUnit.SECONDS);
+    }
+
+    public void sendTablistToPlayers() {
+        String pattern = "HH:mm:ss";
+        DateFormat df = new SimpleDateFormat(pattern);
+        Date today = Calendar.getInstance().getTime();
+        for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
+            player.setTabHeader(new TextComponent("\n" + ChatColor.translateAlternateColorCodes('&', "&6&lMejs.cz") + "\n" + "\n" + ChatColor.GRAY + "discord.mejs.cz" + "\n" + "\n" + ChatColor.WHITE + "Čas: " + ChatColor.GOLD + df.format(today) + "\n"), new TextComponent("\n" + "  " + ChatColor.WHITE + "Hráčů: " + ChatColor.GOLD + ProxyServer.getInstance().getPlayers().size() + ChatColor.GRAY + " | " + ChatColor.WHITE + "Server: " + ChatColor.GOLD + player.getServer().getInfo().getMotd() + ChatColor.GRAY + " | " + ChatColor.WHITE + "Ping: " + ChatColor.GOLD + player.getPing() + "  "));
+        }
     }
 
 

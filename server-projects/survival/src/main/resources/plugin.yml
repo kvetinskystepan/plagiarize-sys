@@ -1,0 +1,7 @@
+name: SurvivalPlugin
+version: '${project.version}'
+main: com.thenarbox.survivalplugin.SurvivalPlugin
+api-version: 1.19
+prefix: [ SURVIVALPLUGIN ]
+authors: [ TheNarbox ]
+description: Survival plugin for Mejs.cz

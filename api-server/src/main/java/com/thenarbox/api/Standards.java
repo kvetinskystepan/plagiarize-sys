@@ -66,7 +66,7 @@ public class Standards {
     public static void commands() {
 
         {
-            Bukkit.getCommandMap().register("lobby", new Command("fly") {
+            Bukkit.getCommandMap().register("", new Command("fly") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
                     if (!(sender instanceof Player))

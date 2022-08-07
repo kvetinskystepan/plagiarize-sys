@@ -14,6 +14,7 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.DateFormat;
@@ -41,6 +42,11 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     public void onDisable() {
         log.info("AuthPlugin is disabled!");
         HandlerList.unregisterAll();
+    }
+
+    @EventHandler
+    public void onTabComplete(TabCompleteEvent e){
+        e.setCancelled(true);
     }
 
     @EventHandler

@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,27 +69,6 @@ public class Standards {
     public static void commands() {
 
         {
-
-            Bukkit.getCommandMap().register("", new Command("restart") {
-                @Override
-                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-                    if (!(sender instanceof Player))
-                        return false;
-
-                    Player playerCo = (Player) sender;
-                    if (!playerCo.hasPermission("standarts.restart")){
-                        ChatNotice.error(playerCo, Component.text("Minimální hodnost pro použití toho příkazu je Developer."));
-                        return false;
-                    }
-
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        ChatNotice.warning(player, Component.text("Server se bude restartovat. Vyčkejte prosím na znovuspuštění. Omlouváme se za komplikace."));
-                        player.performCommand("lobby");
-                    }
-                    Bukkit.getServer().shutdown();
-                    return true;
-                }
-            });
             Bukkit.getCommandMap().register("", new Command("fly") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
@@ -99,50 +79,50 @@ public class Standards {
 
                         if (commandLabel.equalsIgnoreCase("fly")) {
 
-                            if(!player.hasPermission("standarts.fly")){
-                                ChatNotice.error(player, Component.text("Minimální hodnost pro použití toho příkazu je VIP."));
-                                return false;
-                            }
+                            if(player.hasPermission("standarts.fly")){
+                                if (args.length == 0) {
+                                    if (flyingPlayers.contains(player)) {
+                                        player.setFlying(false);
+                                        flyingPlayers.remove(player);
+                                        ChatNotice.success(player, Component.text("Létání bylo vypnuto."));
+                                    }
+                                    else {
+                                        flyingPlayers.add(player);
+                                        player.setFlying(true);
+                                        ChatNotice.success(player, Component.text("Létání bylo zapnuto."));
+                                    }
+                                }
 
-                        if (args.length == 0) {
-                            if (flyingPlayers.contains(player)) {
-                                player.setFlying(false);
-                                flyingPlayers.remove(player);
-                                ChatNotice.success(player, Component.text("Létání bylo vypnuto."));
+                                else if (args.length == 1){
+                                    if(player.hasPermission("standarts.fly.other")){
+                                        Player toPlayer = Bukkit.getPlayer(args[0]);
+                                        if (toPlayer != null) {
+                                            if (flyingPlayers.contains(toPlayer)) {
+                                                toPlayer.setFlying(false);
+                                                flyingPlayers.remove(toPlayer);
+                                                ChatNotice.success(toPlayer, Component.text("Létání bylo vypnuto."));
+                                                ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo vypnuto."));
+                                            }
+                                            else {
+                                                flyingPlayers.add(toPlayer);
+                                                toPlayer.setFlying(true);
+                                                ChatNotice.success(toPlayer, Component.text("Létání bylo zapnuto."));
+                                                ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));
+                                            }
+                                        }
+                                        else {
+                                            ChatNotice.error(player, Component.text(ChatColor.WHITE + "Hráč " + args[0] + " není online."));
+                                        }
+                                    }
+                                    else {
+                                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                                    }
+                                }
                             }
                             else {
-                                flyingPlayers.add(player);
-                                player.setFlying(true);
-                                ChatNotice.success(player, Component.text("Létání bylo zapnuto."));
+                                ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
                             }
                         }
-
-
-                        else if (args.length == 1){
-                            if(!player.hasPermission("standarts.fly.other")){
-                                ChatNotice.error(player, Component.text("Minimální hodnost pro použití toho příkazu je V.Builder."));
-                                return false;
-                            }
-                            Player toPlayer = Bukkit.getPlayer(args[0]);
-                            if (toPlayer != null) {
-                                if (flyingPlayers.contains(toPlayer)) {
-                                    toPlayer.setFlying(false);
-                                    flyingPlayers.remove(toPlayer);
-                                    ChatNotice.success(toPlayer, Component.text("Létání bylo vypnuto."));
-                                    ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo vypnuto."));
-                                }
-                                else {
-                                    flyingPlayers.add(toPlayer);
-                                    toPlayer.setFlying(true);
-                                    ChatNotice.success(toPlayer, Component.text("Létání bylo zapnuto."));
-                                    ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));
-                                }
-                            }
-                            else {
-                                ChatNotice.error(player, Component.text(ChatColor.WHITE + "Hráč " + args[0] + " není online."));
-                            }
-                        }
-                    }
                     return true;
                 }
             });

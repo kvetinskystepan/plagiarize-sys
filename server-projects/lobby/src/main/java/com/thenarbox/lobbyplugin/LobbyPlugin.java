@@ -1,10 +1,13 @@
 package com.thenarbox.lobbyplugin;
 
+import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.lobbyplugin.listeners.CommandMechanic;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.Component;
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -21,10 +24,12 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 @Log4j2(topic = "LobbyPlugin")
 public class LobbyPlugin extends JavaPlugin implements Listener {
@@ -52,7 +57,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
                 .registerEvents(new CommandMechanic(), this);
         getServer().getPluginManager()
                 .registerEvents(new DoubleJump(), this);
-
     }
 
     @Override
@@ -72,8 +76,21 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void chat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
-        String replaced = PlaceholderAPI.setPlaceholders(player, "%vault_rank");
-        e.setFormat(replaced + ChatColor.GRAY + " | " + player.getName() + " " + e.getMessage());
+        String replaced = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%"));
+        e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
+    }
+
+
+    @EventHandler
+    public void onTab(TabCompleteEvent e){
+        e.setCancelled(true);
+    }
+    @EventHandler
+    public void command(PlayerCommandPreprocessEvent e){
+        Player player = e.getPlayer();
+
+        ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš opravnění."));
+        e.setCancelled(true);
     }
 
     @EventHandler

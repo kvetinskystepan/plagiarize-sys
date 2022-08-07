@@ -1,6 +1,7 @@
 package com.thenarbox.api;
 
 import lombok.extern.log4j.Log4j2;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -10,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
@@ -73,6 +75,12 @@ public class Standards {
                     if (!(sender instanceof Player))
                         return false;
 
+                    Player playerCo = (Player) sender;
+                    if (!playerCo.hasPermission("standarts.restart")){
+                        ChatNotice.error(playerCo, Component.text("Minimální hodnost pro použití toho příkazu je Developer."));
+                        return false;
+                    }
+
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         ChatNotice.warning(player, Component.text("Server se bude restartovat. Vyčkejte prosím na znovuspuštění. Omlouváme se za komplikace."));
                         player.performCommand("lobby");
@@ -91,8 +99,8 @@ public class Standards {
 
                         if (commandLabel.equalsIgnoreCase("fly")) {
 
-                            if (!perms.playerInGroup(player, "admin")) {
-                                ChatNotice.error(player, Component.text("Na tuto akci nemáš dostatečná oprávnění"));
+                            if(!player.hasPermission("standarts.fly")){
+                                ChatNotice.error(player, Component.text("Minimální hodnost pro použití toho příkazu je VIP."));
                                 return false;
                             }
 
@@ -108,7 +116,13 @@ public class Standards {
                                 ChatNotice.success(player, Component.text("Létání bylo zapnuto."));
                             }
                         }
+
+
                         else if (args.length == 1){
+                            if(!player.hasPermission("standarts.fly.other")){
+                                ChatNotice.error(player, Component.text("Minimální hodnost pro použití toho příkazu je V.Builder."));
+                                return false;
+                            }
                             Player toPlayer = Bukkit.getPlayer(args[0]);
                             if (toPlayer != null) {
                                 if (flyingPlayers.contains(toPlayer)) {

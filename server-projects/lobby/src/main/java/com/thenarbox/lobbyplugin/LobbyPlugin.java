@@ -4,6 +4,7 @@ import com.thenarbox.api.Standards;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.lobbyplugin.listeners.CommandMechanic;
 import lombok.extern.log4j.Log4j2;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -40,6 +41,10 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             log.error("Vault is not enabled! Disabling LobbyPlugin...");
             getServer().getPluginManager().disablePlugin(this);
         }
+        if(!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
+            log.error("PlaceholderAPI is not enabled! Disabling LobbyPlugin...");
+            getServer().getPluginManager().disablePlugin(this);
+        }
 
         getServer().getPluginManager()
                 .registerEvents(this, this);
@@ -62,6 +67,13 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GOLD + "Hlavní menu");
         item.setItemMeta(meta);
+    }
+
+    @EventHandler
+    public void chat(AsyncPlayerChatEvent e){
+        Player player = e.getPlayer();
+        String replaced = PlaceholderAPI.setPlaceholders(player, "%vault_rank");
+        e.setFormat(replaced + ChatColor.GRAY + " | " + player.getName() + " " + e.getMessage());
     }
 
     @EventHandler

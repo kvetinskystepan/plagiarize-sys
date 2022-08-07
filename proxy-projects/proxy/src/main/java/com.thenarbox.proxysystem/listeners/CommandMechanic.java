@@ -7,6 +7,10 @@ import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
@@ -18,6 +22,43 @@ public class CommandMechanic implements Listener {
 
     public static void Commands(){
         {
+
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("discord") {
+                @Override
+                public void execute(CommandSender sender, String[] args) {
+                    ProxiedPlayer player = (ProxiedPlayer) sender;
+                    TextComponent mainComponent = new TextComponent( "Náš discord: " );
+                    TextComponent subComponent = new TextComponent( "discord.mejs.cz" );
+                    subComponent.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( "Klikni pro otevření" ).create() ) );
+                    subComponent.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL, "https://discord.mejs.cz" ) );
+                    mainComponent.addExtra( subComponent );
+                    ChatNotice.info(player, mainComponent);
+                }
+            });
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("tc") {
+                @Override
+                public void execute(CommandSender sender, String[] args) {
+                    ProxiedPlayer player = (ProxiedPlayer) sender;
+                    if (!player.hasPermission("proxyserver.staffchats.tc")){
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Builder."));
+                        return;
+                    }
+                    if (args.length == 0){
+                        ChatNotice.error(player, Component.text("Syntaxe příkazu: /tc <zpráva>"));
+                        return;
+                    }
+
+                    for (ProxiedPlayer player1 : ProxyServer.getInstance().getPlayers()){
+                        if (!player1.hasPermission("proxyserver.staffchats.tc")){
+                            continue;
+                        }
+                        if (player1 == null)
+                            continue;
+                        player1.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7&lTeamChat: ") + ChatColor.WHITE + player.getName() + ": " + ChatColor.RESET + String.join(" ", args));
+                    }
+                }
+            });
+
             ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("ac") {
                 @Override
                 public void execute(CommandSender sender, String[] args) {
@@ -26,7 +67,7 @@ public class CommandMechanic implements Listener {
                         ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Developer."));
                         return;
                     }
-                    if (args[1] == null){
+                    if (args.length == 0){
                         ChatNotice.error(player, Component.text("Syntaxe příkazu: /ac <zpráva>"));
                         return;
                     }
@@ -37,7 +78,7 @@ public class CommandMechanic implements Listener {
                         }
                         if (player1 == null)
                             continue;
-                        player1.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4&lAC: ") + ChatColor.WHITE + player.getName() + ": " + ChatColor.RESET + String.join(" ", args));
+                        player1.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4&lAdminChat: ") + ChatColor.WHITE + player.getName() + ": " + ChatColor.RESET + String.join(" ", args));
                     }
                 }
             });

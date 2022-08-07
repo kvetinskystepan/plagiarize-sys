@@ -21,6 +21,7 @@ subprojects {
     dependencies {
         implementation project(':api-proxy')
     }
+
 }
 
 // Configure all projects
@@ -29,6 +30,10 @@ allprojects {
     repositories {
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+
+        maven {
+            url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+        }
     }
 
     dependencies {
@@ -36,6 +41,7 @@ allprojects {
         implementation 'net.kyori:adventure-text-serializer-plain:4.11.0'
         implementation 'net.kyori:adventure-text-serializer-bungeecord:4.1.2'
         compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
+        compileOnly 'me.clip:placeholderapi:2.11.2'
     }
 }
 

@@ -1,5 +1,6 @@
 package com.thenarbox.lobbyplugin;
 
+import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
@@ -88,9 +89,10 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void command(PlayerCommandPreprocessEvent e){
         Player player = e.getPlayer();
-
-        ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš opravnění."));
-        e.setCancelled(true);
+        if(!AllowedCommands.initMysql().contains(e.getMessage())){
+            e.setCancelled(true);
+            ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš opravnění."));
+        }
     }
 
     @EventHandler

@@ -8,7 +8,6 @@ import com.thenarbox.lobbyplugin.listeners.CommandMechanic;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -30,8 +29,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -45,7 +42,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         {
             Standards.worlds();
             Standards.commands();
-            Standards.tablist(this);
+            Standards.tab(this);
         }
 
         if(!getServer().getPluginManager().isPluginEnabled("Vault")){

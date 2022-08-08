@@ -1,9 +1,7 @@
 package com.thenarbox.api;
 
 import lombok.extern.log4j.Log4j2;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
-import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameRule;
@@ -11,20 +9,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import static org.bukkit.Bukkit.getServer;
-
 
 /**
  * Standards for plugins.
@@ -34,7 +25,9 @@ public class Standards {
 
     public static ArrayList<Player> flyingPlayers = new ArrayList<Player>();
 
-    public static void tablist(Plugin plugin){
+    public static void tab(Plugin plugin){
+
+
     }
 
     /**

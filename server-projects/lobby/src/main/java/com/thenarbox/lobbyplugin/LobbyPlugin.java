@@ -30,17 +30,22 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.*;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 @Log4j2(topic = "LobbyPlugin")
 public class LobbyPlugin extends JavaPlugin implements Listener {
+
+    ArrayList<String> allowedCommands = new ArrayList<String>();
     @Override
     public void onEnable() {
         System.out.println("LobbyPlugin is enabled!");
         {
             Standards.worlds();
             Standards.commands();
-            Standards.setupPermissions();
+            Standards.tablist(this);
         }
 
         if(!getServer().getPluginManager().isPluginEnabled("Vault")){
@@ -58,6 +63,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
                 .registerEvents(new CommandMechanic(), this);
         getServer().getPluginManager()
                 .registerEvents(new DoubleJump(), this);
+        allowedCommands = AllowedCommands.initMysql();
     }
 
     @Override
@@ -89,7 +95,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void command(PlayerCommandPreprocessEvent e){
         Player player = e.getPlayer();
-        if(!AllowedCommands.initMysql().contains(e.getMessage())){
+        if(!allowedCommands.contains(e.getMessage())){
             e.setCancelled(true);
             ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš opravnění."));
         }

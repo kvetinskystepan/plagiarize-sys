@@ -14,10 +14,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.TabCompleteEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -30,12 +34,7 @@ public class Standards {
 
     public static ArrayList<Player> flyingPlayers = new ArrayList<Player>();
 
-    private static Permission perms = null;
-
-    public static boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
+    public static void tablist(Plugin plugin){
     }
 
     /**

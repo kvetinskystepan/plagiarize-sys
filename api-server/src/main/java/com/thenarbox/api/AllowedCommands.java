@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class AllowedCommands implements Listener {
 
     private static ArrayList < String > allowedCommands = new ArrayList < String > ();
-    public static ArrayList < String > allowedCommands2 = new ArrayList < String > ();
     static final String username = "u1_T2UIK9wc4t";
     static final String password = "!Uzp!@2fuKE6na1^0Xu5gM9W";
     static final String url = "jdbc:mysql://65.108.3.94:43306/s1_AllowedCommands";
@@ -35,8 +34,7 @@ public class AllowedCommands implements Listener {
             statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                allowedCommands.add("/" + resultSet.getString("command"));
-                allowedCommands2.add(resultSet.getString("command"));
+                allowedCommands.add(resultSet.getString("command"));
             }
             disconnectFromMysql();
             return allowedCommands;

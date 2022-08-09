@@ -35,7 +35,7 @@ import java.util.ArrayList;
 @Log4j2(topic = "LobbyPlugin")
 public class LobbyPlugin extends JavaPlugin implements Listener {
 
-    ArrayList<String> allowedCommands = new ArrayList<String>();
+    ArrayList<String> allowedCommands480 = new ArrayList<String>();
     @Override
     public void onEnable() {
         System.out.println("LobbyPlugin is enabled!");
@@ -59,7 +59,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
                 .registerEvents(new CommandMechanic(), this);
         getServer().getPluginManager()
                 .registerEvents(new DoubleJump(), this);
-        allowedCommands = AllowedCommands.initMysql();
+        allowedCommands480 = AllowedCommands.initMysql();
         Standards.View.tab(this);
     }
 
@@ -88,7 +88,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayer(PlayerCommandSendEvent e){
-        final var allowedCommands = AllowedCommands.allowedCommands2;
+        final var allowedCommands = allowedCommands480;
         final var sentCommands = e.getCommands();
         sentCommands.retainAll(allowedCommands);
     }
@@ -106,10 +106,11 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         final int length;
         {
             final int index = commandMessage.indexOf(' ');
-            length = index == -1 ? commandMessage.length() : index - 1;
+            length = index == -1 ? commandMessage.length() : index;
         }
         final var commandName = commandMessage.substring(1, length);
-        if(!allowedCommands.contains(commandName)){
+        if(!allowedCommands480.contains(commandName)){
+            player.sendMessage(commandName);
             e.setCancelled(true);
             ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš opravnění."));
         }

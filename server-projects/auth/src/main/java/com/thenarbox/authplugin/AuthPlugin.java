@@ -1,5 +1,6 @@
 package com.thenarbox.authplugin;
 
+import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.Standards;
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.*;
@@ -19,12 +20,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 @Log4j2(topic = "AuthPlugin")
 public final class AuthPlugin extends JavaPlugin implements Listener {
 
+    ArrayList<String> allowedCommands01 = new ArrayList<String>();
     @Override
     public void onEnable() {
         log.info("AuthPlugin is enabled!");
@@ -34,6 +37,10 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
             Standards.commands();
         }
 
+        allowedCommands01.add("login");
+        allowedCommands01.add("register");
+        allowedCommands01.add("l");
+        allowedCommands01.add("reg");
         getServer().getPluginManager()
                 .registerEvents(this, this);
         getServer().setDefaultGameMode(GameMode.ADVENTURE);
@@ -42,6 +49,13 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     public void onDisable() {
         log.info("AuthPlugin is disabled!");
         HandlerList.unregisterAll();
+    }
+
+    @EventHandler
+    public void onPlayer(PlayerCommandSendEvent e){
+        final var allowedCommands = allowedCommands01;
+        final var sentCommands = e.getCommands();
+        sentCommands.retainAll(allowedCommands);
     }
 
     @EventHandler

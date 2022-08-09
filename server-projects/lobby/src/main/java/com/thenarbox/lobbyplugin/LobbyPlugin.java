@@ -102,7 +102,14 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void command(PlayerCommandPreprocessEvent e){
         Player player = e.getPlayer();
-        if(!allowedCommands.contains(e.getMessage())){
+        final var commandMessage = e.getMessage();
+        final int length;
+        {
+            final int index = commandMessage.indexOf(' ');
+            length = index == -1 ? commandMessage.length() : index - 1;
+        }
+        final var commandName = commandMessage.substring(1, length);
+        if(!allowedCommands.contains(commandName)){
             e.setCancelled(true);
             ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš opravnění."));
         }

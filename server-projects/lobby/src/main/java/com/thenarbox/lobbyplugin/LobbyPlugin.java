@@ -42,7 +42,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         {
             Standards.worlds();
             Standards.commands();
-            Standards.tab(this);
         }
 
         if(!getServer().getPluginManager().isPluginEnabled("Vault")){
@@ -61,6 +60,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         getServer().getPluginManager()
                 .registerEvents(new DoubleJump(), this);
         allowedCommands = AllowedCommands.initMysql();
+        Standards.View.tab(this);
     }
 
     @Override
@@ -85,10 +85,20 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     }
 
 
+
+    @EventHandler
+    public void onPlayer(PlayerCommandSendEvent e){
+        final var allowedCommands = AllowedCommands.allowedCommands2;
+        final var sentCommands = e.getCommands();
+        sentCommands.retainAll(allowedCommands);
+    }
+
+
     @EventHandler
     public void onTab(TabCompleteEvent e){
         e.setCancelled(true);
     }
+
     @EventHandler
     public void command(PlayerCommandPreprocessEvent e){
         Player player = e.getPlayer();

@@ -15,7 +15,6 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     public void onEnable() {
         log.info("SurvivalPlugin has been enabled.");
 
-        Standards.tab(this);
         Standards.commands();
         getServer().getPluginManager().registerEvents(this, this);
     }

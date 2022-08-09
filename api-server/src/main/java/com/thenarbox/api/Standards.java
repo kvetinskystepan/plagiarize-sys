@@ -1,6 +1,7 @@
 package com.thenarbox.api;
 
 import lombok.extern.log4j.Log4j2;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -25,9 +27,20 @@ public class Standards {
 
     public static ArrayList<Player> flyingPlayers = new ArrayList<Player>();
 
-    public static void tab(Plugin plugin){
-
-
+    public class View{
+        public static void tab(Plugin plugin){
+            final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+            Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    var team = scoreboard.getTeam(player.getName());
+                    if(team == null)
+                        team = scoreboard.registerNewTeam(player.getName());
+                    String prefix = PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%");
+                    team.setPrefix(ChatColor.translateAlternateColorCodes('&', prefix + ChatColor.GRAY + " | " + ChatColor.WHITE));
+                    team.addPlayer(player);
+                }
+            }, 0, 20);
+        }
     }
 
     /**

@@ -19,9 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.TabCompleteEvent;
@@ -69,22 +67,12 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         HandlerList.unregisterAll();
     }
 
-    ItemStack item;
-    {
-        item = new ItemStack(org.bukkit.Material.COMPASS);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "Hlavní menu");
-        item.setItemMeta(meta);
-    }
-
     @EventHandler
     public void chat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
         String replaced = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%"));
         e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
     }
-
-
 
     @EventHandler
     public void onPlayer(PlayerCommandSendEvent e){
@@ -93,10 +81,22 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         sentCommands.retainAll(allowedCommands);
     }
 
-
     @EventHandler
-    public void onTab(TabCompleteEvent e){
-        e.setCancelled(true);
+    public void interact(PlayerInteractEvent e){
+        Player player = e.getPlayer();
+        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (player.getItemInHand().getType().equals(Material.COMPASS)) {
+                Inventory inv = Bukkit.createInventory(null, 36, ChatColor.GOLD + "Hlavní menu");
+                player.openInventory(inv);
+                e.setCancelled(true);
+            }
+            else {
+                e.setCancelled(true);
+            }
+        }
+        else {
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -116,6 +116,22 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     }
 
     @EventHandler
+    public void onTnT(final EntityExplodeEvent e) {
+        final Entity entity = e.getEntity();
+        if (entity != null && entity instanceof TNTPrimed) {
+            e.blockList().clear();
+        }
+    }
+
+    ItemStack item;
+    {
+        item = new ItemStack(org.bukkit.Material.COMPASS);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "Hlavní menu");
+        item.setItemMeta(meta);
+    }
+
+    @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
         player.getInventory().clear();
@@ -125,6 +141,11 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         player.setFoodLevel(20);
         player.setWalkSpeed(0.4f);
         e.setJoinMessage(null);
+    }
+
+    @EventHandler
+    public void onTab(TabCompleteEvent e){
+        e.setCancelled(true);
     }
     @EventHandler
     public void Quit(PlayerQuitEvent e){
@@ -151,21 +172,13 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void interact(PlayerInteractEvent e){
-        Player player = e.getPlayer();
-        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (player.getItemInHand().getType().equals(Material.COMPASS)) {
-                Inventory inv = Bukkit.createInventory(null, 36, ChatColor.GOLD + "Hlavní menu");
-                player.openInventory(inv);
-                e.setCancelled(true);
-            }
-            else {
-                e.setCancelled(true);
-            }
-        }
-        else {
-            e.setCancelled(true);
-        }
+    public void kill(EntityDamageEvent e){
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void death(PlayerDeathEvent e){
+        e.setCancelled(true);
     }
 
     @EventHandler
@@ -190,13 +203,5 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void noPvP(EntityDamageByEntityEvent e){
         e.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onTnT(final EntityExplodeEvent e) {
-        final Entity entity = e.getEntity();
-        if (entity != null && entity instanceof TNTPrimed) {
-            e.blockList().clear();
-        }
     }
 }

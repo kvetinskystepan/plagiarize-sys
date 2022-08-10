@@ -2,7 +2,6 @@ package com.thenarbox.proxysystem.listeners;
 
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.proxysystem.ProxySystem;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -22,7 +21,6 @@ public class CommandMechanic implements Listener {
 
     public static void Commands(){
         {
-
             ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("discord") {
                 @Override
                 public void execute(CommandSender sender, String[] args) {
@@ -35,6 +33,7 @@ public class CommandMechanic implements Listener {
                     ChatNotice.info(player, mainComponent);
                 }
             });
+
             ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("tc") {
                 @Override
                 public void execute(CommandSender sender, String[] args) {
@@ -100,6 +99,7 @@ public class CommandMechanic implements Listener {
                 }
             });
         }
+
         {
             ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("lobby") {
                 @Override
@@ -122,6 +122,7 @@ public class CommandMechanic implements Listener {
                 }
             });
         }
+
         {
             ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("hub") {
                 @Override

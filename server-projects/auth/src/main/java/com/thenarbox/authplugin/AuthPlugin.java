@@ -1,6 +1,5 @@
 package com.thenarbox.authplugin;
 
-import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
 import lombok.extern.log4j.Log4j2;
@@ -20,11 +19,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 @Log4j2(topic = "AuthPlugin")
 public final class AuthPlugin extends JavaPlugin implements Listener {

@@ -9,13 +9,9 @@ import org.bukkit.GameRule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -24,8 +20,6 @@ import static org.bukkit.Bukkit.getServer;
  */
 @Log4j2(topic = "Standards")
 public class Standards {
-
-    public static ArrayList<Player> flyingPlayers = new ArrayList<Player>();
 
     public class View{
         public static void tab(Plugin plugin){
@@ -43,9 +37,6 @@ public class Standards {
         }
     }
 
-    /**
-     * Handle world standards.
-     */
     public static void worlds() {
         final var world = getServer()
                 .getWorld("world");
@@ -68,9 +59,6 @@ public class Standards {
         }
     }
 
-    /**
-     * Handle command standards.
-     */
     public static void commands() {
 
         {
@@ -131,12 +119,4 @@ public class Standards {
             });
         }
     }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent e){
-        if (flyingPlayers.contains(e.getPlayer())) {
-            flyingPlayers.remove(e.getPlayer());
-        }
-    }
-
 }

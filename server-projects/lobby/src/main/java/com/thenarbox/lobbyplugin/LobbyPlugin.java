@@ -67,6 +67,26 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         HandlerList.unregisterAll();
     }
 
+    ItemStack item;
+    {
+        item = new ItemStack(org.bukkit.Material.COMPASS);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "Hlavní menu");
+        item.setItemMeta(meta);
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e){
+        Player player = e.getPlayer();
+        player.getInventory().clear();
+        player.getInventory().addItem(item);
+        player.setGameMode(GameMode.ADVENTURE);
+        player.setMaxHealth(20);
+        player.setFoodLevel(20);
+        player.setWalkSpeed(0.4f);
+        e.setJoinMessage(null);
+    }
+
     @EventHandler
     public void chat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
@@ -123,26 +143,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         }
     }
 
-    ItemStack item;
-    {
-        item = new ItemStack(org.bukkit.Material.COMPASS);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "Hlavní menu");
-        item.setItemMeta(meta);
-    }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e){
-        Player player = e.getPlayer();
-        player.getInventory().clear();
-        player.getInventory().addItem(item);
-        player.setGameMode(GameMode.ADVENTURE);
-        player.setMaxHealth(20);
-        player.setFoodLevel(20);
-        player.setWalkSpeed(0.4f);
-        e.setJoinMessage(null);
-    }
-
     @EventHandler
     public void onTab(TabCompleteEvent e){
         e.setCancelled(true);
@@ -187,7 +187,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void LeaveDecay(LeavesDecayEvent e) {
+    public void LeaveDecay(LeavesDecayEvent e){
         e.setCancelled(true);
     }
 

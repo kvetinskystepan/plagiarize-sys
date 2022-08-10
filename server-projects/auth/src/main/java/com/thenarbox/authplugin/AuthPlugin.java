@@ -38,6 +38,8 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
         allowedCommands01.add("register");
         allowedCommands01.add("l");
         allowedCommands01.add("reg");
+        allowedCommands01.add("premium");
+        allowedCommands01.add("cracked");
         getServer().getPluginManager()
                 .registerEvents(this, this);
         getServer().setDefaultGameMode(GameMode.ADVENTURE);

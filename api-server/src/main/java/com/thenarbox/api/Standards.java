@@ -15,9 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import static org.bukkit.Bukkit.getServer;
 
-/**
- * Standards for plugins.
- */
 @Log4j2(topic = "Standards")
 public class Standards {
 

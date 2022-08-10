@@ -33,7 +33,7 @@ import java.util.ArrayList;
 @Log4j2(topic = "LobbyPlugin")
 public class LobbyPlugin extends JavaPlugin implements Listener {
 
-    ArrayList<String> allowedCommands480 = new ArrayList<String>();
+    ArrayList<String> allowedCommands480 = new ArrayList<>();
     @Override
     public void onEnable() {
         System.out.println("LobbyPlugin is enabled!");
@@ -57,6 +57,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
                 .registerEvents(new CommandMechanic(), this);
         getServer().getPluginManager()
                 .registerEvents(new DoubleJump(), this);
+
         allowedCommands480 = AllowedCommands.initMysql();
         Standards.View.tab(this);
     }

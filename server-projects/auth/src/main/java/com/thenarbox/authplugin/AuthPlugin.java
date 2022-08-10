@@ -1,8 +1,10 @@
 package com.thenarbox.authplugin;
 
 import com.thenarbox.api.AllowedCommands;
+import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
 import lombok.extern.log4j.Log4j2;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,6 +51,22 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     public void onDisable() {
         log.info("AuthPlugin is disabled!");
         HandlerList.unregisterAll();
+    }
+
+    @EventHandler
+    public void command(PlayerCommandPreprocessEvent e){
+        Player player = e.getPlayer();
+        final var commandMessage = e.getMessage();
+        final int length;
+        {
+            final int index = commandMessage.indexOf(' ');
+            length = index == -1 ? commandMessage.length() : index;
+        }
+        final var commandName = commandMessage.substring(1, length);
+        if(!allowedCommands01.contains(commandName)){
+            e.setCancelled(true);
+            ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš opravnění."));
+        }
     }
 
     @EventHandler

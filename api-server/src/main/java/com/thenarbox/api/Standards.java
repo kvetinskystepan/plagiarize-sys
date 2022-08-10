@@ -83,33 +83,31 @@ public class Standards {
                     final Player player = (Player) sender;
 
                         if (commandLabel.equalsIgnoreCase("fly")) {
-
                             if(player.hasPermission("standarts.fly")){
                                 if (args.length == 0) {
-                                    if (flyingPlayers.contains(player)) {
+                                    if (player.getAllowFlight()){
+                                        player.setAllowFlight(false);
                                         player.setFlying(false);
-                                        flyingPlayers.remove(player);
                                         ChatNotice.success(player, Component.text("Létání bylo vypnuto."));
                                     }
                                     else {
-                                        flyingPlayers.add(player);
+                                        player.setAllowFlight(true);
                                         player.setFlying(true);
                                         ChatNotice.success(player, Component.text("Létání bylo zapnuto."));
                                     }
                                 }
-
                                 else if (args.length == 1){
                                     if(player.hasPermission("standarts.fly.other")){
                                         Player toPlayer = Bukkit.getPlayer(args[0]);
                                         if (toPlayer != null) {
-                                            if (flyingPlayers.contains(toPlayer)) {
+                                            if (toPlayer.getAllowFlight()) {
+                                                toPlayer.setAllowFlight(false);
                                                 toPlayer.setFlying(false);
-                                                flyingPlayers.remove(toPlayer);
                                                 ChatNotice.success(toPlayer, Component.text("Létání bylo vypnuto."));
                                                 ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo vypnuto."));
                                             }
                                             else {
-                                                flyingPlayers.add(toPlayer);
+                                                toPlayer.setAllowFlight(true);
                                                 toPlayer.setFlying(true);
                                                 ChatNotice.success(toPlayer, Component.text("Létání bylo zapnuto."));
                                                 ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));

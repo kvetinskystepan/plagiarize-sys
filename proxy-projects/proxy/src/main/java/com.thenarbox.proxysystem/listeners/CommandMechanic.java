@@ -106,11 +106,19 @@ public class CommandMechanic implements Listener {
                 public void execute(CommandSender sender, String[] args) {
                     ProxiedPlayer player = (ProxiedPlayer) sender;
                     if(!player.getServer().getInfo().getMotd().equals("Lobby-1")){
-                        ChatNotice.success(player, Component.text("Připojuješ se na Lobby."));
-                        player.connect(ProxyServer.getInstance().getServerInfo("Lobby-1"));
-                        return;
+                        try {
+                            player.connect(ProxyServer.getInstance().getServerInfo("Lobby-1"));
+                            ChatNotice.success(player, Component.text("Připojuješ se na Lobby."));
+                        }
+                        catch (Exception e){
+                            ChatNotice.error(player, Component.text("Server Lobby-1 není dostupný."));
+                        }
+
                     }
-                    ChatNotice.error(player, Component.text("Jsi již na Lobby."));
+                    else {
+                        ChatNotice.error(player, Component.text("Jsi již na Lobby."));
+
+                    }
                 }
             });
         }
@@ -120,11 +128,19 @@ public class CommandMechanic implements Listener {
                 public void execute(CommandSender sender, String[] args) {
                     ProxiedPlayer player = (ProxiedPlayer) sender;
                     if(!player.getServer().getInfo().getMotd().equals("Lobby-1")){
-                        ChatNotice.success(player, Component.text("Připojuješ se na Lobby."));
-                        player.connect(ProxyServer.getInstance().getServerInfo("Lobby-1"));
-                        return;
+                        try {
+                            player.connect(ProxyServer.getInstance().getServerInfo("Lobby-1"));
+                            ChatNotice.success(player, Component.text("Připojuješ se na Lobby."));
+                        }
+                        catch (Exception e){
+                            ChatNotice.error(player, Component.text("Server Lobby-1 není dostupný."));
+                        }
+
                     }
-                    ChatNotice.error(player, Component.text("Jsi již na Lobby."));
+                    else {
+                        ChatNotice.error(player, Component.text("Jsi již na Lobby."));
+
+                    }
                 }
             });
         }

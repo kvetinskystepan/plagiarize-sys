@@ -10,9 +10,13 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
+
+import java.util.Map;
 
 public class CommandMechanic implements Listener {
     public CommandMechanic() {
@@ -21,6 +25,52 @@ public class CommandMechanic implements Listener {
 
     public static void Commands(){
         {
+
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("serverlist") {
+                @Override
+                public void execute(CommandSender sender, String[] args) {
+                    ProxiedPlayer player = (ProxiedPlayer) sender;
+                    if (!player.hasPermission("proxyserver.serverlist")) {
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Developer."));
+                        return;
+                    }
+                    String message = "";
+                    Map<String, ServerInfo> allServer = ProxyServer.getInstance().getServers();
+                    for (ServerInfo info : allServer.values()){
+                        if (info.canAccess(player))
+                            message += info.getName() + ", ";
+                    }
+                    ChatNotice.info(player, new TextComponent(message));
+                }
+            });
+
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("server") {
+                @Override
+                public void execute(CommandSender sender, String[] args) {
+                    ProxiedPlayer player = (ProxiedPlayer) sender;
+                    if (!player.hasPermission("proxyserver.server")) {
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Developer."));
+                        return;
+                    }
+                    if (args.length == 0) {
+                        ChatNotice.error(player, Component.text("Použití: /server <server>"));
+                        return;
+                    }
+                    ServerInfo info = ProxyServer.getInstance().getServerInfo(args[0]);
+                    if (info == null) {
+                        ChatNotice.error(player, Component.text("Server nebyl nalezen."));
+                        return;
+                    }
+                    if (!info.canAccess(player)) {
+                        ChatNotice.error(player, Component.text("Nemáš přístup k tomuto serveru."));
+                        return;
+                    }
+                    player.connect(info);
+                    ChatNotice.success(player, Component.text("Připojuji se k serveru " + info.getName() + "."));
+                }
+            });
+
+
             ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("discord") {
                 @Override
                 public void execute(CommandSender sender, String[] args) {

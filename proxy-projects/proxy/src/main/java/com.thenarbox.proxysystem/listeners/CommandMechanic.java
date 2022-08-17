@@ -73,15 +73,15 @@ public class CommandMechanic implements Listener {
                     }
                     String name = args[0];
                     String group = args[1];
-                    if (group == "majitel" || group == "vedení" || group == "v.developer" || group == "developer" || group == "v.helper" || group == "helper" || group == "v.builder" || group == "builder" || group == "eventer" || group == "default"){
-                        ProxyServer.getInstance().getConsole().sendMessages("lpb user " + name + " clear");
-                        ProxyServer.getInstance().getConsole().sendMessages("lpb user " + name + " parent add " + group);
-                        ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group));
-                    }
-                    else {
+                    if (!group.equalsIgnoreCase("majitel") && !group.equalsIgnoreCase("vedení") && !group.equalsIgnoreCase("v.developer") && !group.equalsIgnoreCase("developer") && !group.equalsIgnoreCase("v.helper") && !group.equalsIgnoreCase("helper") && !group.equalsIgnoreCase("v.builder") && !group.equalsIgnoreCase("builder") && !group.equalsIgnoreCase("eventer") && !group.equalsIgnoreCase("default")) {
                         ChatNotice.error(player, Component.text("Neplatná skupina. Zkus nahlédnout do /ranklist pro více informací."));
                     }
+                    else {
 
+                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " clear");
+                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " parent add " + group);
+                        ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group));
+                    }
                 }
             });
 

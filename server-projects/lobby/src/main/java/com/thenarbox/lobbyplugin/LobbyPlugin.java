@@ -8,10 +8,7 @@ import com.thenarbox.lobbyplugin.listeners.CommandMechanic;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -79,6 +76,8 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
+        Location location = new Location(Bukkit.getWorld("world"), 390.5, 89, 209.5, -90, 0);
+        player.teleport(location);
         player.getInventory().clear();
         player.getInventory().addItem(item);
         player.setGameMode(GameMode.ADVENTURE);
@@ -95,12 +94,12 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onPlayer(PlayerCommandSendEvent e){
         final var allowedCommands = allowedCommands480;
         final var sentCommands = e.getCommands();
         sentCommands.retainAll(allowedCommands);
-    }
+    }*/
 
     @EventHandler
     public void interact(PlayerInteractEvent e){
@@ -120,7 +119,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         }
     }
 
-    @EventHandler
+    /*@EventHandler
     public void command(PlayerCommandPreprocessEvent e){
         Player player = e.getPlayer();
         final var commandMessage = e.getMessage();
@@ -134,7 +133,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             e.setCancelled(true);
             ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš opravnění."));
         }
-    }
+    }*/
 
     @EventHandler
     public void onTnT(final EntityExplodeEvent e) {

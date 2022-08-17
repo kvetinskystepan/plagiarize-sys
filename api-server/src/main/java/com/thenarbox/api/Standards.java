@@ -19,15 +19,55 @@ import static org.bukkit.Bukkit.getServer;
 public class Standards {
 
     public class View{
+        static String priority = "A";
         public static void tab(Plugin plugin){
             final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
             Bukkit.getScheduler().runTaskTimer(plugin, () -> {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    var team = scoreboard.getTeam(player.getName());
+                    String suffix = PlaceholderAPI.setPlaceholders(player, "%luckperms_suffix%");
+                    if (suffix.equalsIgnoreCase("majitel")){
+                        priority = "A";
+                    }
+                    else if (suffix.equalsIgnoreCase("vedení")){
+                        priority = "B";
+                    }
+                    else if (suffix.equalsIgnoreCase("v.developer")){
+                        priority = "C";
+                    }
+                    else if (suffix.equalsIgnoreCase("developer")){
+                        priority = "D";
+                    }
+                    else if (suffix.equalsIgnoreCase("v.helper")){
+                        priority = "E";
+                    }
+                    else if (suffix.equalsIgnoreCase("helper")){
+                        priority = "F";
+                    }
+                    else if (suffix.equalsIgnoreCase("v.builder")){
+                        priority = "G";
+                    }
+                    else if (suffix.equalsIgnoreCase("builder")){
+                        priority = "H";
+                    }
+                    else if (suffix.equalsIgnoreCase("eventer")){
+                        priority = "I";
+                    }
+                    else if (suffix.equalsIgnoreCase("hráč")){
+                        priority = "J";
+                    }
+                    else {
+                        priority = "K";
+                    }
+                    var team = scoreboard.getTeam(priority + player.getName());
                     if(team == null)
-                        team = scoreboard.registerNewTeam(player.getName());
+                        team = scoreboard.registerNewTeam(priority + player.getName());
                     String prefix = PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%");
-                    team.setPrefix(ChatColor.translateAlternateColorCodes('&', prefix + ChatColor.GRAY + " | " + ChatColor.WHITE));
+                    if (suffix.equalsIgnoreCase("hráč")){
+                        team.setPrefix("");
+                    }
+                    else {
+                        team.setPrefix(ChatColor.translateAlternateColorCodes('&', prefix + ChatColor.GRAY + " | " + ChatColor.WHITE));
+                    }
                     team.addPlayer(player);
                 }
             }, 0, 20);
@@ -49,6 +89,7 @@ public class Standards {
             world.setGameRule(GameRule.SPAWN_RADIUS, 1000000);
             world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
             world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+            world.setGameRule(GameRule.RANDOM_TICK_SPEED, 0);
             world.setFullTime(6000);
             world.getWorldBorder().reset();
         } else {

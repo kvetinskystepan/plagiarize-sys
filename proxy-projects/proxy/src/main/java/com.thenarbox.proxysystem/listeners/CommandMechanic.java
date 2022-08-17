@@ -12,7 +12,6 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 
@@ -44,7 +43,49 @@ public class CommandMechanic implements Listener {
                 }
             });
 
-            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("server") {
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("ranklist") {
+                @Override
+                public void execute(CommandSender sender, String[] args) {
+                    ProxiedPlayer player = (ProxiedPlayer) sender;
+                    if (!player.hasPermission("proxyserver.ranklist")) {
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Vedení."));
+                        return;
+                    }
+                    ChatNotice.infoComponent(player, Component.text("Skupiny: majitel, vedení, v.developer, developer, v.helper, helper, v.builder, builder, eventer, default"));
+                }
+            });
+
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("setrank") {
+                @Override
+                public void execute(CommandSender sender, String[] args) {
+                    ProxiedPlayer player = (ProxiedPlayer) sender;
+                    if (!player.hasPermission("proxyserver.setrank")) {
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Vedení."));
+                        return;
+                    };
+                    if (args.length == 0) {
+                        ChatNotice.error(player, Component.text("Použití: /setrank <jméno> <skupina>"));
+                        return;
+                    }
+                    if (args.length == 1) {
+                        ChatNotice.error(player, Component.text("Použití: /setrank <jméno> <skupina>"));
+                        return;
+                    }
+                    String name = args[0];
+                    String group = args[1];
+                    if (group == "majitel" || group == "vedení" || group == "v.developer" || group == "developer" || group == "v.helper" || group == "helper" || group == "v.builder" || group == "builder" || group == "eventer" || group == "default"){
+                        ProxyServer.getInstance().getConsole().sendMessages("lpb user " + name + " clear");
+                        ProxyServer.getInstance().getConsole().sendMessages("lpb user " + name + " parent add " + group);
+                        ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group));
+                    }
+                    else {
+                        ChatNotice.error(player, Component.text("Neplatná skupina. Zkus nahlédnout do /ranklist pro více informací."));
+                    }
+
+                }
+            });
+
+           /* ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("server") {
                 @Override
                 public void execute(CommandSender sender, String[] args) {
                     ProxiedPlayer player = (ProxiedPlayer) sender;
@@ -68,7 +109,7 @@ public class CommandMechanic implements Listener {
                     player.connect(info);
                     ChatNotice.success(player, Component.text("Připojuji se k serveru " + info.getName() + "."));
                 }
-            });
+            });*/
 
 
             ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("discord") {

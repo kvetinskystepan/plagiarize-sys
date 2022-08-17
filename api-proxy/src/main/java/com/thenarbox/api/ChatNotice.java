@@ -11,6 +11,9 @@ public class ChatNotice {
     public ChatNotice() {
     }
 
+    public static void infoComponent(ProxiedPlayer player, Component component){
+        player.sendMessage(ChatColor.GOLD + "✎ "  + ChatColor.GRAY + "| " + ChatColor.WHITE + PlainTextComponentSerializer.plainText().serialize(component));
+    }
     public static void info(ProxiedPlayer player, TextComponent component){
         player.sendMessage(ChatColor.GOLD + "✎ "  + ChatColor.GRAY + "| " + ChatColor.WHITE + component.toPlainText());
     }

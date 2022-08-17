@@ -5,6 +5,7 @@ import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.lobbyplugin.listeners.CommandMechanic;
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -31,6 +32,10 @@ import java.util.ArrayList;
 public class LobbyPlugin extends JavaPlugin implements Listener {
 
     ArrayList<String> allowedCommands480 = new ArrayList<>();
+
+    @Getter
+    Location location = null;
+
     @Override
     public void onEnable() {
         System.out.println("LobbyPlugin is enabled!");
@@ -38,6 +43,8 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             Standards.worlds();
             Standards.commands();
         }
+
+        location = new Location(Bukkit.getWorld("world"), 390.5, 89, 209.5, -90, 0);
 
         if(!getServer().getPluginManager().isPluginEnabled("Vault")){
             log.error("Vault is not enabled! Disabling LobbyPlugin...");
@@ -76,14 +83,13 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
-        Location location = new Location(Bukkit.getWorld("world"), 390.5, 89, 209.5, -90, 0);
-        player.teleport(location);
         player.getInventory().clear();
         player.getInventory().addItem(item);
         player.setGameMode(GameMode.ADVENTURE);
         player.setMaxHealth(20);
         player.setFoodLevel(20);
         player.setWalkSpeed(0.4f);
+        player.teleport(location);
         e.setJoinMessage(null);
     }
 
@@ -94,12 +100,12 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
     }
 
-    /*@EventHandler
+    @EventHandler
     public void onPlayer(PlayerCommandSendEvent e){
         final var allowedCommands = allowedCommands480;
         final var sentCommands = e.getCommands();
         sentCommands.retainAll(allowedCommands);
-    }*/
+    }
 
     @EventHandler
     public void interact(PlayerInteractEvent e){
@@ -119,7 +125,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         }
     }
 
-    /*@EventHandler
+    @EventHandler
     public void command(PlayerCommandPreprocessEvent e){
         Player player = e.getPlayer();
         final var commandMessage = e.getMessage();
@@ -133,7 +139,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             e.setCancelled(true);
             ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš opravnění."));
         }
-    }*/
+    }
 
     @EventHandler
     public void onTnT(final EntityExplodeEvent e) {
@@ -199,6 +205,32 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onDrop(PlayerDropItemEvent e){
         e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent e){
+        Player player = e.getPlayer();
+
+        if (player.getLocation().getY() <= 0) {
+            player.teleport(location);
+        }
+        if (player.getLocation().getY() >= 310) {
+            player.teleport(location);
+        }
+
+        if (player.getLocation().getX() <= -78){
+            player.teleport(location);
+        }
+        if (player.getLocation().getX() >= 968){
+            player.teleport(location);
+        }
+
+        if (player.getLocation().getZ() <= -183){
+            player.teleport(location);
+        }
+        if (player.getLocation().getZ() >= 888){
+            player.teleport(location);
+        }
     }
     @EventHandler
     public void noPvP(EntityDamageByEntityEvent e){

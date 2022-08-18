@@ -24,6 +24,7 @@ import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -72,6 +73,14 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         HandlerList.unregisterAll();
     }
 
+    ItemStack item1;
+    {
+        item1 = new ItemStack(Material.GOLD_INGOT);
+        ItemMeta meta = item1.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "VIP menu");
+        item1.setItemMeta(meta);
+    }
+
     ItemStack item;
     {
         item = new ItemStack(org.bukkit.Material.COMPASS);
@@ -84,7 +93,16 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
         player.getInventory().clear();
-        player.getInventory().addItem(item);
+
+        ItemStack item2 = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) item2.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "Profil");
+        meta.setOwner(player.getName());
+        item2.setItemMeta(meta);
+
+        player.getInventory().setItem(7, item2);
+        player.getInventory().setItem(0, item);
+        player.getInventory().setItem(4, item1);
         player.setGameMode(GameMode.ADVENTURE);
         player.setMaxHealth(20);
         player.setFoodLevel(20);
@@ -97,6 +115,10 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     public void chat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
         String replaced = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%"));
+        if (player.hasPermission("group.default")){
+            e.setFormat(ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
+            return;
+        }
         e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
     }
 
@@ -107,13 +129,45 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         sentCommands.retainAll(allowedCommands);
     }
 
+    Inventory inv;
+    {
+        inv = Bukkit.createInventory(null, 36, ChatColor.GOLD + "Hlavní menu");
+    }
+
+    Inventory inv1;
+    {
+        inv1 = Bukkit.createInventory(null, 27, ChatColor.GOLD + "VIP menu");
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lVIP"));
+        meta.setOwner("TheNarbox");
+        item.setItemMeta(meta);
+        inv1.setItem(4, item);
+    }
+
     @EventHandler
     public void interact(PlayerInteractEvent e){
         Player player = e.getPlayer();
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (player.getItemInHand().getType().equals(Material.COMPASS)) {
-                Inventory inv = Bukkit.createInventory(null, 36, ChatColor.GOLD + "Hlavní menu");
                 player.openInventory(inv);
+                e.setCancelled(true);
+            }
+            else if (player.getItemInHand().getType().equals(Material.GOLD_INGOT)) {
+                player.openInventory(inv1);
+                e.setCancelled(true);
+            }
+            else if (player.getItemInHand().getType().equals(Material.PLAYER_HEAD)) {
+
+                Inventory profile = Bukkit.createInventory(null, 27, ChatColor.GOLD + "Profil");
+                ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
+                SkullMeta meta = (SkullMeta) item.getItemMeta();
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&l" + player.getName()));
+                meta.setOwner(player.getName());
+                item.setItemMeta(meta);
+                profile.setItem(4, item);
+
+                player.openInventory(profile);
                 e.setCancelled(true);
             }
             else {

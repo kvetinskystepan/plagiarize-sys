@@ -23,7 +23,7 @@ public class Motd implements Listener {
     public void onProxyPing(ProxyPingEvent e) throws IOException {
         ServerPing ping = e.getResponse();
         getInstance();
-        String mod1 = ChatColor.translateAlternateColorCodes('&', "&6&lMejs. cz&7| &fVerze: &61.19");
+        String mod1 = ChatColor.translateAlternateColorCodes('&', "&6&lMejs.cz &7| &fVerze: &61.19");
         String mod2 = ChatColor.WHITE + "Server je v režimu " + ChatColor.RED + "údržby";
         ping.setDescription(mod1 + "\n" + mod2);
         e.setResponse(ping);

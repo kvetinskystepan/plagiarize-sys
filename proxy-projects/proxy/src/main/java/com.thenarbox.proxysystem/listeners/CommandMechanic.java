@@ -2,6 +2,7 @@ package com.thenarbox.proxysystem.listeners;
 
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.proxysystem.ProxySystem;
+import me.clip.placeholderapi.util.TimeFormat;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -15,6 +16,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 public class CommandMechanic implements Listener {
@@ -52,6 +55,42 @@ public class CommandMechanic implements Listener {
                         return;
                     }
                     ChatNotice.infoComponent(player, Component.text("Skupiny: majitel, vedení, v.developer, developer, v.helper, helper, v.builder, builder, eventer, default"));
+                }
+            });
+
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("settemprank") {
+                @Override
+                public void execute(CommandSender sender, String[] args) {
+                    if (!(sender instanceof ProxiedPlayer))
+                        return;
+
+                    ProxiedPlayer player = (ProxiedPlayer) sender;
+
+                    if (!player.hasPermission("proxyserver.settemprank")) {
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Vedení."));
+                        return;
+                    };
+                    if (args.length != 3) {
+                        ChatNotice.error(player, Component.text("Použití: /settemprank <jméno> <doba ve dnech> <skupina>"));
+                        return;
+                    }
+                    String name = args[0];
+                    int time;
+                    String group = args[2];
+                    try {
+                        time = Integer.parseInt(args[1]);
+                    } catch (NumberFormatException e) {
+                        ChatNotice.error(player, Component.text("Doba musí být číslo ve dnech."));
+                        return;
+                    }
+                    if (!group.equalsIgnoreCase("majitel") && !group.equalsIgnoreCase("vedení") && !group.equalsIgnoreCase("v.developer") && !group.equalsIgnoreCase("developer") && !group.equalsIgnoreCase("v.helper") && !group.equalsIgnoreCase("helper") && !group.equalsIgnoreCase("v.builder") && !group.equalsIgnoreCase("builder") && !group.equalsIgnoreCase("eventer") && !group.equalsIgnoreCase("default")) {
+                        ChatNotice.error(player, Component.text("Neplatná skupina. Zkus nahlédnout do /ranklist pro více informací."));
+                    }
+                    else {
+                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " clear");
+                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " parent addtemp " + group + " " + time + "d");
+                        ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group + " v délce trvání: " + time + " dnů."));
+                    }
                 }
             });
 
@@ -116,7 +155,7 @@ public class CommandMechanic implements Listener {
                 @Override
                 public void execute(CommandSender sender, String[] args) {
                     ProxiedPlayer player = (ProxiedPlayer) sender;
-                    TextComponent mainComponent = new TextComponent( "Náš discord: " );
+                    TextComponent mainComponent = new TextComponent( "Náš discord (klikni pro otevření): " );
                     TextComponent subComponent = new TextComponent( "discord.mejs.cz" );
                     subComponent.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( "Klikni pro otevření" ).create() ) );
                     subComponent.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL, "https://discord.mejs.cz" ) );

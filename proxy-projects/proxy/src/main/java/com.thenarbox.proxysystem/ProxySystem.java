@@ -3,20 +3,13 @@ import com.thenarbox.proxysystem.listeners.CommandMechanic;
 import com.thenarbox.proxysystem.messages.PrivateMessages;
 import com.thenarbox.proxysystem.motd.Motd;
 import lombok.Getter;
-import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
-import org.w3c.dom.Text;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public final class ProxySystem extends Plugin implements Listener {

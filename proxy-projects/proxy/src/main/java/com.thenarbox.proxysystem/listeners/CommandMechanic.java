@@ -58,42 +58,6 @@ public class CommandMechanic implements Listener {
                 }
             });
 
-            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("settemprank") {
-                @Override
-                public void execute(CommandSender sender, String[] args) {
-                    if (!(sender instanceof ProxiedPlayer))
-                        return;
-
-                    ProxiedPlayer player = (ProxiedPlayer) sender;
-
-                    if (!player.hasPermission("proxyserver.settemprank")) {
-                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Vedení."));
-                        return;
-                    };
-                    if (args.length != 3) {
-                        ChatNotice.error(player, Component.text("Použití: /settemprank <jméno> <doba ve dnech> <skupina>"));
-                        return;
-                    }
-                    String name = args[0];
-                    int time;
-                    String group = args[2];
-                    try {
-                        time = Integer.parseInt(args[1]);
-                    } catch (NumberFormatException e) {
-                        ChatNotice.error(player, Component.text("Doba musí být číslo ve dnech."));
-                        return;
-                    }
-                    if (!group.equalsIgnoreCase("majitel") && !group.equalsIgnoreCase("vedení") && !group.equalsIgnoreCase("v.developer") && !group.equalsIgnoreCase("developer") && !group.equalsIgnoreCase("v.helper") && !group.equalsIgnoreCase("helper") && !group.equalsIgnoreCase("v.builder") && !group.equalsIgnoreCase("builder") && !group.equalsIgnoreCase("eventer") && !group.equalsIgnoreCase("default")) {
-                        ChatNotice.error(player, Component.text("Neplatná skupina. Zkus nahlédnout do /ranklist pro více informací."));
-                    }
-                    else {
-                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " clear");
-                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " parent addtemp " + group + " " + time + "d");
-                        ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group + " v délce trvání: " + time + " dnů."));
-                    }
-                }
-            });
-
             ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("setrank") {
                 @Override
                 public void execute(CommandSender sender, String[] args) {
@@ -102,25 +66,46 @@ public class CommandMechanic implements Listener {
                         ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Vedení."));
                         return;
                     };
-                    if (args.length == 0) {
-                        ChatNotice.error(player, Component.text("Použití: /setrank <jméno> <skupina>"));
+                    if (args.length < 2) {
+                        ChatNotice.error(player, Component.text("Použití: /setrank <jméno> <skupina> | <doba ve dnech>"));
                         return;
                     }
-                    if (args.length == 1) {
-                        ChatNotice.error(player, Component.text("Použití: /setrank <jméno> <skupina>"));
-                        return;
-                    }
-                    String name = args[0];
-                    String group = args[1];
-                    if (!group.equalsIgnoreCase("majitel") && !group.equalsIgnoreCase("vedení") && !group.equalsIgnoreCase("v.developer") && !group.equalsIgnoreCase("developer") && !group.equalsIgnoreCase("v.helper") && !group.equalsIgnoreCase("helper") && !group.equalsIgnoreCase("v.builder") && !group.equalsIgnoreCase("builder") && !group.equalsIgnoreCase("eventer") && !group.equalsIgnoreCase("default")) {
-                        ChatNotice.error(player, Component.text("Neplatná skupina. Zkus nahlédnout do /ranklist pro více informací."));
-                    }
-                    else {
+                    if (args.length == 2){
+                        String name = args[0];
+                        String group = args[1];
+                        if (!group.equalsIgnoreCase("majitel") && !group.equalsIgnoreCase("vedení") && !group.equalsIgnoreCase("v.developer") && !group.equalsIgnoreCase("developer") && !group.equalsIgnoreCase("v.helper") && !group.equalsIgnoreCase("helper") && !group.equalsIgnoreCase("v.builder") && !group.equalsIgnoreCase("builder") && !group.equalsIgnoreCase("eventer") && !group.equalsIgnoreCase("default")) {
+                            ChatNotice.error(player, Component.text("Neplatná skupina. Zkus nahlédnout do /ranklist pro více informací."));
+                        }
+                        else {
 
-                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " clear");
-                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " parent add " + group);
-                        ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group));
+                            ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " clear");
+                            ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " parent add " + group);
+                            ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group));
+                        }
                     }
+                    else if (args.length == 3){
+                        String name = args[0];
+                        int time;
+                        String group = args[1];
+                        try {
+                            time = Integer.parseInt(args[2]);
+                        } catch (NumberFormatException e) {
+                            ChatNotice.error(player, Component.text("Doba musí být číslo ve dnech."));
+                            return;
+                        }
+                        if (!group.equalsIgnoreCase("majitel") && !group.equalsIgnoreCase("vedení") && !group.equalsIgnoreCase("v.developer") && !group.equalsIgnoreCase("developer") && !group.equalsIgnoreCase("v.helper") && !group.equalsIgnoreCase("helper") && !group.equalsIgnoreCase("v.builder") && !group.equalsIgnoreCase("builder") && !group.equalsIgnoreCase("eventer") && !group.equalsIgnoreCase("default")) {
+                            ChatNotice.error(player, Component.text("Neplatná skupina. Zkus nahlédnout do /ranklist pro více informací."));
+                        }
+                        else {
+                            ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " clear");
+                            ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " parent addtemp " + group + " " + time + "d");
+                            ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group + " v délce trvání: " + time + " dnů."));
+                        }
+                    }
+                    else if (args.length > 3){
+                        ChatNotice.error(player, Component.text("Použití: /setrank <jméno> <skupina> | <doba ve dnech>"));
+                    }
+
                 }
             });
 

@@ -27,9 +27,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Log4j2(topic = "LobbyPlugin")
 public class LobbyPlugin extends JavaPlugin implements Listener {
@@ -175,22 +174,17 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
                 ItemStack item2 = new ItemStack(Material.PAPER, 1);
                 ItemMeta meta2 = item2.getItemMeta();
                 String rank = PlaceholderAPI.setPlaceholders(player, "%luckperms_suffix%");
-                meta2.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lRank: " + ChatColor.WHITE + rank));
-                item2.setItemMeta(meta2);
-
-                ItemStack item3 = new ItemStack(Material.CLOCK, 1);
-                ItemMeta meta3 = item3.getItemMeta();
                 String rank1 = rank.toLowerCase();
                 String duration = PlaceholderAPI.setPlaceholders(player, " %luckperms_group_expiry_time_"+rank1+"%");
+                meta2.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lRank: " + ChatColor.WHITE + rank));
                 if (duration.equals(" ")){
-                    meta3.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lExpirace: " + ChatColor.WHITE + "Tvůj rank je permanentní"));
+                    meta2.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&6&lExpirace: " + ChatColor.WHITE + "Tvůj rank je permanentní")));
                 }
                 else {
-                    meta3.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lExpirace:" + ChatColor.WHITE + duration));
+                    meta2.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&6&lExpirace:" + ChatColor.WHITE + duration)));
                 }
-                item3.setItemMeta(meta3);
+                item2.setItemMeta(meta2);
 
-                profile.setItem(19, item3);
                 profile.setItem(10, item2);
                 profile.setItem(4, item);
 

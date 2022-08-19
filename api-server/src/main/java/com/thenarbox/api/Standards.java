@@ -100,6 +100,39 @@ public class Standards {
     public static void commands() {
 
         {
+            Bukkit.getCommandMap().register("", new Command("sudo") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("sudo")){
+                        if(player.hasPermission("standarts.sudo")){
+                            if(args.length == 2){
+                                final Player target = Bukkit.getPlayer(args[0]);
+                                if(target != null){
+                                    target.chat(args[1]);
+                                    ChatNotice.success(player, Component.text("Hráč " + target.getName() + " úspěšně vykonal požadavek."));
+                                }
+                                else{
+                                    ChatNotice.error(player, Component.text("Hráč s tímto nickem nebyl nalezen."));
+                                }
+                            }
+                            else {
+                                ChatNotice.error(player, Component.text("Použití: /sudo <hráč> <příkaz>"));
+                            }
+                        }
+                    }
+                    return true;
+                }
+            });
+
+        }
+
+        {
+
             Bukkit.getCommandMap().register("", new Command("fly") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {

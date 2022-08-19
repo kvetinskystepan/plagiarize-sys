@@ -110,19 +110,26 @@ public class Standards {
 
                     if (commandLabel.equalsIgnoreCase("sudo")){
                         if(player.hasPermission("standarts.sudo")){
-                            if(args.length == 2){
+                            if(args.length < 2){
+                                ChatNotice.error(player, Component.text("Použití: /sudo <hráč> <příkaz>"));
+                            }
+                            else {
                                 final Player target = Bukkit.getPlayer(args[0]);
                                 if(target != null){
-                                    target.chat(args[1]);
+                                    final StringBuilder sb = new StringBuilder();
+                                    for (int i = 1; i < args.length; i++) {
+                                        sb.append(args[i]).append(" ");
+                                    }
+                                    target.chat(sb.toString());
                                     ChatNotice.success(player, Component.text("Hráč " + target.getName() + " úspěšně vykonal požadavek."));
                                 }
                                 else{
                                     ChatNotice.error(player, Component.text("Hráč s tímto nickem nebyl nalezen."));
                                 }
                             }
-                            else {
-                                ChatNotice.error(player, Component.text("Použití: /sudo <hráč> <příkaz>"));
-                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Developer."));
                         }
                     }
                     return true;

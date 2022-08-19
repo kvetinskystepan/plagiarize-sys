@@ -114,12 +114,15 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void chat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
+
         String replaced = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%"));
-        if (player.hasPermission("group.default")){
+
+        if (replaced.equals("")){
             e.setFormat(ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
-            return;
         }
-        e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
+        else {
+            e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
+        }
     }
 
     @EventHandler

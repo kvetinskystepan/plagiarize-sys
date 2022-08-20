@@ -132,7 +132,7 @@ public class Standards {
 
                     if (commandLabel.equalsIgnoreCase("level")){
                         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
-                        ChatNotice.info(player, Component.text("Tvá úroveň je: " + ChatColor.GOLD + level));
+                        ChatNotice.info(player, Component.text("Tvá úroveň je: " + ChatColor.AQUA + level));
                     }
                     return true;
                 }
@@ -211,13 +211,13 @@ public class Standards {
                                             toPlayer.setAllowFlight(false);
                                             toPlayer.setFlying(false);
                                             ChatNotice.success(toPlayer, Component.text("Létání bylo vypnuto."));
-                                            ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo vypnuto."));
+                                            ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.AQUA+toPlayer.getName()+ChatColor.WHITE+" bylo vypnuto."));
                                         }
                                         else {
                                             toPlayer.setAllowFlight(true);
                                             toPlayer.setFlying(true);
                                             ChatNotice.success(toPlayer, Component.text("Létání bylo zapnuto."));
-                                            ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));
+                                            ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.AQUA+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));
                                         }
                                     }
                                     else {
@@ -279,7 +279,7 @@ public class Standards {
                                 }
                                 Bukkit.getOnlinePlayers().stream().filter(online -> online != player).forEach(online ->
                                         online.showPlayer(plugin, player));
-                                final String message = ChatColor.GREEN + "+" + ChatColor.GRAY + " | " + ChatColor.GOLD + player.getName() + ChatColor.WHITE + " se připojil.";
+                                final String message = ChatColor.GREEN + "+" + ChatColor.GRAY + " | " + ChatColor.AQUA + player.getName() + ChatColor.WHITE + " se připojil.";
                                 for (Player p : Bukkit.getOnlinePlayers())
                                     p.sendMessage(message);
                                 ChatNotice.warning(player, Component.text("Vanish deaktivován."));
@@ -288,7 +288,7 @@ public class Standards {
                                 vanishPlayers.add(player.getName());
                                 Bukkit.getOnlinePlayers().stream().filter(online -> online != player).forEach(online ->
                                         online.hidePlayer(plugin, player));
-                                String message = ChatColor.RED + "-" + ChatColor.GRAY + " | " + ChatColor.GOLD + player.getName() + ChatColor.WHITE + " se odpojil.";
+                                String message = ChatColor.RED + "-" + ChatColor.GRAY + " | " + ChatColor.AQUA + player.getName() + ChatColor.WHITE + " se odpojil.";
                                 for (Player p : Bukkit.getOnlinePlayers())
                                     p.sendMessage(message);
                                 for (final Player team : Bukkit.getOnlinePlayers()) {

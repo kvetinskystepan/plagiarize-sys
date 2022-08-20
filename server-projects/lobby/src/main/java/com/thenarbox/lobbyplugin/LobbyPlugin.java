@@ -89,7 +89,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     {
         item = new ItemStack(Material.COMPASS);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "Hlavní menu");
+        meta.setDisplayName(ChatColor.AQUA + "Hlavní menu");
         item.setItemMeta(meta);
     }
 
@@ -97,7 +97,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     {
         item3 = new ItemStack(Material.NAME_TAG);
         ItemMeta meta = item3.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "Obchod");
+        meta.setDisplayName(ChatColor.AQUA + "Obchod");
         item3.setItemMeta(meta);
     }
 
@@ -109,7 +109,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         player.setLevel(Integer.parseInt(level));
         ItemStack item2 = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) item2.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "Profil");
+        meta.setDisplayName(ChatColor.AQUA + "Profil");
         meta.setOwner(player.getName());
         item2.setItemMeta(meta);
 
@@ -132,7 +132,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
 
         if (replaced.equals("")){
-            e.setFormat(ChatColor.GOLD + level + ChatColor.GRAY + " | " +ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
+            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " +ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
         }
         else {
             e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
@@ -153,13 +153,13 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         Inventory inv = Bukkit.createInventory(null, 27, "Hlavní menu");
         ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lSURVIVAL CLASSIC"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lSURVIVAL CLASSIC"));
         lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + " ");
         lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 32002)));
         if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
             lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 32002)));
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &6" + Server.version("172.18.0.1", 32002)));
+            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 32002)));
             lore.add(ChatColor.GRAY + " ");
             lore.add(ChatColor.translateAlternateColorCodes('&', "&8&oResidence, Práce, Úkoly a mnoho dalšího..."));
             lore.add(ChatColor.GRAY + " ");
@@ -169,6 +169,22 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         item.setItemMeta(meta);
         inv.setItem(13, item);
         player.openInventory(inv);
+    }
+
+    List<String> lore9;
+    Inventory inv2;
+    {
+        inv2 = Bukkit.createInventory(null, 27, "Nastavení");
+        lore9 = new ArrayList<>();
+        ItemStack item = new ItemStack(Material.TRIPWIRE_HOOK, 1);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lZměna hesla"));
+        lore9.add(ChatColor.GRAY + " ");
+        lore9.add(ChatColor.GRAY + "Klikni pro změnu hesla");
+        meta.setLore(lore9);
+        item.setItemMeta(meta);
+
+        inv2.setItem(11, item);
     }
 
     List<String> lore3;
@@ -183,11 +199,11 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         lore3 = new ArrayList<>();
         ItemStack item = new ItemStack(Material.NAME_TAG, 1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lObchodní nabídka"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lObchodní nabídka"));
         lore3.add(" ");
         lore3.add(ChatColor.GRAY + "Vítej v serverovém obchodě!");
         lore3.add(ChatColor.GRAY + " ");
-        lore3.add(ChatColor.GOLD + "Zde si můžeš zakoupit: ");
+        lore3.add(ChatColor.AQUA + "Zde si můžeš zakoupit: ");
         lore3.add(ChatColor.GRAY + " ");
         lore3.add(ChatColor.GRAY + " - VIP");
         lore3.add(ChatColor.GRAY + " - Ranky");
@@ -203,11 +219,11 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         lore5 = new ArrayList<>();
         ItemStack item2 = new ItemStack(Material.ANVIL, 1);
         ItemMeta meta2 = item2.getItemMeta();
-        meta2.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lObchod s Ranky"));
+        meta2.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lObchod s Ranky"));
         lore5.add(" ");
         lore5.add(ChatColor.GRAY + "Zde si můžeš zakoupit ranky.");
         lore5.add(ChatColor.GRAY + " ");
-        lore5.add(ChatColor.GOLD + "Platidlem zde je: ");
+        lore5.add(ChatColor.AQUA + "Platidlem zde je: ");
         lore5.add(ChatColor.GRAY + " ");
         lore5.add(ChatColor.GRAY + " - Úroveň hráče");
         lore5.add(ChatColor.GRAY + " ");
@@ -217,11 +233,11 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         lore6 = new ArrayList<>();
         ItemStack item3 = new ItemStack(Material.PAINTING, 1);
         ItemMeta meta3 = item3.getItemMeta();
-        meta3.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lObchod s Doplňky"));
+        meta3.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lObchod s Doplňky"));
         lore6.add(" ");
         lore6.add(ChatColor.GRAY + "Zde si můžeš zakoupit doplňky.");
         lore6.add(ChatColor.GRAY + " ");
-        lore6.add(ChatColor.GOLD + "Platidlem zde je: ");
+        lore6.add(ChatColor.AQUA + "Platidlem zde je: ");
         lore6.add(ChatColor.GRAY + " ");
         lore6.add(ChatColor.GRAY + " - Úroveň hráče");
         lore6.add(ChatColor.GRAY + " - Reálné peníze");
@@ -233,11 +249,11 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         lore7 = new ArrayList<>();
         ItemStack item4 = new ItemStack(Material.LEGACY_EXP_BOTTLE, 1);
         ItemMeta meta4 = item4.getItemMeta();
-        meta4.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lObchod s Levely"));
+        meta4.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lObchod s Levely"));
         lore7.add(" ");
         lore7.add(ChatColor.GRAY + "Zde si můžeš zakoupit levely.");
         lore7.add(ChatColor.GRAY + " ");
-        lore7.add(ChatColor.GOLD + "Platidlem zde jsou: ");
+        lore7.add(ChatColor.AQUA + "Platidlem zde jsou: ");
         lore7.add(ChatColor.GRAY + " ");
         lore7.add(ChatColor.GRAY + " - Reálné peníze");
         lore6.add(ChatColor.GRAY + " - Pro VIP automaticky +X levelů");
@@ -253,11 +269,12 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         lore4 = new ArrayList<>();
         ItemStack item6 = new ItemStack(Material.PAPER, 1);
         ItemMeta meta6 = item6.getItemMeta();
-        meta6.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lInformace"));
+        meta6.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lInformace"));
         lore4.add(" ");
-        lore4.add(ChatColor.GOLD + "Pro další informace koukni na náš web");
+        lore4.add(ChatColor.AQUA + "Pro další informace koukni na náš web");
         lore4.add(ChatColor.GRAY + " ");
         lore4.add(ChatColor.GRAY + "Klikni pro zobrazení webu nebo přejdi na náš web");
+        lore4.add(ChatColor.GRAY + " ");
         lore4.add(ChatColor.GRAY + "                     www.mejs.cz");
         item6.setItemMeta(meta6);
         item6.setLore(lore4);
@@ -274,6 +291,25 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void inv(InventoryClickEvent e){
         Player player = (Player) e.getWhoClicked();
+
+        if(e.getView().getTitle().equals("Nastavení")){
+            e.setCancelled(true);
+            if (e.getCurrentItem() == null)
+                return;
+
+            if (e.getCurrentItem().getType() == Material.TRIPWIRE_HOOK) {
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                player.closeInventory();
+                if (!Server.status("172.18.0.1", 32003).equals(ChatColor.RED + "Offline")){
+                    PlayerChangeServerEvent.connect(player, "PasswordChange");
+                }
+                else {
+                    ChatNotice.error(player, Component.text("Autentifikační server je offline!"));
+                }
+            }
+        }
+
+
         if (e.getView().getTitle().equals("Obchod")){
             e.setCancelled(true);
             if (e.getCurrentItem() == null)
@@ -301,7 +337,13 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             }
             if (e.getCurrentItem().getType() == Material.NAME_TAG){
                 player.closeInventory();
+                player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
                 player.openInventory(inv1);
+            }
+            if(e.getCurrentItem().getType() == Material.REDSTONE_TORCH){
+                player.closeInventory();
+                player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
+                player.openInventory(inv2);
             }
         }
 
@@ -322,15 +364,18 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     }
     List<String> lore1;
     List<String> lore2;
+    List<String> lore10;
     @EventHandler
     public void interact(PlayerInteractEvent e){
         Player player = e.getPlayer();
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (player.getItemInHand().getType().equals(Material.COMPASS)) {
+                player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                 prepareInventory(player);
                 e.setCancelled(true);
             }
             else if (player.getItemInHand().getType().equals(Material.NAME_TAG)) {
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                 player.openInventory(inv1);
                 e.setCancelled(true);
             }
@@ -343,7 +388,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
                 // ItemStack creation, ItemMeta creation, Lore creation, ItemMeta setLore, ItemStack setItemMeta
                 ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
                 SkullMeta meta = (SkullMeta) item.getItemMeta();
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&l" + player.getName()));
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fInformace o &b&l" + player.getName()));
                 meta.setOwner(player.getName());
                 item.setItemMeta(meta);
 
@@ -351,31 +396,43 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
                 String rank1 = rank.toLowerCase();
                 String duration = PlaceholderAPI.setPlaceholders(player, " %luckperms_group_expiry_time_"+rank1+"%");
                 lore1.add(" ");
-                lore1.add(ChatColor.translateAlternateColorCodes('&', "&6&lRank: " + ChatColor.WHITE + rank));
+                lore1.add(ChatColor.translateAlternateColorCodes('&', "&fRank: " + ChatColor.AQUA + rank));
                 if (duration.equals(" ")){
-                    lore1.add(ChatColor.translateAlternateColorCodes('&', "&6&lExpirace: " + ChatColor.WHITE + "Tvůj rank je permanentní"));
+                    lore1.add(ChatColor.translateAlternateColorCodes('&', "&fExpirace: " + ChatColor.AQUA + "Tvůj rank je permanentní"));
                 }
                 else {
-                    lore1.add(ChatColor.translateAlternateColorCodes('&', "&6&lExpirace:" + ChatColor.WHITE + duration));
+                    lore1.add(ChatColor.translateAlternateColorCodes('&', "&fExpirace:" + ChatColor.AQUA + duration));
                 }
                 lore1.add(" ");
                 String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points_formatted%");
-                lore1.add(ChatColor.translateAlternateColorCodes('&', "&6&lÚroveň: " + ChatColor.WHITE + level));
+                lore1.add(ChatColor.translateAlternateColorCodes('&', "&fÚroveň: " + ChatColor.AQUA + level));
 
                 item.setLore(lore1);
 
                 lore2 = new ArrayList<>();
                 ItemStack item1 = new ItemStack(Material.NAME_TAG, 1);
                 ItemMeta meta1 = item1.getItemMeta();
-                meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lObchod"));
+                meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lObchod"));
                 lore2.add(" ");
                 lore2.add(ChatColor.DARK_GRAY + "Zde můžeš nakoupit ranky, doplňky, a další");
                 item1.setItemMeta(meta1);
                 item1.setLore(lore2);
 
+                lore10 = new ArrayList<>();
+                ItemStack item2 = new ItemStack(Material.REDSTONE_TORCH, 1);
+                ItemMeta meta2 = item2.getItemMeta();
+                meta2.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lNastavení"));
+                lore10.add(" ");
+                lore10.add(ChatColor.DARK_GRAY + "Zde si můžeš nastavit žádosti ");
+                lore10.add(ChatColor.DARK_GRAY + "o přátelství, změnit heslo, a další");
+                item2.setItemMeta(meta2);
+                item2.setLore(lore10);
+
                 profile.setItem(11, item1);
                 profile.setItem(13, item);
+                profile.setItem(15, item2);
 
+                player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
                 player.openInventory(profile);
                 e.setCancelled(true);
             }
@@ -414,6 +471,11 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onTab(TabCompleteEvent e){
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void swap(PlayerSwapHandItemsEvent e){
         e.setCancelled(true);
     }
     @EventHandler
@@ -481,17 +543,17 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             player.teleport(location);
         }
 
-        if (player.getLocation().getX() <= -78){
+        if (player.getLocation().getX() <= -65){
             player.teleport(location);
         }
-        if (player.getLocation().getX() >= 968){
+        if (player.getLocation().getX() >= 900){
             player.teleport(location);
         }
 
-        if (player.getLocation().getZ() <= -183){
+        if (player.getLocation().getZ() <= -160){
             player.teleport(location);
         }
-        if (player.getLocation().getZ() >= 888){
+        if (player.getLocation().getZ() >= 800){
             player.teleport(location);
         }
     }

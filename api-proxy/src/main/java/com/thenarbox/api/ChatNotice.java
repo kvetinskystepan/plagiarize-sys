@@ -12,10 +12,10 @@ public class ChatNotice {
     }
 
     public static void infoComponent(ProxiedPlayer player, Component component){
-        player.sendMessage(ChatColor.GOLD + "✎ "  + ChatColor.GRAY + "| " + ChatColor.WHITE + PlainTextComponentSerializer.plainText().serialize(component));
+        player.sendMessage(ChatColor.AQUA + "✎ "  + ChatColor.GRAY + "| " + ChatColor.WHITE + PlainTextComponentSerializer.plainText().serialize(component));
     }
     public static void info(ProxiedPlayer player, TextComponent component){
-        player.sendMessage(ChatColor.GOLD + "✎ "  + ChatColor.GRAY + "| " + ChatColor.WHITE + component.toPlainText());
+        player.sendMessage(ChatColor.AQUA + "✎ "  + ChatColor.GRAY + "| " + ChatColor.WHITE + component.toPlainText());
     }
 
     public static void error(ProxiedPlayer player, Component component){

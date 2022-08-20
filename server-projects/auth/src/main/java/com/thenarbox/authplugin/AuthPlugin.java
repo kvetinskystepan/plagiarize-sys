@@ -25,10 +25,14 @@ import java.util.ArrayList;
 public final class AuthPlugin extends JavaPlugin implements Listener {
 
     ArrayList<String> allowedCommands01 = new ArrayList<String>();
+    ArrayList<String> whitelist = new ArrayList<String>();
+
     @Override
     public void onEnable() {
         log.info("AuthPlugin is enabled!");
 
+        whitelist.add("TheNarbox");
+        whitelist.add("MistrMisak");
         {
             Standards.worlds();
             Standards.commands();
@@ -116,6 +120,11 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
             return;
         }
         Player player = e.getPlayer();
+        if (!whitelist.contains(player.getName())){
+            player.kickPlayer(ChatColor.RED + "Přístup na server byl zamítnut \n \n" + ChatColor.WHITE + "Herní jméno: " + ChatColor.GOLD + player.getName() + "\n" + ChatColor.WHITE + "UUID: " + ChatColor.GOLD + player.getUniqueId() + "\n" + ChatColor.WHITE + "IP: " + ChatColor.GOLD + player.getAddress().getAddress().getHostAddress());
+            log.error("Player " + player.getName() + " byl vyhozen protože není na seznamu povolených hráčů");
+            return;
+        }
         player.hidePlayer(player);
         Bukkit.getOnlinePlayers().forEach(online -> {
             player.hidePlayer(online);

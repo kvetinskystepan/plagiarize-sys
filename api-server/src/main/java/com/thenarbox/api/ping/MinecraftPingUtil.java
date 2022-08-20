@@ -6,8 +6,7 @@ import java.io.IOException;
 
 public class MinecraftPingUtil {
 
-    public static byte PACKET_HANDSHAKE = 0x00, PACKET_STATUSREQUEST = 0x00,
-            PACKET_PING = 0x01;
+    public static byte PACKET_HANDSHAKE = 0x00, PACKET_STATUSREQUEST = 0x00, PACKET_PING = 0x01;
     public static int PROTOCOL_VERSION = 4;
     public static int STATUS_HANDSHAKE = 1;
 

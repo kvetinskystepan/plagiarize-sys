@@ -3,6 +3,7 @@ package com.thenarbox.api;
 import lombok.extern.log4j.Log4j2;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -10,6 +11,10 @@ import org.bukkit.entity.Player;
 public class ChatNotice {
 
     public ChatNotice() {
+    }
+
+    public static void infoHover(Player player, TextComponent component){
+        player.sendMessage(ChatColor.GOLD + "✎ "  + ChatColor.GRAY + "| " + ChatColor.WHITE + component.toPlainText());
     }
 
     public static void info(Player player, Component component){

@@ -12,6 +12,10 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -32,6 +36,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Log4j2(topic = "LobbyPlugin")
 public class LobbyPlugin extends JavaPlugin implements Listener {
@@ -49,6 +54,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             Standards.commands();
         }
 
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         PlayerChangeServerEvent.instance = this;
         location = new Location(Bukkit.getWorld("world"), 390.5, 89, 209.5, -90, 0);
 
@@ -79,27 +85,28 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         HandlerList.unregisterAll();
     }
 
-    ItemStack item1;
-    {
-        item1 = new ItemStack(Material.GOLD_INGOT);
-        ItemMeta meta = item1.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "VIP menu");
-        item1.setItemMeta(meta);
-    }
-
     ItemStack item;
     {
-        item = new ItemStack(org.bukkit.Material.COMPASS);
+        item = new ItemStack(Material.COMPASS);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GOLD + "Hlavní menu");
         item.setItemMeta(meta);
+    }
+
+    ItemStack item3;
+    {
+        item3 = new ItemStack(Material.NAME_TAG);
+        ItemMeta meta = item3.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "Obchod");
+        item3.setItemMeta(meta);
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
         player.getInventory().clear();
-
+        String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
+        player.setLevel(Integer.parseInt(level));
         ItemStack item2 = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) item2.getItemMeta();
         meta.setDisplayName(ChatColor.GOLD + "Profil");
@@ -108,7 +115,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
         player.getInventory().setItem(8, item2);
         player.getInventory().setItem(0, item);
-        player.getInventory().setItem(4, item1);
+        player.getInventory().setItem(7, item3);
         player.setGameMode(GameMode.ADVENTURE);
         player.setMaxHealth(20);
         player.setFoodLevel(20);
@@ -122,14 +129,16 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         Player player = e.getPlayer();
 
         String replaced = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%"));
+        String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
 
         if (replaced.equals("")){
-            e.setFormat(ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
+            e.setFormat(ChatColor.GOLD + level + ChatColor.GRAY + " | " +ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
         }
         else {
             e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
         }
     }
+
 
     @EventHandler
     public void onPlayer(PlayerCommandSendEvent e){
@@ -138,42 +147,181 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         sentCommands.retainAll(allowedCommands);
     }
 
+    List<String> lore;
     public void prepareInventory(Player player)
     {
-        Inventory inv = Bukkit.createInventory(null, 36, ChatColor.GOLD + "Hlavní menu");
+        Inventory inv = Bukkit.createInventory(null, 27, "Hlavní menu");
         ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lSURVIVAL CLASSIC"));
-        meta.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 32002))));
+        lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + " ");
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 32002)));
+        if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
+            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 32002)));
+            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &6" + Server.version("172.18.0.1", 32002)));
+            lore.add(ChatColor.GRAY + " ");
+            lore.add(ChatColor.translateAlternateColorCodes('&', "&8&oResidence, Práce, Úkoly a mnoho dalšího..."));
+            lore.add(ChatColor.GRAY + " ");
+            lore.add(ChatColor.GRAY + "Klikni pro vstup do hry!");
+        }
+        meta.setLore(lore);
         item.setItemMeta(meta);
-        inv.setItem(10, item);
+        inv.setItem(13, item);
         player.openInventory(inv);
     }
 
+    List<String> lore3;
+    List<String> lore4;
+    List<String> lore5;
+    List<String> lore6;
+    List<String> lore7;
     Inventory inv1;
     {
-        inv1 = Bukkit.createInventory(null, 27, ChatColor.GOLD + "VIP menu");
-        ItemStack item = new ItemStack(Material.GOLD_INGOT, 1);
+        inv1 = Bukkit.createInventory(null, 45, "Obchod");
+
+        lore3 = new ArrayList<>();
+        ItemStack item = new ItemStack(Material.NAME_TAG, 1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lVIP"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lObchodní nabídka"));
+        lore3.add(" ");
+        lore3.add(ChatColor.GRAY + "Vítej v serverovém obchodě!");
+        lore3.add(ChatColor.GRAY + " ");
+        lore3.add(ChatColor.GOLD + "Zde si můžeš zakoupit: ");
+        lore3.add(ChatColor.GRAY + " ");
+        lore3.add(ChatColor.GRAY + " - VIP");
+        lore3.add(ChatColor.GRAY + " - Ranky");
+        lore3.add(ChatColor.GRAY + " - Doplňky (Prefixy, Suffixy)");
+        lore3.add(ChatColor.GRAY + " - Levely");
+        lore3.add(ChatColor.GRAY + " ");
+        lore3.add(ChatColor.DARK_GRAY + "Jako platidlo zde používáme ");
+        lore3.add(ChatColor.DARK_GRAY + "úroveň hráče. V případě, že ");
+        lore3.add(ChatColor.DARK_GRAY + "je rank hodnotnější tak reálné peníze");
         item.setItemMeta(meta);
+        item.setLore(lore3);
+
+        lore5 = new ArrayList<>();
+        ItemStack item2 = new ItemStack(Material.ANVIL, 1);
+        ItemMeta meta2 = item2.getItemMeta();
+        meta2.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lObchod s Ranky"));
+        lore5.add(" ");
+        lore5.add(ChatColor.GRAY + "Zde si můžeš zakoupit ranky.");
+        lore5.add(ChatColor.GRAY + " ");
+        lore5.add(ChatColor.GOLD + "Platidlem zde je: ");
+        lore5.add(ChatColor.GRAY + " ");
+        lore5.add(ChatColor.GRAY + " - Úroveň hráče");
+        lore5.add(ChatColor.GRAY + " ");
+        item2.setItemMeta(meta2);
+        item2.setLore(lore5);
+
+        lore6 = new ArrayList<>();
+        ItemStack item3 = new ItemStack(Material.PAINTING, 1);
+        ItemMeta meta3 = item3.getItemMeta();
+        meta3.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lObchod s Doplňky"));
+        lore6.add(" ");
+        lore6.add(ChatColor.GRAY + "Zde si můžeš zakoupit doplňky.");
+        lore6.add(ChatColor.GRAY + " ");
+        lore6.add(ChatColor.GOLD + "Platidlem zde je: ");
+        lore6.add(ChatColor.GRAY + " ");
+        lore6.add(ChatColor.GRAY + " - Úroveň hráče");
+        lore6.add(ChatColor.GRAY + " - Reálné peníze");
+        lore6.add(ChatColor.GRAY + " - Pro VIP zdarma některé doplňky");
+        lore6.add(ChatColor.GRAY + " ");
+        item3.setItemMeta(meta3);
+        item3.setLore(lore6);
+
+        lore7 = new ArrayList<>();
+        ItemStack item4 = new ItemStack(Material.LEGACY_EXP_BOTTLE, 1);
+        ItemMeta meta4 = item4.getItemMeta();
+        meta4.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lObchod s Levely"));
+        lore7.add(" ");
+        lore7.add(ChatColor.GRAY + "Zde si můžeš zakoupit levely.");
+        lore7.add(ChatColor.GRAY + " ");
+        lore7.add(ChatColor.GOLD + "Platidlem zde jsou: ");
+        lore7.add(ChatColor.GRAY + " ");
+        lore7.add(ChatColor.GRAY + " - Reálné peníze");
+        lore6.add(ChatColor.GRAY + " - Pro VIP automaticky +X levelů");
+        lore7.add(ChatColor.GRAY + " ");
+        item4.setItemMeta(meta4);
+        item4.setLore(lore7);
+
+        ItemStack item5 = new ItemStack(Material.BARRIER, 1);
+        ItemMeta meta5 = item5.getItemMeta();
+        meta5.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lZavřít Obchod"));
+        item5.setItemMeta(meta5);
+
+        lore4 = new ArrayList<>();
+        ItemStack item6 = new ItemStack(Material.PAPER, 1);
+        ItemMeta meta6 = item6.getItemMeta();
+        meta6.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lInformace"));
+        lore4.add(" ");
+        lore4.add(ChatColor.GOLD + "Pro další informace koukni na náš web");
+        lore4.add(ChatColor.GRAY + " ");
+        lore4.add(ChatColor.GRAY + "Klikni pro zobrazení webu nebo přejdi na náš web");
+        lore4.add(ChatColor.GRAY + "                     www.mejs.cz");
+        item6.setItemMeta(meta6);
+        item6.setLore(lore4);
+
+
+        inv1.setItem(44, item6);
+        inv1.setItem(36, item5);
+        inv1.setItem(21, item2);
+        inv1.setItem(22, item3);
+        inv1.setItem(23, item4);
         inv1.setItem(4, item);
     }
 
     @EventHandler
     public void inv(InventoryClickEvent e){
         Player player = (Player) e.getWhoClicked();
-        if (e.getView().getTitle().equals(ChatColor.GOLD + "Hlavní menu")){
+        if (e.getView().getTitle().equals("Obchod")){
+            e.setCancelled(true);
+            if (e.getCurrentItem() == null)
+                return;
+            if (e.getCurrentItem().getType() == Material.BARRIER){
+                player.closeInventory();
+                return;
+            }
+            if (e.getCurrentItem().getType() == Material.PAPER){
+                TextComponent mainComponent = new TextComponent( "Náš web (klikni pro otevření): " );
+                TextComponent subComponent = new TextComponent( "www.mejs.cz" );
+                subComponent.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( "Klikni pro otevření" ).create() ) );
+                subComponent.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL, "https://mejs.cz" ) );
+                mainComponent.addExtra( subComponent );
+                player.closeInventory();
+                ChatNotice.infoHover(player, mainComponent);
+            }
+        }
+
+
+        if(e.getView().getTitle().equals("Profil")){
+            e.setCancelled(true);
+            if(e.getCurrentItem() == null){
+                return;
+            }
+            if (e.getCurrentItem().getType() == Material.NAME_TAG){
+                player.closeInventory();
+                player.openInventory(inv1);
+            }
+        }
+
+        if (e.getView().getTitle().equals("Hlavní menu")){
             e.setCancelled(true);
             if (e.getCurrentItem() == null){
                 return;
             }
             if (e.getCurrentItem().getType() == Material.GRASS_BLOCK){
-                PlayerChangeServerEvent.connect(player, "Survival");
+                if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
+                    PlayerChangeServerEvent.connect(player, "Survival");
+                }
+                else {
+                    ChatNotice.error(player, Component.text("Server je offline!"));
+                }
             }
         }
     }
-
+    List<String> lore1;
+    List<String> lore2;
     @EventHandler
     public void interact(PlayerInteractEvent e){
         Player player = e.getPlayer();
@@ -182,36 +330,51 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
                 prepareInventory(player);
                 e.setCancelled(true);
             }
-            else if (player.getItemInHand().getType().equals(Material.GOLD_INGOT)) {
+            else if (player.getItemInHand().getType().equals(Material.NAME_TAG)) {
                 player.openInventory(inv1);
                 e.setCancelled(true);
             }
             else if (player.getItemInHand().getType().equals(Material.PLAYER_HEAD)) {
 
-                Inventory profile = Bukkit.createInventory(null, 27, ChatColor.GOLD + "Profil");
+                // Inventory creation, List initialise
+                Inventory profile = Bukkit.createInventory(null, 27, "Profil");
+                lore1 = new ArrayList<>();
 
+                // ItemStack creation, ItemMeta creation, Lore creation, ItemMeta setLore, ItemStack setItemMeta
                 ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
                 SkullMeta meta = (SkullMeta) item.getItemMeta();
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&l" + player.getName()));
                 meta.setOwner(player.getName());
                 item.setItemMeta(meta);
 
-                ItemStack item2 = new ItemStack(Material.PAPER, 1);
-                ItemMeta meta2 = item2.getItemMeta();
                 String rank = PlaceholderAPI.setPlaceholders(player, "%luckperms_suffix%");
                 String rank1 = rank.toLowerCase();
                 String duration = PlaceholderAPI.setPlaceholders(player, " %luckperms_group_expiry_time_"+rank1+"%");
-                meta2.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lRank: " + ChatColor.WHITE + rank));
+                lore1.add(" ");
+                lore1.add(ChatColor.translateAlternateColorCodes('&', "&6&lRank: " + ChatColor.WHITE + rank));
                 if (duration.equals(" ")){
-                    meta2.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&6&lExpirace: " + ChatColor.WHITE + "Tvůj rank je permanentní")));
+                    lore1.add(ChatColor.translateAlternateColorCodes('&', "&6&lExpirace: " + ChatColor.WHITE + "Tvůj rank je permanentní"));
                 }
                 else {
-                    meta2.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&6&lExpirace:" + ChatColor.WHITE + duration)));
+                    lore1.add(ChatColor.translateAlternateColorCodes('&', "&6&lExpirace:" + ChatColor.WHITE + duration));
                 }
-                item2.setItemMeta(meta2);
+                lore1.add(" ");
+                String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points_formatted%");
+                lore1.add(ChatColor.translateAlternateColorCodes('&', "&6&lÚroveň: " + ChatColor.WHITE + level));
 
-                profile.setItem(10, item2);
-                profile.setItem(4, item);
+                item.setLore(lore1);
+
+                lore2 = new ArrayList<>();
+                ItemStack item1 = new ItemStack(Material.NAME_TAG, 1);
+                ItemMeta meta1 = item1.getItemMeta();
+                meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lObchod"));
+                lore2.add(" ");
+                lore2.add(ChatColor.DARK_GRAY + "Zde můžeš nakoupit ranky, doplňky, a další");
+                item1.setItemMeta(meta1);
+                item1.setLore(lore2);
+
+                profile.setItem(11, item1);
+                profile.setItem(13, item);
 
                 player.openInventory(profile);
                 e.setCancelled(true);

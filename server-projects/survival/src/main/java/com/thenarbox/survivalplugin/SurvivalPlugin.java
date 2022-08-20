@@ -79,9 +79,10 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         Player player = e.getPlayer();
 
         String replaced = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%"));
+        String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
 
         if (replaced.equals("")){
-            e.setFormat(ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
+            e.setFormat(ChatColor.GOLD + level + ChatColor.GRAY + " | " +ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
         }
         else {
             e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
@@ -101,8 +102,13 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e){
         Player player = e.getPlayer();
-        e.setQuitMessage(ChatColor.RED + "-" + ChatColor.GRAY + " | " + ChatColor.GOLD + player.getName() + ChatColor.WHITE + " se odpojil.");
-        vanishPlayers.remove(player.getName());
+        if (vanishPlayers.contains(player.getName())){
+            vanishPlayers.remove(player.getName());
+            e.setQuitMessage(null);
+        }
+        else {
+            e.setQuitMessage(ChatColor.RED + "-" + ChatColor.GRAY + " | " + ChatColor.GOLD + player.getName() + ChatColor.WHITE + " se odpojil.");
+        }
     }
 
     @EventHandler

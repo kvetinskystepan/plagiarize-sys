@@ -106,6 +106,41 @@ public class Standards {
     public static void commands() {
 
         {
+            Bukkit.getCommandMap().register("global", new Command("uroven") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("uroven")){
+                        player.performCommand("level");
+                    }
+                    return true;
+                }
+            });
+
+        }
+
+        {
+            Bukkit.getCommandMap().register("global", new Command("level") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("level")){
+                        String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
+                        ChatNotice.info(player, Component.text("Tvá úroveň je: " + ChatColor.GOLD + level));
+                    }
+                    return true;
+                }
+            });
+
+        }
+
+        {
             Bukkit.getCommandMap().register("global", new Command("sudo") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {

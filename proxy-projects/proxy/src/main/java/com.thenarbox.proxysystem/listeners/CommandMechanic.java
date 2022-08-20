@@ -2,7 +2,6 @@ package com.thenarbox.proxysystem.listeners;
 
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.proxysystem.ProxySystem;
-import me.clip.placeholderapi.util.TimeFormat;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -16,8 +15,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 
 public class CommandMechanic implements Listener {

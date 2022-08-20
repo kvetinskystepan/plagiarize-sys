@@ -1,10 +1,12 @@
 package com.thenarbox.api;
 
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,10 +15,14 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 import static org.bukkit.Bukkit.getServer;
 
 @Log4j2(topic = "Standards")
 public class Standards {
+
+    public static ArrayList<String> vanishPlayers = new ArrayList<String>();
 
     public class View{
         static String priority = "A";
@@ -100,7 +106,7 @@ public class Standards {
     public static void commands() {
 
         {
-            Bukkit.getCommandMap().register("", new Command("sudo") {
+            Bukkit.getCommandMap().register("global", new Command("sudo") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
                     if (!(sender instanceof  Player))
@@ -140,7 +146,7 @@ public class Standards {
 
         {
 
-            Bukkit.getCommandMap().register("", new Command("fly") {
+            Bukkit.getCommandMap().register("global", new Command("fly") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
                     if (!(sender instanceof Player))
@@ -148,50 +154,367 @@ public class Standards {
 
                     final Player player = (Player) sender;
 
-                        if (commandLabel.equalsIgnoreCase("fly")) {
-                            if(player.hasPermission("standarts.fly")){
-                                if (args.length == 0) {
-                                    if (player.getAllowFlight()){
-                                        player.setAllowFlight(false);
-                                        player.setFlying(false);
-                                        ChatNotice.success(player, Component.text("Létání bylo vypnuto."));
-                                    }
-                                    else {
-                                        player.setAllowFlight(true);
-                                        player.setFlying(true);
-                                        ChatNotice.success(player, Component.text("Létání bylo zapnuto."));
-                                    }
+                    if (commandLabel.equalsIgnoreCase("fly")) {
+                        if(player.hasPermission("standarts.fly")){
+                            if (args.length == 0) {
+                                if (player.getAllowFlight()){
+                                    player.setAllowFlight(false);
+                                    player.setFlying(false);
+                                    ChatNotice.success(player, Component.text("Létání bylo vypnuto."));
                                 }
-                                else if (args.length == 1){
-                                    if(player.hasPermission("standarts.fly.other")){
-                                        Player toPlayer = Bukkit.getPlayer(args[0]);
-                                        if (toPlayer != null) {
-                                            if (toPlayer.getAllowFlight()) {
-                                                toPlayer.setAllowFlight(false);
-                                                toPlayer.setFlying(false);
-                                                ChatNotice.success(toPlayer, Component.text("Létání bylo vypnuto."));
-                                                ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo vypnuto."));
-                                            }
-                                            else {
-                                                toPlayer.setAllowFlight(true);
-                                                toPlayer.setFlying(true);
-                                                ChatNotice.success(toPlayer, Component.text("Létání bylo zapnuto."));
-                                                ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));
-                                            }
+                                else {
+                                    player.setAllowFlight(true);
+                                    player.setFlying(true);
+                                    ChatNotice.success(player, Component.text("Létání bylo zapnuto."));
+                                }
+                            }
+                            else if (args.length == 1){
+                                if(player.hasPermission("standarts.fly.other")){
+                                    Player toPlayer = Bukkit.getPlayer(args[0]);
+                                    if (toPlayer != null) {
+                                        if (toPlayer.getAllowFlight()) {
+                                            toPlayer.setAllowFlight(false);
+                                            toPlayer.setFlying(false);
+                                            ChatNotice.success(toPlayer, Component.text("Létání bylo vypnuto."));
+                                            ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo vypnuto."));
                                         }
                                         else {
-                                            ChatNotice.error(player, Component.text(ChatColor.WHITE + "Hráč " + args[0] + " není online."));
+                                            toPlayer.setAllowFlight(true);
+                                            toPlayer.setFlying(true);
+                                            ChatNotice.success(toPlayer, Component.text("Létání bylo zapnuto."));
+                                            ChatNotice.success(player, Component.text("Létání hráči "+ChatColor.GOLD+toPlayer.getName()+ChatColor.WHITE+" bylo zapnuto."));
                                         }
                                     }
                                     else {
-                                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                                        ChatNotice.error(player, Component.text(ChatColor.WHITE + "Hráč " + args[0] + " není online."));
                                     }
+                                }
+                                else {
+                                    ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                                }
+                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+    }
+
+    public static void survivalCommands(Plugin plugin){
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("vanish") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (vanishPlayers.contains(player.getName())) {
+                        vanishPlayers.remove(player.getName());
+                        if (player.getGameMode() != GameMode.CREATIVE){
+                            player.setAllowFlight(false);
+                            player.setFlying(false);
+                        }
+                        Bukkit.getOnlinePlayers().stream().filter(online -> online != player).forEach(online ->
+                                online.showPlayer(plugin, player));
+                        final String message = ChatColor.RED + "-" + ChatColor.GRAY + " | " + ChatColor.GOLD + player.getName() + ChatColor.WHITE + " se odpojil.";
+                        for (Player p : Bukkit.getOnlinePlayers())
+                            p.sendMessage(message);
+                        ChatNotice.warning(player, Component.text("Vanish deaktivován."));
+                    }
+                    else {
+                        vanishPlayers.add(player.getName());
+                        Bukkit.getOnlinePlayers().stream().filter(online -> online != player).forEach(online ->
+                                online.hidePlayer(plugin, player));
+                        String message = ChatColor.GREEN + "+" + ChatColor.GRAY + " | " + ChatColor.GOLD + player.getName() + ChatColor.WHITE + " se připojil.";
+                        for (Player p : Bukkit.getOnlinePlayers())
+                            p.sendMessage(message);
+                        for (final Player team : Bukkit.getOnlinePlayers()) {
+                            if (!player.hasPermission("vanish.info"))
+                                continue;
+                            ChatNotice.info(team, Component.text("Člen " + player.getName() + " si aktivoval vanish."));
+                        }
+                        player.setGameMode(GameMode.SURVIVAL);
+                        player.setAllowFlight(true);
+                        player.setFlying(true);
+                        player.setHealth(player.getMaxHealth());
+                        player.setFoodLevel(20);
+                        ChatNotice.warning(player, Component.text("Vanish byl aktivován."));
+                    }
+                    return true;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("tp") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("tp")){
+                        if (player.hasPermission("survival.tp")){
+                            if (args.length == 0){
+                                ChatNotice.error(player, Component.text("Užití: /tp <jméno>"));
+                            }
+                            else {
+                                Player toPlayer = Bukkit.getPlayer(args[0]);
+                                if (toPlayer != null){
+                                    player.teleport(toPlayer);
+                                    ChatNotice.success(player, Component.text("Teleportoval si se na hráče " + toPlayer.getName()));
+                                }
+                                else {
+                                    ChatNotice.error(player, Component.text("Hráč nebyl nalezen."));
+                                }
+                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Helper."));
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("gmc") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("gmc")){
+                        if (player.hasPermission("survival.gmc")){
+                            if (args.length < 1){
+                                if (player.getGameMode() == GameMode.CREATIVE)
+                                    ChatNotice.error(player, Component.text("Již máš zapnutý creative."));
+                                else {
+                                    player.setGameMode(GameMode.CREATIVE);
+                                    ChatNotice.success(player, Component.text("Creative byl zapnut."));
+                                }
+                            }
+                            else if (args.length == 1){
+                                Player toPlayer = Bukkit.getPlayer(args[0]);
+                                if (toPlayer != null){
+                                    if (toPlayer.getGameMode() == GameMode.CREATIVE)
+                                        ChatNotice.error(player, Component.text("Hráč " + toPlayer.getName() + " již má zapnutý creative."));
+                                    else {
+                                        toPlayer.setGameMode(GameMode.CREATIVE);
+                                        ChatNotice.success(player, Component.text("Creative byl zapnut pro hráče " + toPlayer.getName()));
+                                        ChatNotice.success(toPlayer, Component.text("Creative byl zapnut."));
+                                    }
+                                }
+                                else {
+                                    ChatNotice.error(player, Component.text("Hráč nebyl nalezen."));
                                 }
                             }
                             else {
-                                ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
+                                ChatNotice.error(player, Component.text("Užití: /gmc <jméno>"));
                             }
                         }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("gms") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("gms")){
+                        if (player.hasPermission("survival.gms")){
+                            if (args.length < 1){
+                                if (player.getGameMode() == GameMode.SURVIVAL)
+                                    ChatNotice.error(player, Component.text("Již máš zapnutý survival."));
+                                else {
+                                    player.setGameMode(GameMode.SURVIVAL);
+                                    ChatNotice.success(player, Component.text("Survival byl zapnut."));
+                                }
+                            }
+                            else if (args.length == 1){
+                                Player toPlayer = Bukkit.getPlayer(args[0]);
+                                if (toPlayer != null){
+                                    if (toPlayer.getGameMode() == GameMode.SURVIVAL)
+                                        ChatNotice.error(player, Component.text("Hráč " + toPlayer.getName() + " již má zapnutý survival."));
+                                    else {
+                                        toPlayer.setGameMode(GameMode.SURVIVAL);
+                                        ChatNotice.success(player, Component.text("Survival byl zapnut pro hráče " + toPlayer.getName()));
+                                        ChatNotice.success(toPlayer, Component.text("Survival byl zapnut."));
+                                    }
+                                }
+                                else {
+                                    ChatNotice.error(player, Component.text("Hráč nebyl nalezen."));
+                                }
+                            }
+                            else {
+                                ChatNotice.error(player, Component.text("Užití: /gms <jméno>"));
+                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("gma") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("gma")){
+                        if (player.hasPermission("survival.gma")){
+                            if (args.length < 1){
+                                if (player.getGameMode() == GameMode.ADVENTURE)
+                                    ChatNotice.error(player, Component.text("Již máš zapnutý adventure."));
+                                else {
+                                    player.setGameMode(GameMode.ADVENTURE);
+                                    ChatNotice.success(player, Component.text("Adventure byl zapnut."));
+                                }
+                            }
+                            else if (args.length == 1){
+                                Player toPlayer = Bukkit.getPlayer(args[0]);
+                                if (toPlayer != null){
+                                    if (toPlayer.getGameMode() == GameMode.ADVENTURE)
+                                        ChatNotice.error(player, Component.text("Hráč " + toPlayer.getName() + " již má zapnutý adventure."));
+                                    else {
+                                        toPlayer.setGameMode(GameMode.ADVENTURE);
+                                        ChatNotice.success(player, Component.text("Adventure byl zapnut pro hráče " + toPlayer.getName()));
+                                        ChatNotice.success(toPlayer, Component.text("Adventure byl zapnut."));
+                                    }
+                                }
+                                else {
+                                    ChatNotice.error(player, Component.text("Hráč nebyl nalezen."));
+                                }
+                            }
+                            else {
+                                ChatNotice.error(player, Component.text("Užití: /gma <jméno>"));
+                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("gmsp") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("gmsp")){
+                        if (player.hasPermission("survival.gmsp")){
+                            if (args.length < 1){
+                                if (player.getGameMode() == GameMode.SPECTATOR)
+                                    ChatNotice.error(player, Component.text("Již máš zapnutý spectator."));
+                                else {
+                                    player.setGameMode(GameMode.SPECTATOR);
+                                    ChatNotice.success(player, Component.text("Spectator byl zapnut."));
+                                }
+                            }
+                            else if (args.length == 1){
+                                Player toPlayer = Bukkit.getPlayer(args[0]);
+                                if (toPlayer != null){
+                                    if (toPlayer.getGameMode() == GameMode.SPECTATOR)
+                                        ChatNotice.error(player, Component.text("Hráč " + toPlayer.getName() + " již má zapnutý spectator."));
+                                    else {
+                                        toPlayer.setGameMode(GameMode.SPECTATOR);
+                                        ChatNotice.success(player, Component.text("Spectator byl zapnut pro hráče " + toPlayer.getName()));
+                                        ChatNotice.success(toPlayer, Component.text("Spectator byl zapnut."));
+                                    }
+                                }
+                                else {
+                                    ChatNotice.error(player, Component.text("Hráč nebyl nalezen."));
+                                }
+                            }
+                            else {
+                                ChatNotice.error(player, Component.text("Užití: /gmsp <jméno>"));
+                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("day") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("day")){
+                        if (player.hasPermission("survival.day")){
+                            player.getWorld().setFullTime(1000);
+                            ChatNotice.success(player, Component.text("Denní čas byl nastaven."));
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("night") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("night")){
+                        if (player.hasPermission("survival.night")){
+                            player.getWorld().setFullTime(13000);
+                            ChatNotice.success(player, Component.text("Noční čas byl nastaven."));
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                        }
+                    }
                     return true;
                 }
             });

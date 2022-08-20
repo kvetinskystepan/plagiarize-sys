@@ -4,6 +4,7 @@ import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
 import com.thenarbox.api.ping.MinecraftPing;
+import com.thenarbox.api.services.Server;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.lobbyplugin.listeners.CommandMechanic;
 import com.thenarbox.api.PlayerChangeServerEvent;
@@ -48,7 +49,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             Standards.commands();
         }
 
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         PlayerChangeServerEvent.instance = this;
         location = new Location(Bukkit.getWorld("world"), 390.5, 89, 209.5, -90, 0);
 
@@ -144,8 +144,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lSURVIVAL CLASSIC"));
-        meta.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + com.thenarbox.api.services.Server.PlayerCount("172.18.0.1", 32002))));
-        //meta.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7Klikni pro vstup do hry.")));
+        meta.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 32002))));
         item.setItemMeta(meta);
         inv.setItem(10, item);
         player.openInventory(inv);

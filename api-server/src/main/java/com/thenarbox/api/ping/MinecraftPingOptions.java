@@ -7,22 +7,22 @@ public class MinecraftPingOptions {
     private int timeout = 2000;
     private String charset = "UTF-8";
 
-    public MinecraftPingOptions setHostname(String hostname) {
+    public MinecraftPingOptions setHostname(final String hostname) {
         this.hostname = hostname;
         return this;
     }
 
-    public MinecraftPingOptions setPort(int port) {
+    public MinecraftPingOptions setPort(final int port) {
         this.port = port;
         return this;
     }
 
-    public MinecraftPingOptions setTimeout(int timeout) {
+    public MinecraftPingOptions setTimeout(final int timeout) {
         this.timeout = timeout;
         return this;
     }
 
-    public MinecraftPingOptions setCharset(String charset) {
+    public MinecraftPingOptions setCharset(final String charset) {
         this.charset = charset;
         return this;
     }

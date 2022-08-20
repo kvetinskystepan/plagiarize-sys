@@ -279,6 +279,50 @@ public class Standards {
         }
 
         {
+            Bukkit.getCommandMap().register("survival", new Command("heal") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("heal")){
+                        if (player.hasPermission("survival.heal")){
+                            if (args.length < 1){
+                                player.setHealth(player.getMaxHealth());
+                                player.setFoodLevel(20);
+                            }
+                            if (args.length == 1){
+                                if (player.hasPermission("survival.heal.other")){
+                                    Player toPlayer = Bukkit.getPlayer(args[0]);
+                                    if (toPlayer != null){
+                                        toPlayer.setHealth(toPlayer.getMaxHealth());
+                                        toPlayer.setFoodLevel(20);
+                                        ChatNotice.success(player, Component.text("Uzdravil si hráče " + toPlayer.getName()));
+                                    }
+                                    else {
+                                        ChatNotice.error(player, Component.text("Hráč nebyl nalezen."));
+                                    }
+                                }
+                                else {
+                                    ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Helper."));
+                                }
+                            }
+                            else {
+                                ChatNotice.error(player, Component.text("Použití: /heal <jméno>"));
+                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+
+        {
             Bukkit.getCommandMap().register("survival", new Command("tp") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
@@ -290,7 +334,7 @@ public class Standards {
                     if (commandLabel.equalsIgnoreCase("tp")){
                         if (player.hasPermission("survival.tp")){
                             if (args.length == 0){
-                                ChatNotice.error(player, Component.text("Užití: /tp <jméno>"));
+                                ChatNotice.error(player, Component.text("Použití: /tp <jméno>"));
                             }
                             else {
                                 Player toPlayer = Bukkit.getPlayer(args[0]);
@@ -347,7 +391,7 @@ public class Standards {
                                 }
                             }
                             else {
-                                ChatNotice.error(player, Component.text("Užití: /gmc <jméno>"));
+                                ChatNotice.error(player, Component.text("Použití: /gmc <jméno>"));
                             }
                         }
                         else {
@@ -394,7 +438,7 @@ public class Standards {
                                 }
                             }
                             else {
-                                ChatNotice.error(player, Component.text("Užití: /gms <jméno>"));
+                                ChatNotice.error(player, Component.text("Použití: /gms <jméno>"));
                             }
                         }
                         else {
@@ -441,7 +485,7 @@ public class Standards {
                                 }
                             }
                             else {
-                                ChatNotice.error(player, Component.text("Užití: /gma <jméno>"));
+                                ChatNotice.error(player, Component.text("Použití: /gma <jméno>"));
                             }
                         }
                         else {
@@ -488,7 +532,7 @@ public class Standards {
                                 }
                             }
                             else {
-                                ChatNotice.error(player, Component.text("Užití: /gmsp <jméno>"));
+                                ChatNotice.error(player, Component.text("Použití: /gmsp <jméno>"));
                             }
                         }
                         else {

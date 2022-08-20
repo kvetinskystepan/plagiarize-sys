@@ -1,9 +1,15 @@
 package com.thenarbox.api.ping;
 
 import java.util.List;
+
+/**
+ * References:
+ * http://wiki.vg/Server_List_Ping
+ * https://gist.github.com/thinkofdeath/6927216
+ */
 public class MinecraftPingReply {
 
-    private String description;
+    private Description description;
     private Players players;
     private Version version;
     private String favicon;
@@ -11,7 +17,7 @@ public class MinecraftPingReply {
     /**
      * @return the MOTD
      */
-    public String getDescription() {
+    public Description getDescription() {
         return this.description;
     }
 
@@ -34,6 +40,17 @@ public class MinecraftPingReply {
      */
     public String getFavicon() {
         return this.favicon;
+    }
+
+    public class Description {
+        private String text;
+
+        /**
+         * @return Server description text
+         */
+        public String getText() {
+            return this.text;
+        }
     }
 
     public class Players {
@@ -103,3 +120,4 @@ public class MinecraftPingReply {
     }
 
 }
+

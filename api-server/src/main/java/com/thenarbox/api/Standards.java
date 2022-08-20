@@ -206,6 +206,25 @@ public class Standards {
 
     public static void survivalCommands(Plugin plugin){
 
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("v") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("v")){
+                        player.performCommand("vanish");
+                    }
+
+                    return false;
+                }
+            });
+        }
+
+
         {
             Bukkit.getCommandMap().register("survival", new Command("vanish") {
                 @Override
@@ -215,37 +234,44 @@ public class Standards {
 
                     final Player player = (Player) sender;
 
-                    if (vanishPlayers.contains(player.getName())) {
-                        vanishPlayers.remove(player.getName());
-                        if (player.getGameMode() != GameMode.CREATIVE){
-                            player.setAllowFlight(false);
-                            player.setFlying(false);
+                    if (commandLabel.equalsIgnoreCase("vanish")) {
+                        if (player.hasPermission("survival.vanish")){
+                            if (vanishPlayers.contains(player.getName())) {
+                                vanishPlayers.remove(player.getName());
+                                if (player.getGameMode() != GameMode.CREATIVE){
+                                    player.setAllowFlight(false);
+                                    player.setFlying(false);
+                                }
+                                Bukkit.getOnlinePlayers().stream().filter(online -> online != player).forEach(online ->
+                                        online.showPlayer(plugin, player));
+                                final String message = ChatColor.GREEN + "+" + ChatColor.GRAY + " | " + ChatColor.GOLD + player.getName() + ChatColor.WHITE + " se připojil.";
+                                for (Player p : Bukkit.getOnlinePlayers())
+                                    p.sendMessage(message);
+                                ChatNotice.warning(player, Component.text("Vanish deaktivován."));
+                            }
+                            else {
+                                vanishPlayers.add(player.getName());
+                                Bukkit.getOnlinePlayers().stream().filter(online -> online != player).forEach(online ->
+                                        online.hidePlayer(plugin, player));
+                                String message = ChatColor.RED + "-" + ChatColor.GRAY + " | " + ChatColor.GOLD + player.getName() + ChatColor.WHITE + " se odpojil.";
+                                for (Player p : Bukkit.getOnlinePlayers())
+                                    p.sendMessage(message);
+                                for (final Player team : Bukkit.getOnlinePlayers()) {
+                                    if (!player.hasPermission("survival.vanish.info"))
+                                        continue;
+                                    ChatNotice.info(team, Component.text("Člen " + player.getName() + " si aktivoval vanish."));
+                                }
+                                player.setGameMode(GameMode.SURVIVAL);
+                                player.setAllowFlight(true);
+                                player.setFlying(true);
+                                player.setHealth(player.getMaxHealth());
+                                player.setFoodLevel(20);
+                                ChatNotice.warning(player, Component.text("Vanish byl aktivován."));
+                            }
                         }
-                        Bukkit.getOnlinePlayers().stream().filter(online -> online != player).forEach(online ->
-                                online.showPlayer(plugin, player));
-                        final String message = ChatColor.RED + "-" + ChatColor.GRAY + " | " + ChatColor.GOLD + player.getName() + ChatColor.WHITE + " se odpojil.";
-                        for (Player p : Bukkit.getOnlinePlayers())
-                            p.sendMessage(message);
-                        ChatNotice.warning(player, Component.text("Vanish deaktivován."));
-                    }
-                    else {
-                        vanishPlayers.add(player.getName());
-                        Bukkit.getOnlinePlayers().stream().filter(online -> online != player).forEach(online ->
-                                online.hidePlayer(plugin, player));
-                        String message = ChatColor.GREEN + "+" + ChatColor.GRAY + " | " + ChatColor.GOLD + player.getName() + ChatColor.WHITE + " se připojil.";
-                        for (Player p : Bukkit.getOnlinePlayers())
-                            p.sendMessage(message);
-                        for (final Player team : Bukkit.getOnlinePlayers()) {
-                            if (!player.hasPermission("vanish.info"))
-                                continue;
-                            ChatNotice.info(team, Component.text("Člen " + player.getName() + " si aktivoval vanish."));
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Helper."));
                         }
-                        player.setGameMode(GameMode.SURVIVAL);
-                        player.setAllowFlight(true);
-                        player.setFlying(true);
-                        player.setHealth(player.getMaxHealth());
-                        player.setFoodLevel(20);
-                        ChatNotice.warning(player, Component.text("Vanish byl aktivován."));
                     }
                     return true;
                 }

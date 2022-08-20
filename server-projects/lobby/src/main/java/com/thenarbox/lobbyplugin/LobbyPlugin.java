@@ -5,6 +5,7 @@ import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.lobbyplugin.listeners.CommandMechanic;
+import com.thenarbox.api.PlayerChangeServerEvent;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -25,8 +26,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -38,6 +43,8 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @Getter
     Location location = null;
 
+    private static Plugin instance;
+
     @Override
     public void onEnable() {
         System.out.println("LobbyPlugin is enabled!");
@@ -46,6 +53,9 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             Standards.commands();
         }
 
+        instance = this;
+
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         location = new Location(Bukkit.getWorld("world"), 390.5, 89, 209.5, -90, 0);
 
         if(!getServer().getPluginManager().isPluginEnabled("Vault")){
@@ -72,6 +82,28 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     public void onDisable() {
         System.out.println("LobbyPlugin is now disabled.");
         HandlerList.unregisterAll();
+    }
+
+
+    public static void connect(Player player, String serverName, String serverAddress) {
+        PlayerChangeServerEvent event = new PlayerChangeServerEvent(player, serverName, serverAddress);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if(!event.isCancelled()) {
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(b);
+
+            if(event.getMessage() != null) {
+                player.sendMessage(event.getMessage());
+            }
+
+            try {
+                out.writeUTF("Connect");
+                out.writeUTF(event.getServerAddress());
+            } catch(IOException ex) {}
+            Bukkit.getLogger().info("Connecting " + player.getName() + " to " + serverName + "...");
+            player.sendPluginMessage(instance, "BungeeCord", b.toByteArray());
+        }
     }
 
     ItemStack item1;
@@ -136,17 +168,32 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     Inventory inv;
     {
         inv = Bukkit.createInventory(null, 36, ChatColor.GOLD + "Hlavní menu");
+        ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "Survival");
+        item.setItemMeta(meta);
+        inv.setItem(10, item);
     }
 
     Inventory inv1;
     {
         inv1 = Bukkit.createInventory(null, 27, ChatColor.GOLD + "VIP menu");
-        ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
-        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        ItemStack item = new ItemStack(Material.GOLD_INGOT, 1);
+        ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lVIP"));
-        meta.setOwner("TheNarbox");
         item.setItemMeta(meta);
         inv1.setItem(4, item);
+    }
+
+    @EventHandler
+    public void inv(InventoryClickEvent e){
+        Player player = (Player) e.getWhoClicked();
+        if (e.getView().getTitle().equalsIgnoreCase("Hlavní menu")){
+            e.setCancelled(true);
+            if (e.getCurrentItem().getType() == Material.GRASS_BLOCK){
+                player.openInventory(inv);
+            }
+        }
     }
 
     @EventHandler

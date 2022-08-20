@@ -292,6 +292,7 @@ public class Standards {
                             if (args.length < 1){
                                 player.setHealth(player.getMaxHealth());
                                 player.setFoodLevel(20);
+                                ChatNotice.success(player, Component.text("Byl jsi vyléčen."));
                             }
                             if (args.length == 1){
                                 if (player.hasPermission("survival.heal.other")){
@@ -309,7 +310,7 @@ public class Standards {
                                     ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Helper."));
                                 }
                             }
-                            else {
+                            else if (args.length > 1){
                                 ChatNotice.error(player, Component.text("Použití: /heal <jméno>"));
                             }
                         }
@@ -534,6 +535,31 @@ public class Standards {
                             else {
                                 ChatNotice.error(player, Component.text("Použití: /gmsp <jméno>"));
                             }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("sun") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("sun")){
+                        if (player.hasPermission("survival.sun")){
+                            player.getWorld().setStorm(false);
+                            player.getWorld().setThundering(false);
+                            player.getWorld().setWeatherDuration(0);
+                            ChatNotice.success(player, Component.text("Déšť byl vypnut."));
                         }
                         else {
                             ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));

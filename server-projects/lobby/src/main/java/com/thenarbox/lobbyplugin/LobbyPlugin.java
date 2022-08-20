@@ -1,10 +1,9 @@
 package com.thenarbox.lobbyplugin;
 
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
+import com.thenarbox.api.ping.MinecraftPing;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.lobbyplugin.listeners.CommandMechanic;
 import com.thenarbox.api.PlayerChangeServerEvent;
@@ -28,12 +27,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -80,6 +75,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         System.out.println("LobbyPlugin is now disabled.");
+        getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
         HandlerList.unregisterAll();
     }
 
@@ -142,14 +138,17 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         sentCommands.retainAll(allowedCommands);
     }
 
-    Inventory inv;
+    public void prepareInventory(Player player)
     {
-        inv = Bukkit.createInventory(null, 36, ChatColor.GOLD + "Hlavní menu");
+        Inventory inv = Bukkit.createInventory(null, 36, ChatColor.GOLD + "Hlavní menu");
         ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "Survival");
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lSURVIVAL CLASSIC"));
+        meta.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + com.thenarbox.api.services.Server.PlayerCount("172.18.0.1", 32002))));
+        //meta.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7Klikni pro vstup do hry.")));
         item.setItemMeta(meta);
         inv.setItem(10, item);
+        player.openInventory(inv);
     }
 
     Inventory inv1;
@@ -181,7 +180,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         Player player = e.getPlayer();
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (player.getItemInHand().getType().equals(Material.COMPASS)) {
-                player.openInventory(inv);
+                prepareInventory(player);
                 e.setCancelled(true);
             }
             else if (player.getItemInHand().getType().equals(Material.GOLD_INGOT)) {
@@ -239,7 +238,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         final var commandName = commandMessage.substring(1, length);
         if(!allowedCommands480.contains(commandName)){
             e.setCancelled(true);
-            ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš opravnění."));
+            ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš oprávnění."));
         }
     }
 

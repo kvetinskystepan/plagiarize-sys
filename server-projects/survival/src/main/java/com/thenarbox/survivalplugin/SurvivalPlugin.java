@@ -70,7 +70,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         final var commandName = commandMessage.substring(1, length);
         if(!allowedCommands32.contains(commandName)){
             e.setCancelled(true);
-            ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš opravnění."));
+            ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš oprávnění."));
         }
     }
 

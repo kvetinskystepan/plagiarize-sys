@@ -1,10 +1,17 @@
 package com.thenarbox.api;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 
 public class PlayerChangeServerEvent extends Event implements Cancellable {
@@ -14,13 +21,30 @@ public class PlayerChangeServerEvent extends Event implements Cancellable {
     private Player playerPla;
     private String serverStr;
     private String serverAddressStr;
-    private String messageStr = ChatColor.GRAY + "Connecting to server " + ChatColor.GOLD + null + ChatColor.GRAY + "...";
 
-    public PlayerChangeServerEvent(Player player, String server, String serverAddress) {
+    public static Plugin instance;
+
+    public static void connect(Player player, String serverName) {
+        PlayerChangeServerEvent event = new PlayerChangeServerEvent(player, serverName);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if(!event.isCancelled()) {
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(b);
+
+            ChatNotice.success(player, Component.text("Připojuješ se k " + serverName + " serveru"));
+
+            try {
+                out.writeUTF("Connect");
+                out.writeUTF(serverName);
+            } catch(IOException ex) {}
+            player.sendPluginMessage(instance, "BungeeCord", b.toByteArray());
+        }
+    }
+
+    public PlayerChangeServerEvent(Player player, String server) {
         playerPla = player;
         serverStr = server;
-        serverAddressStr = serverAddress;
-        messageStr = ChatColor.GRAY + "Connecting to server " + ChatColor.GOLD + server + ChatColor.GRAY + "...";
     }
 
     @Override
@@ -42,10 +66,6 @@ public class PlayerChangeServerEvent extends Event implements Cancellable {
         cancelled = cancel;
     }
 
-    public String getMessage() {
-        return messageStr;
-    }
-
     public Player getPlayer() {
         return playerPla;
     }
@@ -56,10 +76,6 @@ public class PlayerChangeServerEvent extends Event implements Cancellable {
 
     public String getServerAddress() {
         return serverAddressStr;
-    }
-
-    public void setMessage(String message) {
-        messageStr = message;
     }
 
     public void setServer(String server) {

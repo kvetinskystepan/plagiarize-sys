@@ -1,5 +1,7 @@
 package com.thenarbox.lobbyplugin;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
@@ -43,8 +45,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @Getter
     Location location = null;
 
-    private static Plugin instance;
-
     @Override
     public void onEnable() {
         System.out.println("LobbyPlugin is enabled!");
@@ -53,9 +53,8 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             Standards.commands();
         }
 
-        instance = this;
-
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        PlayerChangeServerEvent.instance = this;
         location = new Location(Bukkit.getWorld("world"), 390.5, 89, 209.5, -90, 0);
 
         if(!getServer().getPluginManager().isPluginEnabled("Vault")){
@@ -82,28 +81,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     public void onDisable() {
         System.out.println("LobbyPlugin is now disabled.");
         HandlerList.unregisterAll();
-    }
-
-
-    public static void connect(Player player, String serverName, String serverAddress) {
-        PlayerChangeServerEvent event = new PlayerChangeServerEvent(player, serverName, serverAddress);
-        Bukkit.getPluginManager().callEvent(event);
-
-        if(!event.isCancelled()) {
-            ByteArrayOutputStream b = new ByteArrayOutputStream();
-            DataOutputStream out = new DataOutputStream(b);
-
-            if(event.getMessage() != null) {
-                player.sendMessage(event.getMessage());
-            }
-
-            try {
-                out.writeUTF("Connect");
-                out.writeUTF(event.getServerAddress());
-            } catch(IOException ex) {}
-            Bukkit.getLogger().info("Connecting " + player.getName() + " to " + serverName + "...");
-            player.sendPluginMessage(instance, "BungeeCord", b.toByteArray());
-        }
     }
 
     ItemStack item1;
@@ -188,10 +165,13 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void inv(InventoryClickEvent e){
         Player player = (Player) e.getWhoClicked();
-        if (e.getView().getTitle().equalsIgnoreCase("Hlavní menu")){
+        if (e.getView().getTitle().equals(ChatColor.GOLD + "Hlavní menu")){
             e.setCancelled(true);
+            if (e.getCurrentItem() == null){
+                return;
+            }
             if (e.getCurrentItem().getType() == Material.GRASS_BLOCK){
-                player.openInventory(inv);
+                PlayerChangeServerEvent.connect(player, "Survival");
             }
         }
     }

@@ -26,11 +26,11 @@ public class MinecraftPingUtil {
      * @author thinkofdeath
      * See: https://gist.github.com/thinkofdeath/e975ddee04e9c87faf22
      */
-    public static int readVarInt(DataInputStream in) throws IOException {
+    public static int readVarInt(final DataInputStream in) throws IOException {
         int i = 0;
         int j = 0;
         while (true) {
-            int k = in.readByte();
+            final int k = in.readByte();
 
             i |= (k & 0x7F) << j++ * 7;
 
@@ -45,11 +45,11 @@ public class MinecraftPingUtil {
     }
 
     /**
+     * @throws IOException
      * @author thinkofdeath
      * See: https://gist.github.com/thinkofdeath/e975ddee04e9c87faf22
-     * @throws IOException
      */
-    public static void writeVarInt(DataOutputStream out, int paramInt) throws IOException {
+    public static void writeVarInt(final DataOutputStream out, int paramInt) throws IOException {
         while (true) {
             if ((paramInt & 0xFFFFFF80) == 0) {
                 out.writeByte(paramInt);

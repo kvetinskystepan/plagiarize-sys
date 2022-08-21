@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -236,10 +236,126 @@ public class Standards {
         }
     }
 
+    private static HashMap<UUID, UUID> requests = new HashMap<>();
     public static void survivalCommands(Plugin plugin){
 
+        {
+            Bukkit.getCommandMap().register("survival", new Command("tpaccept") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
 
-        Location spawn = new Location(Bukkit.getWorld("spawn"), 22.5, 50, 39.5, 90, 0);
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("tpaccept")) {
+                        if (requests.containsKey(player.getUniqueId())) {
+                            ChatNotice.success(player, Component.text("Přijal si požadavek na teleportaci."));
+                            ChatNotice.success(Bukkit.getPlayer(requests.get(player.getUniqueId())), Component.text("Hráč " + player.getName() + " přijal tvůj požadavek na teleportaci."));
+                            Bukkit.getPlayer(requests.get(player.getUniqueId())).teleport(player);
+                            requests.remove(player.getUniqueId());
+                            return true;
+                        }
+                        ChatNotice.error(player, Component.text("Nemáš žádné otevřené žádosti o teleportaci."));
+                    }
+
+                    return false;
+                }
+            });
+
+
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("tpdeny") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("tpdeny")) {
+                        if (requests.containsKey(player.getUniqueId())) {
+                            ChatNotice.success(player, Component.text("Odmítl jsi požadavek na teleportaci."));
+                            ChatNotice.info(Bukkit.getPlayer(requests.get(player.getUniqueId())), Component.text("Hráč " + player.getName() + " odmítl tvůj požadavek na teleportaci."));
+                            requests.remove(player.getUniqueId());
+                            return true;
+                        }
+                        ChatNotice.error(player, Component.text("Nemáš žádné otevřené žádosti o teleportaci."));
+                    }
+
+                    return false;
+                }
+            });
+
+
+        }
+
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("tpa") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("tpa")) {
+                        if (args.length != 1) {
+                            ChatNotice.error(player, Component.text("Použití: /tpa <jméno>"));
+                            return true;
+                        }
+                        if (requests.containsKey(player.getUniqueId())) {
+                            ChatNotice.error(player, Component.text("Jsi již otevřený požadavek na teleportaci."));
+                            return true;
+                        }
+
+                        Player target = Bukkit.getPlayer(args[0]);
+
+                        if (target == player){
+                            ChatNotice.error(player, Component.text("Nemůžeš se teleportovat sám na sebe."));
+                            return true;
+                        }
+                        if (target != null) {
+                            requests.put(target.getUniqueId(), player.getUniqueId());
+                            ChatNotice.success(player, Component.text("Poslal jsi požadavek na teleportaci hráči " + ChatColor.AQUA + target.getName() + ChatColor.WHITE + "."));
+                            ChatNotice.info(target, Component.text("Hráč " + ChatColor.AQUA + player.getName() + ChatColor.WHITE + " ti poslal žádost o teleportaci."));
+                            ChatNotice.info(target, Component.text("Použij "+ ChatColor.AQUA+"/tpaccept"+ChatColor.WHITE + " pro potvrzení nebo "+ ChatColor.AQUA+"/tpdeny pro zamítnutí."));
+                            ChatNotice.info(target, Component.text("Na potvrzení máš "+ChatColor.AQUA+"30 "+ChatColor.WHITE+"sekund."));
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    if (requests.containsKey(target.getUniqueId())) {
+                                        requests.remove(player.getUniqueId());
+                                        requests.remove(target.getUniqueId());
+                                        ChatNotice.info(player, Component.text("Hráč " + target.getName() + " neodpověděl na tvůj požadavek na teleportaci."));
+                                        ChatNotice.info(target, Component.text("Žádost hráče " + player.getName() + " byla smazána."));
+                                    }
+                                }
+                            }, 30000);
+                            return true;
+                        }
+                        ChatNotice.error(player, Component.text("Hráč " + args[0] + " není online."));
+                    }
+                    return false;
+                }
+            });
+
+
+
+
+
+
+        }
+
+
+        Location spawn = new Location(Bukkit.getWorld("world"), 22.5, 50, 39.5, 90, 0);
 
         {
             Bukkit.getCommandMap().register("survival", new Command("spawn") {
@@ -250,7 +366,9 @@ public class Standards {
 
                     final Player player = (Player) sender;
                     player.teleport(spawn);
-
+                    player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+                    player.playEffect(player.getLocation(), Effect.ENDER_SIGNAL, 1);
+                    ChatNotice.success(player, Component.text("Byl jsi teleportován na spawn."));
                     return false;
                 }
             });
@@ -384,17 +502,36 @@ public class Standards {
                     if (commandLabel.equalsIgnoreCase("tp")){
                         if (player.hasPermission("survival.tp")){
                             if (args.length == 0){
-                                ChatNotice.error(player, Component.text("Použití: /tp <jméno>"));
+                                ChatNotice.error(player, Component.text("Použití: /tp <jméno> | <na hráče>"));
                             }
-                            else {
+                            else if (args.length == 1){
                                 Player toPlayer = Bukkit.getPlayer(args[0]);
                                 if (toPlayer != null){
                                     player.teleport(toPlayer);
-                                    ChatNotice.success(player, Component.text("Teleportoval si se na hráče " + toPlayer.getName()));
+                                    ChatNotice.success(player, Component.text("Teleportoval jsi se na hráče " + toPlayer.getName()));
                                 }
                                 else {
                                     ChatNotice.error(player, Component.text("Hráč nebyl nalezen."));
                                 }
+                            }
+                            else if (args.length == 2){
+                                Player fromPlayer = Bukkit.getPlayer(args[0]);
+                                Player toPlayer = Bukkit.getPlayer(args[1]);
+                                if (toPlayer != null){
+                                    if (fromPlayer != null){
+                                        fromPlayer.teleport(toPlayer);
+                                        ChatNotice.success(player, Component.text("Teleportoval jsi hráče " + fromPlayer.getName() + " na hráče " + toPlayer.getName()));
+                                    }
+                                    else {
+                                        ChatNotice.error(player, Component.text("Hráč kterého chceš teleportovat nebyl nalezen."));
+                                    }
+                                }
+                                else {
+                                    ChatNotice.error(player, Component.text("Hráč na kterého chceš provést teleportaci nebyl nalezen."));
+                                }
+                            }
+                            else {
+                                ChatNotice.error(player, Component.text("Použití: /tp <jméno> | <na hráče>"));
                             }
                         }
                         else {

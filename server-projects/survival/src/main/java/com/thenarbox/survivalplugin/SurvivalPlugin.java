@@ -9,6 +9,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -54,6 +55,8 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
 
         allowedCommands32 = AllowedCommands.initSurvivalMysql();
 
+        CommandSender sender = Bukkit.getConsoleSender();
+        sender.sendMessage("papi reload");
     }
 
     @EventHandler

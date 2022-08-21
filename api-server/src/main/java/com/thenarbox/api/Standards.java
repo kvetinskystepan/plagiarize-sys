@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.GameRule;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -241,6 +238,23 @@ public class Standards {
 
     public static void survivalCommands(Plugin plugin){
 
+
+        Location spawn = new Location(Bukkit.getWorld("spawn"), 22.5, 50, 39.5, 90, 0);
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("spawn") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+                    player.teleport(spawn);
+
+                    return false;
+                }
+            });
+        }
 
         {
             Bukkit.getCommandMap().register("survival", new Command("v") {

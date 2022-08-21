@@ -22,12 +22,11 @@ public class SpawnService implements Listener {
 
     public static Location spawn;
     public static void spawnSettings(){
-        spawn = new Location(Bukkit.getWorld("spawn"), 22.5, 50, 39.5, 90, 0);
-        final World spawn_world = getServer().getWorld("spawn");
-        spawn_world.setTime(6000);
-        spawn_world.setStorm(false);
-        spawn_world.setThundering(false);
-        spawn_world.setWeatherDuration(0);
+        spawn = new Location(Bukkit.getWorld("world"), 22.5, 50, 39.5, 90, 0);
+
+        final var spawn_world = getServer().
+                getWorld("world");
+
         spawn_world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         spawn_world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         spawn_world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
@@ -39,13 +38,18 @@ public class SpawnService implements Listener {
         spawn_world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
         spawn_world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
         spawn_world.setGameRule(GameRule.RANDOM_TICK_SPEED, 0);
+
+        spawn_world.setTime(6000);
+        spawn_world.setStorm(false);
+        spawn_world.setThundering(false);
+        spawn_world.setWeatherDuration(0);
     }
 
 
     @EventHandler
     public void onFallDamage(EntityDamageEvent e) {
         Player player = (Player) e.getEntity();
-        if (player.getWorld().getName().equals("spawn")) {
+        if (player.getWorld().getName().equals("world")) {
             e.setCancelled(true);
         }
     }
@@ -53,7 +57,7 @@ public class SpawnService implements Listener {
     @EventHandler
     public void Fill(PlayerBucketFillEvent e){
         Player player = e.getPlayer();
-        if (player.getWorld().getName().equals("spawn")) {
+        if (player.getWorld().getName().equals("world")) {
             e.setCancelled(true);
         }
     }
@@ -61,7 +65,7 @@ public class SpawnService implements Listener {
     @EventHandler
     public void noPvP(EntityDamageByEntityEvent e) {
         Player player = (Player) e.getEntity();
-        if (player.getWorld().getName().equals("spawn")) {
+        if (player.getWorld().getName().equals("world")) {
             e.setCancelled(true);
         }
     }
@@ -69,7 +73,7 @@ public class SpawnService implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         Player player = e.getPlayer();
-        if (player.getWorld().getName().equals("spawn")) {
+        if (player.getWorld().getName().equals("world")) {
             e.setCancelled(true);
         }
     }
@@ -77,7 +81,7 @@ public class SpawnService implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player player = e.getPlayer();
-        if (player.getWorld().getName().equals("spawn")) {
+        if (player.getWorld().getName().equals("world")) {
             e.setCancelled(true);
         }
     }
@@ -85,7 +89,7 @@ public class SpawnService implements Listener {
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent e) {
         Player player = e.getPlayer();
-        if (player.getWorld().getName().equals("spawn")) {
+        if (player.getWorld().getName().equals("world")) {
             e.setCancelled(true);
         }
     }
@@ -93,7 +97,7 @@ public class SpawnService implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
         Player player = e.getPlayer();
-        if (player.getWorld().getName().equals("spawn")) {
+        if (player.getWorld().getName().equals("world")) {
             e.setCancelled(true);
         }
     }
@@ -101,7 +105,7 @@ public class SpawnService implements Listener {
     @EventHandler
     public void onItemPickup(PlayerPickupItemEvent e) {
         Player player = e.getPlayer();
-        if (player.getWorld().getName().equals("spawn")) {
+        if (player.getWorld().getName().equals("world")) {
             e.setCancelled(true);
         }
     }

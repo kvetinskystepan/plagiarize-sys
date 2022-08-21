@@ -3,6 +3,7 @@ package com.thenarbox.survivalplugin;
 import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
+import com.thenarbox.survivalplugin.services.SpawnService;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -22,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 
 import static com.thenarbox.api.Standards.vanishPlayers;
+import static com.thenarbox.survivalplugin.services.SpawnService.spawn;
 
 @Log4j2(topic = "SurvivalPlugin")
 public class SurvivalPlugin extends JavaPlugin implements Listener {
@@ -43,9 +45,12 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         Standards.survivalCommands(this);
         Standards.commands();
         Standards.View.tab(this);
+        SpawnService.spawnSettings();
 
         getServer().getPluginManager()
                 .registerEvents(this, this);
+        getServer().getPluginManager()
+                .registerEvents(new SpawnService(), this);
 
         allowedCommands32 = AllowedCommands.initSurvivalMysql();
 
@@ -92,6 +97,12 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
+        if (player.getWorld().getName().equals("spawn")){
+            player.teleport(spawn);
+        }
+        if(!player.hasPlayedBefore()){
+            player.teleport(spawn);
+        }
         Bukkit.getOnlinePlayers().forEach(online -> {
             if(vanishPlayers.contains(player.getName()))
                 e.getPlayer().hidePlayer(this, online);

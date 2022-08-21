@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -46,6 +47,13 @@ public class SpawnService implements Listener {
     }
 
 
+    @EventHandler
+    public void onFood(FoodLevelChangeEvent e){
+        Player player = (Player) e.getEntity();
+        if (player.getWorld().getName().equals("world")){
+            e.setCancelled(true);
+        }
+    }
     @EventHandler
     public void onFallDamage(EntityDamageEvent e) {
         Player player = (Player) e.getEntity();

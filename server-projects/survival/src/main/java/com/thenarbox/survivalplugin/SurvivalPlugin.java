@@ -97,7 +97,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
-        if (player.getWorld().getName().equals("spawn")){
+        if (player.getWorld().getName().equals("world")){
             player.teleport(spawn);
         }
         if(!player.hasPlayedBefore()){

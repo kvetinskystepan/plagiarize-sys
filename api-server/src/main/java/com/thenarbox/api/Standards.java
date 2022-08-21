@@ -240,6 +240,41 @@ public class Standards {
     public static void survivalCommands(Plugin plugin){
 
         {
+
+            Bukkit.getCommandMap().register("survival", new Command("repair") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof Player))
+                        return true;
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("repair")){
+                        if (player.hasPermission("survival.repair")){
+                            if (player.getInventory().getItemInMainHand() == null){
+                                ChatNotice.error(player, Component.text("Nemáš v ruce žádný předmět."));
+                            }
+                            else {
+                                player.getInventory().getItemInMainHand().setDurability((short) 0);
+                                ChatNotice.success(player, Component.text("Předmět byl úspěšně opraven."));
+                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
+                        }
+                    }
+                    return false;
+                }
+            });
+
+
+        }
+
+
+
+
+
+        {
             Bukkit.getCommandMap().register("survival", new Command("tpaccept") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
@@ -310,12 +345,12 @@ public class Standards {
                             ChatNotice.error(player, Component.text("Použití: /tpa <jméno>"));
                             return true;
                         }
-                        if (requests.containsKey(player.getUniqueId())) {
-                            ChatNotice.error(player, Component.text("Jsi již otevřený požadavek na teleportaci."));
-                            return true;
-                        }
 
                         Player target = Bukkit.getPlayer(args[0]);
+                        if (requests.containsKey(target.getUniqueId())) {
+                            ChatNotice.error(player, Component.text("Máš již otevřený požadavek na teleportaci."));
+                            return true;
+                        }
 
                         if (target == player){
                             ChatNotice.error(player, Component.text("Nemůžeš se teleportovat sám na sebe."));
@@ -325,7 +360,7 @@ public class Standards {
                             requests.put(target.getUniqueId(), player.getUniqueId());
                             ChatNotice.success(player, Component.text("Poslal jsi požadavek na teleportaci hráči " + ChatColor.AQUA + target.getName() + ChatColor.WHITE + "."));
                             ChatNotice.info(target, Component.text("Hráč " + ChatColor.AQUA + player.getName() + ChatColor.WHITE + " ti poslal žádost o teleportaci."));
-                            ChatNotice.info(target, Component.text("Použij "+ ChatColor.AQUA+"/tpaccept"+ChatColor.WHITE + " pro potvrzení nebo "+ ChatColor.AQUA+"/tpdeny pro zamítnutí."));
+                            ChatNotice.info(target, Component.text("Použij "+ ChatColor.AQUA+"/tpaccept"+ChatColor.WHITE + " pro potvrzení nebo "+ ChatColor.AQUA+"/tpdeny "+ChatColor.WHITE+"pro zamítnutí."));
                             ChatNotice.info(target, Component.text("Na potvrzení máš "+ChatColor.AQUA+"30 "+ChatColor.WHITE+"sekund."));
                             Timer timer = new Timer();
                             timer.schedule(new TimerTask() {

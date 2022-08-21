@@ -28,13 +28,14 @@ import java.util.List;
 public class Menus
         implements Listener {
 
+    public static Boolean isInventoryOpen = false;
     static List<String> lore3;
     static List<String> lore4;
     static List<String> lore5;
     static List<String> lore6;
     static List<String> lore7;
     static Inventory inv1;
-    public static void obchodMenu(Player player) {
+    public static void shopMenu(Player player) {
         inv1 = Bukkit.createInventory(null, 45, "Obchod");
 
         lore3 = new ArrayList<>();
@@ -88,7 +89,7 @@ public class Menus
         item3.setLore(lore6);
 
         lore7 = new ArrayList<>();
-        ItemStack item4 = new ItemStack(Material.LEGACY_EXP_BOTTLE, 1);
+        ItemStack item4 = new ItemStack(Material.EXPERIENCE_BOTTLE, 1);
         ItemMeta meta4 = item4.getItemMeta();
         meta4.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lObchod s Levely"));
         lore7.add(" ");
@@ -102,9 +103,9 @@ public class Menus
         item4.setItemMeta(meta4);
         item4.setLore(lore7);
 
-        ItemStack item5 = new ItemStack(Material.BARRIER, 1);
+        ItemStack item5 = new ItemStack(Material.ARROW, 1);
         ItemMeta meta5 = item5.getItemMeta();
-        meta5.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lZavřít Obchod"));
+        meta5.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lZpět do profilu"));
         item5.setItemMeta(meta5);
 
         lore4 = new ArrayList<>();
@@ -120,9 +121,19 @@ public class Menus
         item6.setItemMeta(meta6);
         item6.setLore(lore4);
 
+        ItemStack item7 = new ItemStack(Material.BARRIER, 1);
+        ItemMeta meta7 = item7.getItemMeta();
+        meta7.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lZavřít obchod"));
+        item7.setItemMeta(meta7);
+
 
         inv1.setItem(44, item6);
-        inv1.setItem(36, item5);
+        if (isInventoryOpen){
+            inv1.setItem(36, item5);
+        }
+        else {
+            inv1.setItem(36, item7);
+        }
         inv1.setItem(21, item2);
         inv1.setItem(22, item3);
         inv1.setItem(23, item4);
@@ -213,6 +224,7 @@ public class Menus
     }
 
     static List<String> lore9;
+    static List<String> lore15;
     static Inventory inv2;
     public static void settingsMenu(Player player){
         inv2 = Bukkit.createInventory(null, 27, "Nastavení");
@@ -225,8 +237,38 @@ public class Menus
         meta.setLore(lore9);
         item.setItemMeta(meta);
 
+        ItemStack item5 = new ItemStack(Material.ARROW, 1);
+        ItemMeta meta5 = item5.getItemMeta();
+        meta5.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lZpět do profilu"));
+        item5.setItemMeta(meta5);
+
+        lore15 = new ArrayList<>();
+        ItemStack item1 = new ItemStack(Material.BOOK, 1);
+        ItemMeta meta1 = item1.getItemMeta();
+        meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lNastavení systému přátel"));
+        lore15.add(ChatColor.GRAY + " ");
+        lore15.add(ChatColor.GRAY + "Klikni pro nastavení systému přátel");
+        item1.setItemMeta(meta1);
+        item1.setLore(lore15);
+
+        inv2.setItem(18, item5);
+        inv2.setItem(12, item1);
         inv2.setItem(11, item);
         player.openInventory(inv2);
+    }
+
+    static Inventory inv5;
+    public static void friendsSettings(Player player){
+        inv5 = Bukkit.createInventory(null, 9, "Nastavení systému přátel");
+
+        ItemStack item5 = new ItemStack(Material.ARROW, 1);
+        ItemMeta meta5 = item5.getItemMeta();
+        meta5.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lZpět do nastavení"));
+        item5.setItemMeta(meta5);
+
+        inv5.setItem(8, item5);
+
+        player.openInventory(inv5);
     }
 
 
@@ -234,10 +276,32 @@ public class Menus
     public void InventoryClickEvent(InventoryClickEvent e){
         Player player = (Player) e.getWhoClicked();
 
+        if(e.getView().getTitle().equals("Nastavení systému přátel")){
+            e.setCancelled(true);
+            if(e.getCurrentItem().getType() == null){
+                return;
+            }
+            if(e.getCurrentItem().getType() == Material.ARROW){
+                player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
+                settingsMenu(player);
+            }
+        }
+
         if(e.getView().getTitle().equals("Nastavení")){
             e.setCancelled(true);
             if (e.getCurrentItem() == null)
                 return;
+
+            if (e.getCurrentItem().getType() == Material.ARROW){
+                profileMenu(player);
+                return;
+            }
+
+            if (e.getCurrentItem().getType() == Material.BOOK){
+                player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
+                friendsSettings(player);
+                return;
+            }
 
             if (e.getCurrentItem().getType() == Material.TRIPWIRE_HOOK) {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
@@ -256,6 +320,10 @@ public class Menus
             e.setCancelled(true);
             if (e.getCurrentItem() == null)
                 return;
+            if (e.getCurrentItem().getType() == Material.ARROW){
+                profileMenu(player);
+                return;
+            }
             if (e.getCurrentItem().getType() == Material.BARRIER){
                 player.closeInventory();
                 return;
@@ -278,12 +346,11 @@ public class Menus
                 return;
             }
             if (e.getCurrentItem().getType() == Material.NAME_TAG){
-                player.closeInventory();
                 player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
-                obchodMenu(player);
+                isInventoryOpen = true;
+                shopMenu(player);
             }
             if(e.getCurrentItem().getType() == Material.REDSTONE_TORCH){
-                player.closeInventory();
                 player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
                 settingsMenu(player);
             }

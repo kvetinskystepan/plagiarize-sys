@@ -149,7 +149,8 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             }
             else if (player.getItemInHand().getType().equals(Material.NAME_TAG)) {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                Menus.obchodMenu(player);
+                Menus.isInventoryOpen = false;
+                Menus.shopMenu(player);
                 e.setCancelled(true);
             }
             else if (player.getItemInHand().getType().equals(Material.PLAYER_HEAD)) {

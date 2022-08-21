@@ -25,7 +25,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Menus implements Listener {
+public class Menus
+        implements Listener {
 
     static List<String> lore3;
     static List<String> lore4;

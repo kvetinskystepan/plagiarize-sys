@@ -3,10 +3,7 @@ package com.thenarbox.lobbyplugin;
 import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
-import com.thenarbox.api.ping.MinecraftPing;
-import com.thenarbox.api.services.Server;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
-import com.thenarbox.lobbyplugin.listeners.CommandMechanic;
 import com.thenarbox.api.PlayerChangeServerEvent;
 import com.thenarbox.lobbyplugin.services.Menus;
 import lombok.Getter;
@@ -63,8 +60,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
         getServer().getPluginManager()
                 .registerEvents(this, this);
-        getServer().getPluginManager()
-                .registerEvents(new CommandMechanic(), this);
         getServer().getPluginManager()
                 .registerEvents(new DoubleJump(), this);
         getServer().getPluginManager()

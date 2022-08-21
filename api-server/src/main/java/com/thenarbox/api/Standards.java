@@ -239,6 +239,93 @@ public class Standards {
     private static HashMap<UUID, UUID> requests = new HashMap<>();
     public static void survivalCommands(Plugin plugin){
 
+        plugin.saveDefaultConfig();
+        {
+            Bukkit.getCommandMap().register("survival", new Command("sethome") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof final Player player))
+                        return true;
+
+
+                    if (commandLabel.equalsIgnoreCase("sethome")){
+                        if (args.length == 0){
+                            ChatNotice.error(player, Component.text("Použití: /sethome <název>"));
+                        }
+                        else if (player.getWorld().getName().equalsIgnoreCase("world")){
+                            ChatNotice.error(player, Component.text("Nemůžeš mít domov v tomto světě."));
+                        }
+                        else {
+                            plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
+                            plugin.saveConfig();
+                            ChatNotice.success(player, Component.text("Domov byl úspěšně nastaven."));
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("home") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof final Player player))
+                        return true;
+
+                    if (commandLabel.equalsIgnoreCase("home")){
+                        if (args.length == 0){
+                            ChatNotice.error(player, Component.text("Použití: /home <název>"));
+                        }
+                        else {
+                            if (plugin.getConfig().contains("homes." + player.getUniqueId() + "." + args[0])){
+                                player.teleport(Objects.requireNonNull(plugin.getConfig().getLocation("homes." + player.getUniqueId() + "." + args[0])));
+                                ChatNotice.success(player, Component.text("Byl jsi úspěšně teleportován na domov " + args[0]));
+                            }
+                            else {
+                                ChatNotice.error(player, Component.text("Domov s tímto názvem nebyl nalezen."));
+                            }
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("homes") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof final Player player))
+                        return true;
+
+                    if (commandLabel.equalsIgnoreCase("homes")){
+                        if (args.length == 0){
+                            if (plugin.getConfig().contains("homes." + player.getUniqueId())){
+                                StringBuilder sb = new StringBuilder();
+                                for (String key : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId())).getKeys(false)){
+                                    sb.append(key).append(" ");
+                                }
+                                ChatNotice.success(player, Component.text("Máš následující domovy: " + sb.toString()));
+                            }
+                            else {
+                                ChatNotice.error(player, Component.text("Nemáš žádné domovy."));
+                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Použití: /homelist"));
+                        }
+                    }
+                    return false;
+                }
+            });
+
+
+
+
+
+        }
+
         {
 
             Bukkit.getCommandMap().register("survival", new Command("repair") {

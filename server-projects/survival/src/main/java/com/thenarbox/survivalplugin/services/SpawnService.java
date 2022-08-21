@@ -3,6 +3,7 @@ package com.thenarbox.survivalplugin.services;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,10 +12,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.*;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -105,6 +103,9 @@ public class SpawnService implements Listener {
     public void onInteract(PlayerInteractEvent e){
         Player player = e.getPlayer();
         if (player.getWorld().getName().equals("world")) {
+            if (e.getClickedBlock().getType() == Material.CAKE){
+                e.setCancelled(true);
+            }
             e.setCancelled(true);
         }
     }
@@ -114,6 +115,36 @@ public class SpawnService implements Listener {
         Player player = e.getPlayer();
         if (player.getWorld().getName().equals("world")) {
             e.setCancelled(true);
+        }
+    }
+
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent e){
+        Player player = e.getPlayer();
+
+        if(!player.getWorld().getName().equals("world"))
+            return;
+
+        if (player.getLocation().getY() <= 0) {
+            player.teleport(spawn);
+        }
+        if (player.getLocation().getY() >= 200) {
+            player.teleport(spawn);
+        }
+
+        if (player.getLocation().getX() <= -390){
+            player.teleport(spawn);
+        }
+        if (player.getLocation().getX() >= 265){
+            player.teleport(spawn);
+        }
+
+        if (player.getLocation().getZ() <= -300){
+            player.teleport(spawn);
+        }
+        if (player.getLocation().getZ() >= 340){
+            player.teleport(spawn);
         }
     }
 

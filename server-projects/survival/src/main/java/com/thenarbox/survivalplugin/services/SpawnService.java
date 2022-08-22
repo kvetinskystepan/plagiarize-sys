@@ -103,9 +103,6 @@ public class SpawnService implements Listener {
     public void onInteract(PlayerInteractEvent e){
         Player player = e.getPlayer();
         if (player.getWorld().getName().equals("world")) {
-            if (e.getClickedBlock().getType() == Material.CAKE){
-                e.setCancelled(true);
-            }
             e.setCancelled(true);
         }
     }

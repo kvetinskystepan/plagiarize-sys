@@ -276,8 +276,6 @@ public class Standards {
             });
         }
 
-
-
         plugin.saveDefaultConfig();
         {
             Bukkit.getCommandMap().register("survival", new Command("sethome") {
@@ -285,7 +283,6 @@ public class Standards {
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
                     if (!(sender instanceof final Player player))
                         return true;
-
 
                     if (commandLabel.equalsIgnoreCase("sethome")){
                         if (args.length == 0){

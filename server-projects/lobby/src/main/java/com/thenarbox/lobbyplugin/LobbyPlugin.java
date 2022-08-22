@@ -28,6 +28,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Log4j2(topic = "LobbyPlugin")
 public class LobbyPlugin extends JavaPlugin implements Listener {
@@ -67,6 +69,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
         allowedCommands480 = AllowedCommands.initMysql();
         Standards.View.tab(this);
+
     }
 
     @Override

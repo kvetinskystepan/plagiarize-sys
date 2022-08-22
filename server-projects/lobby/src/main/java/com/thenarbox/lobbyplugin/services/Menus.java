@@ -22,9 +22,12 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Menus
         implements Listener {
@@ -148,7 +151,6 @@ public class Menus
 
 
     // MAIN MENU
-
 
     public static void mainMenu(Player player)
     {

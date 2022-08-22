@@ -79,39 +79,34 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     ItemStack item;
     {
         item = new ItemStack(Material.COMPASS);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.AQUA + "Hlavní menu");
-        item.setItemMeta(meta);
+        ItemMeta meta1 = item.getItemMeta();
+        meta1.setDisplayName(ChatColor.AQUA + "Hlavní menu");
+        item.setItemMeta(meta1);
     }
 
     ItemStack item3;
     {
         item3 = new ItemStack(Material.NAME_TAG);
-        ItemMeta meta = item3.getItemMeta();
-        meta.setDisplayName(ChatColor.AQUA + "Obchod");
-        item3.setItemMeta(meta);
-    }
-
-    ItemStack item2;
-    SkullMeta meta;
-    {
-        item2 = new ItemStack(Material.PLAYER_HEAD);
-        meta = (SkullMeta) item2.getItemMeta();
-        meta.setDisplayName(ChatColor.AQUA + "Profil");
-        item2.setItemMeta(meta);
+        ItemMeta meta2 = item3.getItemMeta();
+        meta2.setDisplayName(ChatColor.AQUA + "Obchod");
+        item3.setItemMeta(meta2);
     }
 
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
-        meta.setOwner(player.getName());
+        player.getInventory().clear();
 
-        player.getInventory().clear(player.getInventory().getSize());
+        ItemStack item2 = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta3 = (SkullMeta) item2.getItemMeta();
+        meta3.setDisplayName(ChatColor.AQUA + "Profil");
+        meta3.setOwner(player.getName());
+        item2.setItemMeta(meta3);
+
         player.getInventory().setItem(8, item2);
         player.getInventory().setItem(0, item);
         player.getInventory().setItem(7, item3);
-        player.setItemInHand(item);
 
         player.setGameMode(GameMode.ADVENTURE);
 

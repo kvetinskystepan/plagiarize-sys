@@ -36,6 +36,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
         whitelist.add("laifaner");
         whitelist.add("Angelsword3");
         whitelist.add("_M4gii");
+        whitelist.add("Tonda");
         {
             Standards.worlds();
             Standards.commands();

@@ -289,7 +289,6 @@ public class Menus
         profile.setItem(13, item);
         profile.setItem(15, item2);
 
-        player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
         player.openInventory(profile);
     }
 
@@ -373,6 +372,7 @@ public class Menus
                 return;
 
             if (e.getCurrentItem().getType() == Material.ARROW){
+                player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
                 profileMenu(player);
                 return;
             }
@@ -396,6 +396,7 @@ public class Menus
             if (e.getCurrentItem() == null)
                 return;
             if (e.getCurrentItem().getType() == Material.ARROW){
+                player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
                 profileMenu(player);
                 return;
             }
@@ -438,17 +439,21 @@ public class Menus
             }
             if (e.getCurrentItem().getType() == Material.GRASS_BLOCK){
                 if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     PlayerChangeServerEvent.connect(player, "Survival");
                 }
                 else {
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
                     ChatNotice.error(player, Component.text("Server je offline!"));
                 }
             }
             if (e.getCurrentItem().getType() == Material.WOODEN_AXE){
                 if (!Server.status("172.18.0.1", 64000).equals(ChatColor.RED + "Offline")){
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     PlayerChangeServerEvent.connect(player, "Build");
                 }
                 else {
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
                     ChatNotice.error(player, Component.text("Server je offline!"));
                 }
             }

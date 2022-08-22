@@ -154,7 +154,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (player.getItemInHand().getType().equals(Material.COMPASS)) {
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-                Menus.mainMenu(player);
+                Menus.mainMenu(player, this);
                 e.setCancelled(true);
             }
             else if (player.getItemInHand().getType().equals(Material.NAME_TAG)) {

@@ -3,6 +3,7 @@ package com.thenarbox.lobbyplugin.services;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.PlayerChangeServerEvent;
 import com.thenarbox.api.services.Server;
+import com.thenarbox.lobbyplugin.LobbyPlugin;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -13,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,11 +155,65 @@ public class Menus
 
     // MAIN MENU
 
-    public static void mainMenu(Player player)
+    public static void updateInventory(final Player player, final Plugin plugin) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Inventory inventory = ((HumanEntity) player).getOpenInventory().getTopInventory();
+
+                if (!player.getOpenInventory().getTitle().equals("Hlavní menu")) {
+                    cancel();
+                    return;
+                }
+
+                lore.clear();
+                lore.add(ChatColor.GRAY + " ");
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 32002)));
+                if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
+                    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 32002)));
+                    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 32002)));
+                    lore.add(ChatColor.GRAY + "Generace světa: "+ChatColor.AQUA+"Klasická");
+                    lore.add(ChatColor.GRAY + " ");
+                    lore.add(ChatColor.translateAlternateColorCodes('&', "&8&oResidence, Práce, Úkoly a mnoho dalšího..."));
+                    lore.add(ChatColor.GRAY + " ");
+                    lore.add(ChatColor.GRAY + "Klikni pro vstup do hry!");
+                }
+                meta.setLore(lore);
+                item.setItemMeta(meta);
+
+
+                lore20.clear();
+                lore20.add(" ");
+                lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 64000)));
+                if (!Server.status("172.18.0.1", 64000).equals(ChatColor.RED + "Offline")){
+                    lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 64000)));
+                    lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 64000)));
+                    lore20.add(ChatColor.GRAY + " ");
+                    lore20.add(ChatColor.translateAlternateColorCodes('&', "&8&oServer pro naše stavitele :)"));
+                    lore20.add(ChatColor.GRAY + " ");
+                }
+                meta1.setLore(lore20);
+                item1.setItemMeta(meta1);
+
+                if (player.hasPermission("proxyserver.build.join"))
+                    inv.setItem(36, item1);
+                inv.setItem(21, item);
+
+
+            }
+        }.runTaskTimer(plugin, 20L, 20L);
+    }
+
+    static ItemMeta meta;
+    static ItemMeta meta1;
+    static ItemStack item;
+    static ItemStack item1;
+
+    public static void mainMenu(Player player, Plugin plugin)
     {
         inv = Bukkit.createInventory(null, 45, "Hlavní menu");
-        ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
-        ItemMeta meta = item.getItemMeta();
+        item = new ItemStack(Material.GRASS_BLOCK, 1);
+        meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lSURVIVAL CLASSIC"));
         lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + " ");
@@ -174,8 +231,8 @@ public class Menus
         item.setItemMeta(meta);
 
         lore20 = new ArrayList<>();
-        ItemStack item1 = new ItemStack(Material.WOODEN_AXE, 1);
-        ItemMeta meta1 = item1.getItemMeta();
+        item1 = new ItemStack(Material.WOODEN_AXE, 1);
+        meta1 = item1.getItemMeta();
         meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lBuild server"));
         lore20.add(" ");
         lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 64000)));
@@ -225,6 +282,7 @@ public class Menus
         inv.setItem(22, item3);
         inv.setItem(23, item4);
         player.openInventory(inv);
+        updateInventory(player, plugin);
     }
 
 

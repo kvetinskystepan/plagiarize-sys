@@ -92,26 +92,38 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         item3.setItemMeta(meta);
     }
 
+    ItemStack item2;
+    SkullMeta meta;
+    {
+        item2 = new ItemStack(Material.PLAYER_HEAD);
+        meta = (SkullMeta) item2.getItemMeta();
+        meta.setDisplayName(ChatColor.AQUA + "Profil");
+        item2.setItemMeta(meta);
+    }
+
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
-        player.getInventory().clear();
-        String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
-        player.setLevel(Integer.parseInt(level));
-        ItemStack item2 = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) item2.getItemMeta();
-        meta.setDisplayName(ChatColor.AQUA + "Profil");
         meta.setOwner(player.getName());
-        item2.setItemMeta(meta);
 
+        player.getInventory().clear(player.getInventory().getSize());
         player.getInventory().setItem(8, item2);
         player.getInventory().setItem(0, item);
         player.getInventory().setItem(7, item3);
+        player.setItemInHand(item);
+
         player.setGameMode(GameMode.ADVENTURE);
-        player.setMaxHealth(20);
+
+        player.setMaxHealth(player.getMaxHealth());
         player.setFoodLevel(20);
         player.setWalkSpeed(0.4f);
+
         player.teleport(location);
+
+        String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
+        player.setLevel(Integer.parseInt(level));
+
         e.setJoinMessage(null);
     }
 
@@ -236,9 +248,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void inventory(InventoryClickEvent e){
-        if (!e.getView().getTitle().equals("Změna hesla")){
-            e.setCancelled(true);
-        }
+        e.setCancelled(true);
     }
 
     @EventHandler

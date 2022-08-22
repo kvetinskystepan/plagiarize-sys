@@ -162,6 +162,7 @@ public class Menus
         if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
             lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 32002)));
             lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 32002)));
+            lore.add(ChatColor.GRAY + "Generace světa: "+ChatColor.AQUA+"Klasická");
             lore.add(ChatColor.GRAY + " ");
             lore.add(ChatColor.translateAlternateColorCodes('&', "&8&oResidence, Práce, Úkoly a mnoho dalšího..."));
             lore.add(ChatColor.GRAY + " ");
@@ -244,6 +245,7 @@ public class Menus
         String rank1 = rank.toLowerCase();
         String duration = PlaceholderAPI.setPlaceholders(player, " %luckperms_group_expiry_time_"+rank1+"%");
         lore1.add(" ");
+        lore1.add(ChatColor.translateAlternateColorCodes('&', "&b&lRanky"));
         lore1.add(ChatColor.translateAlternateColorCodes('&', "&fRank: " + ChatColor.AQUA + rank));
         if (duration.equals(" ")){
             lore1.add(ChatColor.translateAlternateColorCodes('&', "&fExpirace: " + ChatColor.AQUA + "Tvůj rank je permanentní"));
@@ -252,8 +254,15 @@ public class Menus
             lore1.add(ChatColor.translateAlternateColorCodes('&', "&fExpirace:" + ChatColor.AQUA + duration));
         }
         lore1.add(" ");
+        lore1.add(ChatColor.translateAlternateColorCodes('&', "&b&lÚroveň"));
         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points_formatted%");
         lore1.add(ChatColor.translateAlternateColorCodes('&', "&fÚroveň: " + ChatColor.AQUA + level));
+        lore1.add(" ");
+        lore1.add(ChatColor.translateAlternateColorCodes('&', "&b&lPřátelé"));
+        String friends = PlaceholderAPI.setPlaceholders(player, "%friendsapi_friendcount%");
+        lore1.add(ChatColor.translateAlternateColorCodes('&', "&fPočet přátel: " + ChatColor.AQUA + friends));
+        String pending = PlaceholderAPI.setPlaceholders(player, "%friendsapi_friendrequestcount%");
+        lore1.add(ChatColor.translateAlternateColorCodes('&', "&fPočet přátel čekajících na odpověď: " + ChatColor.AQUA + pending));
 
         item.setLore(lore1);
 

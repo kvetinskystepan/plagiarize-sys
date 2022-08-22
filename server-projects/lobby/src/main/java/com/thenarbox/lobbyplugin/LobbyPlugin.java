@@ -236,7 +236,9 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void inventory(InventoryClickEvent e){
+        if (!e.getView().getTitle().equals("Změna hesla")){
             e.setCancelled(true);
+        }
     }
 
     @EventHandler

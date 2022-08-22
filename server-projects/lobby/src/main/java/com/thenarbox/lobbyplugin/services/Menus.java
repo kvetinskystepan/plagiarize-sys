@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -29,15 +30,19 @@ public class Menus
         implements Listener {
 
     public static Boolean isInventoryOpen = false;
-    static List<String> lore3;
-    static List<String> lore4;
-    static List<String> lore5;
-    static List<String> lore6;
-    static List<String> lore7;
-    static Inventory inv1;
+
+    static Inventory inv5, inv2, inv1;
+
+    static List<String> lore9, lore15,  lore1, lore2, lore10, lore, lore20, lore30, lore3, lore4, lore5, lore6, lore7;
+
+
+
+    // SHOP MENU
+
+
+
     public static void shopMenu(Player player) {
         inv1 = Bukkit.createInventory(null, 45, "Obchod");
-
         lore3 = new ArrayList<>();
         ItemStack item = new ItemStack(Material.NAME_TAG, 1);
         ItemMeta meta = item.getItemMeta();
@@ -141,10 +146,13 @@ public class Menus
         player.openInventory(inv1);
     }
 
-    static List<String> lore;
+
+    // MAIN MENU
+
+
     public static void mainMenu(Player player)
     {
-        Inventory inv = Bukkit.createInventory(null, 27, "Hlavní menu");
+        Inventory inv = Bukkit.createInventory(null, 45, "Hlavní menu");
         ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lSURVIVAL CLASSIC"));
@@ -161,14 +169,67 @@ public class Menus
         }
         meta.setLore(lore);
         item.setItemMeta(meta);
-        inv.setItem(13, item);
+
+        lore20 = new ArrayList<>();
+        ItemStack item1 = new ItemStack(Material.WOODEN_AXE, 1);
+        ItemMeta meta1 = item1.getItemMeta();
+        meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lBuild server"));
+        lore20.add(" ");
+        lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 64000)));
+        if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
+            lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 64000)));
+            lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 64000)));
+            lore20.add(ChatColor.GRAY + " ");
+            lore20.add(ChatColor.translateAlternateColorCodes('&', "&8&oServer pro naše stavitele :)"));
+            lore20.add(ChatColor.GRAY + " ");
+        }
+        meta1.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta1.setLore(lore20);
+        item1.setItemMeta(meta1);
+
+        lore30 = new ArrayList<>();
+        ItemStack item2 = new ItemStack(Material.COMPASS, 1);
+        ItemMeta meta2 = item2.getItemMeta();
+        meta2.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lHlavní menu"));
+        lore30.add(ChatColor.GRAY + " ");
+        lore30.add(ChatColor.GRAY + "Zde nalezneš veškeré servery");
+        lore30.add(ChatColor.GRAY + "a informace o nich. Pokud se chceš");
+        lore30.add(ChatColor.GRAY + "připojit k některému serveru, klikni na něj.");
+        lore30.add(ChatColor.GRAY + " ");
+        lore30.add(ChatColor.WHITE + "Pokud se vyskytne problém, můžeš ");
+        lore30.add(ChatColor.WHITE + "nám ho zaslat na náš discord");
+        lore30.add(ChatColor.WHITE + "server do ticketu. ");
+        lore30.add(ChatColor.GRAY + " ");
+        lore30.add(ChatColor.AQUA + "/discord "+ChatColor.GRAY+"pro více informací.");
+        meta2.setLore(lore30);
+        item2.setItemMeta(meta2);
+
+        ItemStack item3 = new ItemStack(Material.BARRIER, 1);
+        ItemMeta meta3 = item3.getItemMeta();
+        meta3.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&cTak tady se ještě pracuje.."));
+        item3.setItemMeta(meta3);
+
+        ItemStack item4 = new ItemStack(Material.BARRIER, 1);
+        ItemMeta meta4 = item4.getItemMeta();
+        meta4.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&cTak tady se ještě pracuje.."));
+        item4.setItemMeta(meta4);
+
+
+        inv.setItem(4, item2);
+        if (player.hasPermission("proxyserver.build.join"))
+            inv.setItem(36, item1);
+        inv.setItem(21, item);
+        inv.setItem(22, item3);
+        inv.setItem(23, item4);
         player.openInventory(inv);
     }
 
 
-    static List<String> lore1;
-    static List<String> lore2;
-    static List<String> lore10;
+
+    // PROFILE MENU
+
+
+
     public static void profileMenu(Player player){
         Inventory profile = Bukkit.createInventory(null, 27, "Profil");
         lore1 = new ArrayList<>();
@@ -223,9 +284,11 @@ public class Menus
         player.openInventory(profile);
     }
 
-    static List<String> lore9;
-    static List<String> lore15;
-    static Inventory inv2;
+
+    // SETTINGS MENU
+
+
+
     public static void settingsMenu(Player player){
         inv2 = Bukkit.createInventory(null, 27, "Nastavení");
         lore9 = new ArrayList<>();
@@ -257,7 +320,11 @@ public class Menus
         player.openInventory(inv2);
     }
 
-    static Inventory inv5;
+
+    // FRIENDS SETTINGS
+
+
+
     public static void friendsSettings(Player player){
         inv5 = Bukkit.createInventory(null, 9, "Nastavení systému přátel");
 
@@ -270,6 +337,10 @@ public class Menus
 
         player.openInventory(inv5);
     }
+
+
+    // CLICK EVENT
+
 
 
     @EventHandler
@@ -306,12 +377,7 @@ public class Menus
             if (e.getCurrentItem().getType() == Material.TRIPWIRE_HOOK) {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                 player.closeInventory();
-                if (!Server.status("172.18.0.1", 32003).equals(ChatColor.RED + "Offline")){
-                    PlayerChangeServerEvent.connect(player, "PasswordChange");
-                }
-                else {
-                    ChatNotice.error(player, Component.text("Autentifikační server je offline!"));
-                }
+                ChatNotice.success(player, Component.text("Kontaktuji autentifikační server..."));
             }
         }
 
@@ -369,8 +435,14 @@ public class Menus
                     ChatNotice.error(player, Component.text("Server je offline!"));
                 }
             }
+            if (e.getCurrentItem().getType() == Material.WOODEN_AXE){
+                if (!Server.status("172.18.0.1", 64000).equals(ChatColor.RED + "Offline")){
+                    PlayerChangeServerEvent.connect(player, "Build");
+                }
+                else {
+                    ChatNotice.error(player, Component.text("Server je offline!"));
+                }
+            }
         }
     }
-
-
 }

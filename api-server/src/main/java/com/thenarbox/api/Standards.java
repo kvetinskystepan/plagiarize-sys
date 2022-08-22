@@ -7,10 +7,16 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -238,6 +244,39 @@ public class Standards {
 
     private static HashMap<UUID, UUID> requests = new HashMap<>();
     public static void survivalCommands(Plugin plugin){
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("invsee") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof final Player player))
+                        return true;
+
+                    if (commandLabel.equalsIgnoreCase("invsee")) {
+                        if (player.hasPermission("survival.invsee")){
+
+                            Player target = Bukkit.getPlayer(args[0]);
+
+                            if (args.length == 0){
+                                ChatNotice.error(player, Component.text("Použití: /invsee <hráč>"));
+                            }
+                            if (target != null) {
+                                player.openInventory(target.getInventory());
+                            }
+                            else {
+                                ChatNotice.error(player, Component.text("Hráč s tímto nickem nebyl nalezen."));
+                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Helper."));
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
+
+
 
         plugin.saveDefaultConfig();
         {

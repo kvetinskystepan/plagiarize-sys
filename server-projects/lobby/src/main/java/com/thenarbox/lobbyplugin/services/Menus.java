@@ -177,7 +177,7 @@ public class Menus
         meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lBuild server"));
         lore20.add(" ");
         lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 64000)));
-        if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
+        if (!Server.status("172.18.0.1", 64000).equals(ChatColor.RED + "Offline")){
             lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 64000)));
             lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 64000)));
             lore20.add(ChatColor.GRAY + " ");
@@ -444,6 +444,7 @@ public class Menus
                 }
                 else {
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                    player.closeInventory();
                     ChatNotice.error(player, Component.text("Server je offline!"));
                 }
             }
@@ -454,6 +455,7 @@ public class Menus
                 }
                 else {
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                    player.closeInventory();
                     ChatNotice.error(player, Component.text("Server je offline!"));
                 }
             }

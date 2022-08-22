@@ -31,7 +31,7 @@ public class Menus
 
     public static Boolean isInventoryOpen = false;
 
-    static Inventory inv5, inv2, inv1;
+    static Inventory inv5, inv2, inv1, inv;
 
     static List<String> lore9, lore15,  lore1, lore2, lore10, lore, lore20, lore30, lore3, lore4, lore5, lore6, lore7;
 
@@ -152,7 +152,7 @@ public class Menus
 
     public static void mainMenu(Player player)
     {
-        Inventory inv = Bukkit.createInventory(null, 45, "Hlavní menu");
+        inv = Bukkit.createInventory(null, 45, "Hlavní menu");
         ItemStack item = new ItemStack(Material.GRASS_BLOCK, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lSURVIVAL CLASSIC"));

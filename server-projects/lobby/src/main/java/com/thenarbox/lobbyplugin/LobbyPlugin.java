@@ -41,16 +41,16 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        System.out.println("LobbyPlugin is enabled!");
+        log.error("SPRÁVA LOBBY MEJS.CZ");
+        log.error(" ");
         {
             Standards.worlds();
             Standards.commands();
         }
-
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         PlayerChangeServerEvent.instance = this;
         location = new Location(Bukkit.getWorld("world"), 390.5, 89, 209.5, -90, 0);
-
+        log.error("Probíhá inicializace...50%");
         if(!getServer().getPluginManager().isPluginEnabled("Vault")){
             log.error("Vault is not enabled! Disabling LobbyPlugin...");
             getServer().getPluginManager().disablePlugin(this);
@@ -59,7 +59,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             log.error("PlaceholderAPI is not enabled! Disabling LobbyPlugin...");
             getServer().getPluginManager().disablePlugin(this);
         }
-
         getServer().getPluginManager()
                 .registerEvents(this, this);
         getServer().getPluginManager()
@@ -69,14 +68,17 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
         allowedCommands480 = AllowedCommands.initMysql();
         Standards.View.tab(this);
-
+        log.error(" ");
+        log.error("Inicializace proběhla úspěšně.");
+        log.error(" ");
+        log.error("SPRÁVA LOBBY MEJS.CZ");
     }
 
     @Override
     public void onDisable() {
-        System.out.println("LobbyPlugin is now disabled.");
         getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
         HandlerList.unregisterAll();
+        log.info(ChatColor.RED + "LobbyPlugin byl vypnut.");
     }
 
     ItemStack item;
@@ -133,10 +135,10 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
 
         if (replaced.equals("")){
-            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " +ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
+            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
         }
         else {
-            e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
+            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + replaced + " " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
         }
     }
 

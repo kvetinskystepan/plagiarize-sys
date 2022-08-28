@@ -3,6 +3,8 @@ package com.thenarbox.survivalplugin;
 import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
+import com.thenarbox.survivalplugin.mechanics.Command;
+import com.thenarbox.survivalplugin.services.Menus;
 import com.thenarbox.survivalplugin.services.SpawnService;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -32,8 +34,8 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     ArrayList<String> allowedCommands32 = new ArrayList<>();
 
     public void onEnable() {
-        log.info("SurvivalPlugin has been enabled.");
-
+        log.error("SPRÁVA SURVIVAL MEJS.CZ");
+        log.error(" ");
         if(!getServer().getPluginManager().isPluginEnabled("Vault")){
             log.error("Vault is not enabled! Disabling LobbyPlugin...");
             getServer().getPluginManager().disablePlugin(this);
@@ -42,21 +44,26 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
             log.error("PlaceholderAPI is not enabled! Disabling LobbyPlugin...");
             getServer().getPluginManager().disablePlugin(this);
         }
-
+        Command.commands();
         Standards.survivalCommands(this);
         Standards.commands();
         Standards.View.tab(this);
+        log.error("Probíhá inicializace...50%");
         SpawnService.spawnSettings();
 
         getServer().getPluginManager()
                 .registerEvents(this, this);
         getServer().getPluginManager()
                 .registerEvents(new SpawnService(), this);
+        getServer().getPluginManager()
+                .registerEvents(new Menus(), this);
 
         allowedCommands32 = AllowedCommands.initSurvivalMysql();
 
-        CommandSender sender = Bukkit.getConsoleSender();
-        sender.sendMessage("papi reload");
+        log.error(" ");
+        log.error("Inicializace proběhla úspěšně.");
+        log.error(" ");
+        log.error("SPRÁVA SURVIVAL MEJS.CZ");
     }
 
     @EventHandler
@@ -90,10 +97,10 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
 
         if (replaced.equals("")){
-            e.setFormat(ChatColor.GOLD + level + ChatColor.GRAY + " | " +ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
+            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
         }
         else {
-            e.setFormat(replaced + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
+            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + replaced + " " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
         }
     }
 

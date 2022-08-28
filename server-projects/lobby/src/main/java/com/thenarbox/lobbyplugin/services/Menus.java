@@ -3,7 +3,6 @@ package com.thenarbox.lobbyplugin.services;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.PlayerChangeServerEvent;
 import com.thenarbox.api.services.Server;
-import com.thenarbox.lobbyplugin.LobbyPlugin;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -37,9 +36,9 @@ public class Menus
 
     public static Boolean isInventoryOpen = false;
 
-    static Inventory inv5, inv2, inv1, inv;
+    static Inventory inv5, inv2, inv1, inv, inv3;
 
-    static List<String> lore9, lore15,  lore1, lore2, lore10, lore, lore20, lore30, lore3, lore4, lore5, lore6, lore7;
+    static List<String> lore9, lore15,  lore1, lore2, lore10, lore, lore20, lore30, lore3, lore4, lore5, lore6, lore7, lore8;
 
 
 
@@ -153,6 +152,35 @@ public class Menus
     }
 
 
+
+
+    // RANK SHOP
+
+    public static void rankShop(Player player){
+        inv3 = Bukkit.createInventory(null, 45, "Obchod s Ranky");
+        lore8 = new ArrayList<>();
+
+        ItemStack anvil = new ItemStack(Material.ANVIL, 1);
+        ItemMeta meta = anvil.getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lObchod s Ranky"));
+        lore8.add(" ");
+        lore8.add(ChatColor.GRAY + "Zde si můžeš zakoupit ranky.");
+        lore8.add(ChatColor.GRAY + " ");
+        lore8.add(ChatColor.AQUA + "Ranky lze odemknout pomocí: ");
+        lore8.add(ChatColor.GRAY + " ");
+        lore8.add(ChatColor.GRAY + " - Úroveně hráče");
+        lore8.add(ChatColor.GRAY + " ");
+        lore8.add(ChatColor.DARK_GRAY + "Každý rank má vlastní ceny i vzácnost.");
+        meta.setLore(lore8);
+        anvil.setItemMeta(meta);
+
+        inv3.setItem(4, anvil);
+        player.openInventory(inv3);
+    }
+
+
+
+
     // MAIN MENU
 
     public static void updateInventory(final Player player, final Plugin plugin) {
@@ -172,7 +200,6 @@ public class Menus
                 if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
                     lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 32002)));
                     lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 32002)));
-                    lore.add(ChatColor.GRAY + "Generace světa: "+ChatColor.AQUA+"Klasická");
                     lore.add(ChatColor.GRAY + " ");
                     lore.add(ChatColor.translateAlternateColorCodes('&', "&8&oResidence, Práce, Úkoly a mnoho dalšího..."));
                     lore.add(ChatColor.GRAY + " ");
@@ -214,14 +241,13 @@ public class Menus
         inv = Bukkit.createInventory(null, 45, "Hlavní menu");
         item = new ItemStack(Material.GRASS_BLOCK, 1);
         meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lSURVIVAL CLASSIC"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lSURVIVAL"));
         lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + " ");
         lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 32002)));
         if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
             lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 32002)));
             lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 32002)));
-            lore.add(ChatColor.GRAY + "Generace světa: "+ChatColor.AQUA+"Klasická");
             lore.add(ChatColor.GRAY + " ");
             lore.add(ChatColor.translateAlternateColorCodes('&', "&8&oResidence, Práce, Úkoly a mnoho dalšího..."));
             lore.add(ChatColor.GRAY + " ");
@@ -417,9 +443,9 @@ public class Menus
 
         if(e.getView().getTitle().equals("Nastavení systému přátel")){
             e.setCancelled(true);
-            if(e.getCurrentItem().getType() == null){
+            if (e.getCurrentItem() == null)
                 return;
-            }
+
             if(e.getCurrentItem().getType() == Material.ARROW){
                 player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
                 settingsMenu(player);
@@ -455,6 +481,7 @@ public class Menus
             e.setCancelled(true);
             if (e.getCurrentItem() == null)
                 return;
+
             if (e.getCurrentItem().getType() == Material.ARROW){
                 player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
                 profileMenu(player);
@@ -462,6 +489,11 @@ public class Menus
             }
             if (e.getCurrentItem().getType() == Material.BARRIER){
                 player.closeInventory();
+                return;
+            }
+            if (e.getCurrentItem().getType() == Material.ANVIL){
+                player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
+                rankShop(player);
                 return;
             }
             if (e.getCurrentItem().getType() == Material.PAPER){
@@ -481,6 +513,7 @@ public class Menus
             if(e.getCurrentItem() == null){
                 return;
             }
+
             if (e.getCurrentItem().getType() == Material.NAME_TAG){
                 player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
                 isInventoryOpen = true;
@@ -497,6 +530,7 @@ public class Menus
             if (e.getCurrentItem() == null){
                 return;
             }
+
             if (e.getCurrentItem().getType() == Material.GRASS_BLOCK){
                 if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);

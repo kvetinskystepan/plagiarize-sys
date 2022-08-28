@@ -1,5 +1,6 @@
 package com.thenarbox.api;
 
+import com.thenarbox.api.colors.ColorAPI;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -68,6 +69,9 @@ public class Standards {
                     String prefix = PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%");
                     if (suffix.equalsIgnoreCase("hráč")){
                         team.setPrefix("");
+                    }
+                    else if (suffix.equalsIgnoreCase("v.developer")){
+                        team.setPrefix(/*ColorAPI.process("<GRADIENT:a4ffec>"+prefix.toUpperCase()+"</GRADIENT:a4ffec>"*/ ColorAPI.rainbow(prefix.toUpperCase(), 1f)+ " " + ChatColor.WHITE);
                     }
                     else {
                         team.setPrefix(ChatColor.translateAlternateColorCodes('&', prefix + " " + ChatColor.WHITE));

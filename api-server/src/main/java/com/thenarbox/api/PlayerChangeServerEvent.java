@@ -1,5 +1,6 @@
 package com.thenarbox.api;
 
+import com.thenarbox.api.colors.ColorAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,7 +33,7 @@ public class PlayerChangeServerEvent extends Event implements Cancellable {
             ByteArrayOutputStream b = new ByteArrayOutputStream();
             DataOutputStream out = new DataOutputStream(b);
 
-            ChatNotice.success(player, Component.text("Připojuješ se k " + serverName + " serveru"));
+            ChatNotice.success(player, Component.text("Připojuješ se k " + ColorAPI.process("<GRADIENT:a4ffec>"+serverName+"</GRADIENT:a4ffec>") + ChatColor.WHITE + " serveru"));
 
             try {
                 out.writeUTF("Connect");

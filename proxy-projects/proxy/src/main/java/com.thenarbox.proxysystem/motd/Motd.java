@@ -1,5 +1,6 @@
 package com.thenarbox.proxysystem.motd;
 
+import com.thenarbox.api.colors.ColorAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.event.ProxyPingEvent;
@@ -23,9 +24,8 @@ public class Motd implements Listener {
     public void onProxyPing(ProxyPingEvent e) throws IOException {
         ServerPing ping = e.getResponse();
         getInstance();
-        String mod1 = ChatColor.translateAlternateColorCodes('&', "&6&lMejs.cz &7| &fVerze: &61.19");
-        String mod2 = ChatColor.WHITE + "Server je v režimu " + ChatColor.RED + "údržby";
-        ping.setDescription(mod1 + "\n" + mod2);
+        String mod1 = "MEJS.cz";
+        ping.setDescription(mod1);
         e.setResponse(ping);
     }
 }

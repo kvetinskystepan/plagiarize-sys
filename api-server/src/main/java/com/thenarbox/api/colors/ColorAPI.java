@@ -18,30 +18,9 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class ColorAPI {
-
-    /**
-     * The current version of the server in the a form of a major version.
-     * If the static initialization for this fails, you know something's wrong with
-     * the server software.
-     *
-     * @since 1.0.0
-     */
     private static final int VERSION = getVersion();
-
-    /**
-     * Cached result if the server version is after the v1.16 RGB update.
-     *
-     * @since 1.0.0
-     */
     private static final boolean SUPPORTS_RGB = VERSION >= 16;
-
     private static final List<String> SPECIAL_COLORS = Arrays.asList("&l", "&n", "&o", "&k", "&m", "§l", "§n", "§o", "§k", "§m");
-
-    /**
-     * Cached result of all legacy colors.
-     *
-     * @since 1.0.0
-     */
     private static final Map<Color, ChatColor> COLORS = ImmutableMap.<Color, ChatColor>builder()
             .put(new Color(0), ChatColor.getByChar('0'))
             .put(new Color(170), ChatColor.getByChar('1'))
@@ -59,21 +38,7 @@ public class ColorAPI {
             .put(new Color(16733695), ChatColor.getByChar('d'))
             .put(new Color(16777045), ChatColor.getByChar('e'))
             .put(new Color(16777215), ChatColor.getByChar('f')).build();
-
-    /**
-     * Cached result of patterns.
-     *
-     * @since 1.0.2
-     */
     private static final List<Pattern> PATTERNS = Arrays.asList(new GradientPattern(), new SolidPattern(), new RainbowPattern());
-
-    /**
-     * Processes a string to add color to it.
-     * Thanks to Distressing for helping with the regex <3
-     *
-     * @param string The string we want to process
-     * @since 1.0.0
-     */
     @Nonnull
     public static String process(@Nonnull String string) {
         for (Pattern pattern : PATTERNS) {
@@ -84,13 +49,6 @@ public class ColorAPI {
         return string;
     }
 
-    /**
-     * Processes multiple strings in a collection.
-     *
-     * @param strings The collection of the strings we are processing
-     * @return The list of processed strings
-     * @since 1.0.3
-     */
     @Nonnull
     public static List<String> process(@Nonnull Collection<String> strings) {
         return strings.stream()
@@ -98,26 +56,11 @@ public class ColorAPI {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Colors a String.
-     *
-     * @param string The string we want to color
-     * @param color  The color we want to set it to
-     * @since 1.0.0
-     */
     @Nonnull
     public static String color(@Nonnull String string, @Nonnull Color color) {
         return (SUPPORTS_RGB ? ChatColor.of(color) : getClosestColor(color)) + string;
     }
 
-    /**
-     * Colors a String with a gradiant.
-     *
-     * @param string The string we want to color
-     * @param start  The starting gradiant
-     * @param end    The ending gradiant
-     * @since 1.0.0
-     */
     @Nonnull
     public static String color(@Nonnull String string, @Nonnull Color start, @Nonnull Color end) {
         String originalString = string;
@@ -126,13 +69,6 @@ public class ColorAPI {
         return apply(originalString, colors);
     }
 
-    /**
-     * Colors a String with rainbow colors.
-     *
-     * @param string     The string which should have rainbow colors
-     * @param saturation The saturation of the rainbow colors
-     * @since 1.0.3
-     */
     @Nonnull
     public static String rainbow(@Nonnull String string, float saturation) {
         String originalString = string;
@@ -141,26 +77,12 @@ public class ColorAPI {
         return apply(originalString, colors);
     }
 
-    /**
-     * Gets a color from hex code.
-     *
-     * @param string The hex code of the color
-     * @since 1.0.0
-     */
     @Nonnull
     public static ChatColor getColor(@Nonnull String string) {
         return SUPPORTS_RGB ? ChatColor.of(new Color(Integer.parseInt(string, 16)))
                 : getClosestColor(new Color(Integer.parseInt(string, 16)));
     }
 
-    /**
-     * Removes all color codes from the provided String, including IridiumColorAPI
-     * patterns.
-     *
-     * @param string The String which should be stripped
-     * @return The stripped string without color codes
-     * @since 1.0.5
-     */
     @Nonnull
     public static String stripColorFormatting(@Nonnull String string) {
         return string.replaceAll("<#[0-9A-F]{6}>|[&§][a-f0-9lnokm]|<[/]?[A-Z]{5,8}(:[0-9A-F]{6})?[0-9]*>", "");
@@ -201,14 +123,6 @@ public class ColorAPI {
         return workingString;
     }
 
-    /**
-     * Returns a rainbow array of chat colors.
-     *
-     * @param step       How many colors we return
-     * @param saturation The saturation of the rainbow
-     * @return The array of colors
-     * @since 1.0.3
-     */
     @Nonnull
     private static ChatColor[] createRainbow(int step, float saturation) {
         ChatColor[] colors = new ChatColor[step];
@@ -226,15 +140,6 @@ public class ColorAPI {
         return colors;
     }
 
-    /**
-     * Returns a gradient array of chat colors.
-     *
-     * @param start The starting color.
-     * @param end   The ending color.
-     * @param step  How many colors we return.
-     * @author TheViperShow
-     * @since 1.0.0
-     */
     @Nonnull
     private static ChatColor[] createGradient(@Nonnull Color start, @Nonnull Color end, int step) {
         ChatColor[] colors = new ChatColor[step];
@@ -259,12 +164,6 @@ public class ColorAPI {
         return colors;
     }
 
-    /**
-     * Returns the closest legacy color from an rgb color
-     *
-     * @param color The color we want to transform
-     * @since 1.0.0
-     */
     @Nonnull
     private static ChatColor getClosestColor(Color color) {
         Color nearestColor = null;
@@ -280,13 +179,7 @@ public class ColorAPI {
         return COLORS.get(nearestColor);
     }
 
-    /**
-     * Gets a simplified major version (..., 9, 10, ..., 14).
-     * In most cases, you shouldn't be using this method.
-     *
-     * @return the simplified major version.
-     * @since 1.0.0
-     */
+
     private static int getVersion() {
         String version = Bukkit.getVersion();
         Validate.notEmpty(version, "Cannot get major Minecraft version from null or empty string");

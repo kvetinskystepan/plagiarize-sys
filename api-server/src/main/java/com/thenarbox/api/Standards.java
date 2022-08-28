@@ -71,7 +71,7 @@ public class Standards {
                         team.setPrefix("");
                     }
                     else if (suffix.equalsIgnoreCase("v.developer")){
-                        team.setPrefix(/*ColorAPI.process("<GRADIENT:a4ffec>"+prefix.toUpperCase()+"</GRADIENT:a4ffec>"*/ ColorAPI.rainbow(prefix.toUpperCase(), 1f)+ " " + ChatColor.WHITE);
+                        team.setPrefix(ColorAPI.process("<GRADIENT:779ba6>"+prefix.toUpperCase()+"</GRADIENT:779ba6>" + " " + ChatColor.WHITE));
                     }
                     else {
                         team.setPrefix(ChatColor.translateAlternateColorCodes('&', prefix + " " + ChatColor.WHITE));

@@ -164,6 +164,7 @@ public class Standards {
                                         sb.append(args[i]).append(" ");
                                     }
                                     target.chat(sb.toString());
+
                                     ChatNotice.success(player, Component.text("Hráč " + target.getName() + " úspěšně vykonal požadavek."));
                                 }
                                 else{

@@ -2,6 +2,7 @@ package com.thenarbox.survivalplugin;
 
 import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
+import com.thenarbox.api.PlayerChangeServerEvent;
 import com.thenarbox.api.Standards;
 import com.thenarbox.survivalplugin.mechanics.Command;
 import com.thenarbox.survivalplugin.services.Menus;
@@ -107,6 +108,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
+        player.sendMessage(String.valueOf(player.getProtocolVersion()));
         if (player.getWorld().getName().equals("world")){
             player.teleport(spawn);
         }

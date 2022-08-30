@@ -63,7 +63,7 @@ public class AllowedCommands implements Listener {
         Statement statement = null;
         try {
             connection = DriverManager.getConnection(url, username, password);
-            String sql = "SELECT * FROM `s1_AllowedCommands`.`AllowedCommands`;";
+            String sql = "SELECT * FROM `s1_allowedcommands`.`AllowedCommands`;";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {

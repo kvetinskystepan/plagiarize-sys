@@ -188,7 +188,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void command(PlayerCommandPreprocessEvent e){
         Player player = e.getPlayer();
-        final var commandMessage = e.getMessage();
+        final var commandMessage = e.getMessage().toLowerCase();
         final int length;
         {
             final int index = commandMessage.indexOf(' ');

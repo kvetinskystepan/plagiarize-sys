@@ -70,11 +70,8 @@ public class Standards {
                     if (suffix.equalsIgnoreCase("hráč")){
                         team.setPrefix("");
                     }
-                    else if (suffix.equalsIgnoreCase("v.developer")){
-                        team.setPrefix(ColorAPI.process("<GRADIENT:779ba6>"+prefix.toUpperCase()+"</GRADIENT:779ba6>" + " " + ChatColor.WHITE));
-                    }
                     else {
-                        team.setPrefix(ChatColor.translateAlternateColorCodes('&', prefix + " " + ChatColor.WHITE));
+                        team.setPrefix(ChatColor.translateAlternateColorCodes('&', prefix) + " " + ChatColor.WHITE);
                     }
                     team.addPlayer(player);
                 }
@@ -105,7 +102,36 @@ public class Standards {
         }
     }
 
-    public static void commands() {
+    public static void commands(Plugin plugin) {
+
+        getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
+
+        {
+            Bukkit.getCommandMap().register("global", new Command("reset") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof  Player))
+                        return false;
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("reset")){
+                        if (player.hasPermission("standards.reset")){
+                            Bukkit.getOnlinePlayers().forEach(player1 -> {
+                                PlayerChangeServerEvent.connect(player1, "Lobby-1");
+                                ChatNotice.info(player1, Component.text("Server se restartuje, byl jsi přepojen na Lobby!"));
+                            });
+                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                Bukkit.getServer().shutdown();
+                            }, 100L);
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Developer."));
+                        }
+                    }
+                    return true;
+                }
+            });
+
+        }
 
         {
             Bukkit.getCommandMap().register("global", new Command("uroven") {

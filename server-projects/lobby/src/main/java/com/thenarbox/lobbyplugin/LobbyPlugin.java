@@ -6,6 +6,8 @@ import com.thenarbox.api.Standards;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.api.PlayerChangeServerEvent;
 import com.thenarbox.lobbyplugin.services.Menus;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import io.papermc.paper.event.player.ChatEvent;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -15,6 +17,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
@@ -45,7 +48,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         log.error(" ");
         {
             Standards.worlds();
-            Standards.commands();
+            Standards.commands(this);
         }
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         PlayerChangeServerEvent.instance = this;
@@ -85,7 +88,8 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     {
         item = new ItemStack(Material.COMPASS);
         ItemMeta meta1 = item.getItemMeta();
-        meta1.setDisplayName(ChatColor.AQUA + "Hlavní menu");
+        String name = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lH&x&1&4&f&4&c&0&lL&x&1&c&e&9&a&c&lA&x&2&5&d&e&9&9&lV&x&2&d&d&3&8&5&lN&x&3&6&c&7&7&2&lÍ &x&3&e&b&c&5&e&lM&x&4&7&b&1&4&b&lE&x&4&f&a&6&3&7&lN&x&5&8&9&b&2&4&lU");
+        meta1.setDisplayName(name);
         item.setItemMeta(meta1);
     }
 
@@ -93,7 +97,8 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     {
         item3 = new ItemStack(Material.NAME_TAG);
         ItemMeta meta2 = item3.getItemMeta();
-        meta2.setDisplayName(ChatColor.AQUA + "Obchod");
+        String name = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lO&x&1&a&e&b&b&0&lB&x&2&a&d&7&8&d&lC&x&3&9&c&3&6&a&lH&x&4&9&a&f&4&7&lO&x&5&8&9&b&2&4&lD");
+        meta2.setDisplayName(name);
         item3.setItemMeta(meta2);
     }
 
@@ -105,7 +110,8 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
         ItemStack item2 = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta3 = (SkullMeta) item2.getItemMeta();
-        meta3.setDisplayName(ChatColor.AQUA + "Profil");
+        String name = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lP&x&1&a&e&b&b&0&lR&x&2&a&d&7&8&d&lO&x&3&9&c&3&6&a&lF&x&4&9&a&f&4&7&lI&x&5&8&9&b&2&4&lL");
+        meta3.setDisplayName(ChatColor.AQUA + name);
         meta3.setOwner(player.getName());
         item2.setItemMeta(meta3);
 
@@ -127,7 +133,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         e.setJoinMessage(null);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void chat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
 
@@ -135,10 +141,10 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
 
         if (replaced.equals("")){
-            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
+            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage().replace("%", "%%"));
         }
         else {
-            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + replaced + " " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
+            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + replaced + " " + ChatColor.WHITE + player.getName() + ": " + e.getMessage().replace("%", "%%"));
         }
     }
 

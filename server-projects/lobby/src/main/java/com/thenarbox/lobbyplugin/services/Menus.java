@@ -47,7 +47,7 @@ public class Menus
 
 
     public static void shopMenu(Player player) {
-        inv1 = Bukkit.createInventory(null, 45, "Obchod");
+        inv1 = Bukkit.createInventory(null, 45, name1);
         lore3 = new ArrayList<>();
         ItemStack item = new ItemStack(Material.NAME_TAG, 1);
         ItemMeta meta = item.getItemMeta();
@@ -189,7 +189,7 @@ public class Menus
             public void run() {
                 Inventory inventory = ((HumanEntity) player).getOpenInventory().getTopInventory();
 
-                if (!player.getOpenInventory().getTitle().equals("Hlavní menu")) {
+                if (!player.getOpenInventory().getTitle().equals(name)) {
                     cancel();
                     return;
                 }
@@ -198,8 +198,8 @@ public class Menus
                 lore.add(ChatColor.GRAY + " ");
                 lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 32002)));
                 if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
-                    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 32002)));
-                    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 32002)));
+                    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:32002%")));
+                    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
                     lore.add(ChatColor.GRAY + " ");
                     lore.add(ChatColor.translateAlternateColorCodes('&', "&8&oResidence, Práce, Úkoly a mnoho dalšího..."));
                     lore.add(ChatColor.GRAY + " ");
@@ -213,8 +213,8 @@ public class Menus
                 lore20.add(" ");
                 lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 64000)));
                 if (!Server.status("172.18.0.1", 64000).equals(ChatColor.RED + "Offline")){
-                    lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 64000)));
-                    lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 64000)));
+                    lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:64000%")));
+                    lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Doporučená verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
                     lore20.add(ChatColor.GRAY + " ");
                     lore20.add(ChatColor.translateAlternateColorCodes('&', "&8&oServer pro naše stavitele :)"));
                     lore20.add(ChatColor.GRAY + " ");
@@ -236,18 +236,25 @@ public class Menus
     static ItemStack item;
     static ItemStack item1;
 
+    static String name2 = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lP&x&1&a&e&b&b&0&lR&x&2&a&d&7&8&d&lO&x&3&9&c&3&6&a&lF&x&4&9&a&f&4&7&lI&x&5&8&9&b&2&4&lL");
+
+    static String name1 = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lO&x&1&a&e&b&b&0&lB&x&2&a&d&7&8&d&lC&x&3&9&c&3&6&a&lH&x&4&9&a&f&4&7&lO&x&5&8&9&b&2&4&lD");
+
+    static String name = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lH&x&1&4&f&4&c&0&lL&x&1&c&e&9&a&c&lA&x&2&5&d&e&9&9&lV&x&2&d&d&3&8&5&lN&x&3&6&c&7&7&2&lÍ &x&3&e&b&c&5&e&lM&x&4&7&b&1&4&b&lE&x&4&f&a&6&3&7&lN&x&5&8&9&b&2&4&lU");
+
     public static void mainMenu(Player player, Plugin plugin)
     {
-        inv = Bukkit.createInventory(null, 45, "Hlavní menu");
+        inv = Bukkit.createInventory(null, 45, name);
         item = new ItemStack(Material.GRASS_BLOCK, 1);
         meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lSURVIVAL"));
+        String metaName = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lS&x&0&c&f&2&c&e&lU&x&0&e&e&4&c&a&lR&x&0&f&d&7&c&5&lV&x&1&0&c&9&c&0&lI&x&1&2&b&c&b&c&lV&x&1&3&a&e&b&7&lA&x&1&4&a&1&b&2&lL &x&1&6&9&3&a&e&l1&x&1&7&8&6&a&9&l.&x&1&8&7&8&a&4&l1&x&1&a&6&b&a&0&l9&x&1&b&5&d&9&b&l+");
+        meta.setDisplayName(metaName);
         lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + " ");
         lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 32002)));
         if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 32002)));
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 32002)));
+            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:32002%")));
+            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
             lore.add(ChatColor.GRAY + " ");
             lore.add(ChatColor.translateAlternateColorCodes('&', "&8&oResidence, Práce, Úkoly a mnoho dalšího..."));
             lore.add(ChatColor.GRAY + " ");
@@ -259,12 +266,12 @@ public class Menus
         lore20 = new ArrayList<>();
         item1 = new ItemStack(Material.WOODEN_AXE, 1);
         meta1 = item1.getItemMeta();
-        meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lBuild server"));
+        meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lB&x&0&d&e&f&c&d&lU&x&0&e&d&f&c&8&lI&x&1&0&c&e&c&2&lL&x&1&1&b&e&b&d&lD &x&1&3&a&e&b&7&lS&x&1&5&9&e&b&1&lE&x&1&6&8&e&a&c&lR&x&1&8&7&d&a&6&lV&x&1&9&6&d&a&1&lE&x&1&b&5&d&9&b&lR"));
         lore20.add(" ");
         lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 64000)));
         if (!Server.status("172.18.0.1", 64000).equals(ChatColor.RED + "Offline")){
-            lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + Server.PlayerCount("172.18.0.1", 64000)));
-            lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &b" + Server.version("172.18.0.1", 64000)));
+            lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:64000%")));
+            lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Doporučená verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
             lore20.add(ChatColor.GRAY + " ");
             lore20.add(ChatColor.translateAlternateColorCodes('&', "&8&oServer pro naše stavitele :)"));
             lore20.add(ChatColor.GRAY + " ");
@@ -273,10 +280,12 @@ public class Menus
         meta1.setLore(lore20);
         item1.setItemMeta(meta1);
 
+        String discord = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3/&x&0&d&e&8&c&bd&x&1&0&d&1&c&3i&x&1&2&b&a&b&bs&x&1&4&a&2&b&3c&x&1&6&8&b&a&bo&x&1&9&7&4&a&3r&x&1&b&5&d&9&bd");
+
         lore30 = new ArrayList<>();
         ItemStack item2 = new ItemStack(Material.COMPASS, 1);
         ItemMeta meta2 = item2.getItemMeta();
-        meta2.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lHlavní menu"));
+        meta2.setDisplayName(name);
         lore30.add(ChatColor.GRAY + " ");
         lore30.add(ChatColor.GRAY + "Zde nalezneš veškeré servery");
         lore30.add(ChatColor.GRAY + "a informace o nich. Pokud se chceš");
@@ -286,7 +295,7 @@ public class Menus
         lore30.add(ChatColor.WHITE + "nám ho zaslat na náš discord");
         lore30.add(ChatColor.WHITE + "server do ticketu. ");
         lore30.add(ChatColor.GRAY + " ");
-        lore30.add(ChatColor.AQUA + "/discord "+ChatColor.GRAY+"pro více informací.");
+        lore30.add(ChatColor.AQUA + discord + ChatColor.GRAY + " pro více informací.");
         meta2.setLore(lore30);
         item2.setItemMeta(meta2);
 
@@ -318,7 +327,7 @@ public class Menus
 
 
     public static void profileMenu(Player player){
-        Inventory profile = Bukkit.createInventory(null, 27, "Profil");
+        Inventory profile = Bukkit.createInventory(null, 27, name2);
         lore1 = new ArrayList<>();
 
         ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
@@ -477,7 +486,7 @@ public class Menus
         }
 
 
-        if (e.getView().getTitle().equals("Obchod")){
+        if (e.getView().getTitle().equals(name1)){
             e.setCancelled(true);
             if (e.getCurrentItem() == null)
                 return;
@@ -508,7 +517,7 @@ public class Menus
         }
 
 
-        if(e.getView().getTitle().equals("Profil")){
+        if(e.getView().getTitle().equals(name2)){
             e.setCancelled(true);
             if(e.getCurrentItem() == null){
                 return;
@@ -525,7 +534,7 @@ public class Menus
             }
         }
 
-        if (e.getView().getTitle().equals("Hlavní menu")){
+        if (e.getView().getTitle().equals(name)){
             e.setCancelled(true);
             if (e.getCurrentItem() == null){
                 return;
@@ -535,6 +544,7 @@ public class Menus
                 if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     PlayerChangeServerEvent.connect(player, "Survival");
+                    player.closeInventory();
                 }
                 else {
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
@@ -546,6 +556,7 @@ public class Menus
                 if (!Server.status("172.18.0.1", 64000).equals(ChatColor.RED + "Offline")){
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     PlayerChangeServerEvent.connect(player, "Build");
+                    player.closeInventory();
                 }
                 else {
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);

@@ -9,13 +9,13 @@ public class AllowedCommands implements Listener {
 
     private static ArrayList < String > allowedCommands = new ArrayList < String > ();
     private static ArrayList < String > allowedCommands2 = new ArrayList < String > ();
-    static final String username = "u1_T2UIK9wc4t";
-    static final String password = "!Uzp!@2fuKE6na1^0Xu5gM9W";
-    static final String url = "jdbc:mysql://65.108.3.94:43306/s1_AllowedCommands";
+    static final String username = "u1_JjGU1JmqnN";
+    static final String password = "u0vSbP2@39LPmx+HNNzcf=Iu";
+    static final String url = "jdbc:mysql://188.40.35.126:43306/s1_allowedcommands";
 
-    static final String username1 = "u4_phBX7CZ6lQ";
-    static final String password1 = "7..c!6igs^xYBAPIfu!15DjZ";
-    static final String url1 = "jdbc:mysql://65.108.3.94:43306/s4_AllowedCommandsSurvival";
+    static final String username1 = "u4_RuiJdY5u9o";
+    static final String password1 = "YPjZK5h+g.EHMl2Dwu2=B!y9";
+    static final String url1 = "jdbc:mysql://188.40.35.126:43306/s4_AllowedCommandsSurvival";
 
     static Connection connection;
 

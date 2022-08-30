@@ -2,7 +2,6 @@ package com.thenarbox.survivalplugin;
 
 import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
-import com.thenarbox.api.PlayerChangeServerEvent;
 import com.thenarbox.api.Standards;
 import com.thenarbox.survivalplugin.mechanics.Command;
 import com.thenarbox.survivalplugin.services.Menus;
@@ -12,7 +11,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -37,6 +35,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     public void onEnable() {
         log.error("SPRÁVA SURVIVAL MEJS.CZ");
         log.error(" ");
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         if(!getServer().getPluginManager().isPluginEnabled("Vault")){
             log.error("Vault is not enabled! Disabling LobbyPlugin...");
             getServer().getPluginManager().disablePlugin(this);
@@ -47,7 +46,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         }
         Command.commands();
         Standards.survivalCommands(this);
-        Standards.commands();
+        Standards.commands(this);
         Standards.View.tab(this);
         log.error("Probíhá inicializace...50%");
         SpawnService.spawnSettings();
@@ -108,7 +107,6 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
-        player.sendMessage(String.valueOf(player.getProtocolVersion()));
         if (player.getWorld().getName().equals("world")){
             player.teleport(spawn);
         }

@@ -24,6 +24,22 @@ public class Command implements Listener {
     public static void commands(){
 
         {
+            Bukkit.getCommandMap().register("survival", new org.bukkit.command.Command("hlasovani") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof Player))
+                        return false;
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("hlasovani")){
+                        Menus.voteMenuMain(player);
+                    }
+                    return false;
+                }
+            });
+
+        }
+
+        {
             Bukkit.getCommandMap().register("survival", new org.bukkit.command.Command("rtp") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
@@ -42,7 +58,7 @@ public class Command implements Listener {
                             }
                         }
                         cooldowns.put(player.getName(), System.currentTimeMillis());
-                        randomTeleport.teleport(player, Objects.requireNonNull(Bukkit.getWorld("Priroda")));
+                        randomTeleport.teleport(player, Objects.requireNonNull(Bukkit.getWorld("world")));
                         return true;
                     }
 

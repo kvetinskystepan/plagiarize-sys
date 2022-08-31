@@ -314,13 +314,39 @@ public class Standards {
                         if (args.length == 0){
                             ChatNotice.error(player, Component.text("Použití: /sethome <název>"));
                         }
-                        else if (player.getWorld().getName().equalsIgnoreCase("world")){
+                        else if (player.getWorld().getName().equalsIgnoreCase("Spawn")){
                             ChatNotice.error(player, Component.text("Nemůžeš mít domov v tomto světě."));
+                        }
+                        else if (plugin.getConfig().get("homes." + player.getUniqueId() + "." + args[0]) != null){
+                            ChatNotice.error(player, Component.text("Tento název domova již existuje."));
                         }
                         else {
                             plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
                             plugin.saveConfig();
                             ChatNotice.success(player, Component.text("Domov byl úspěšně nastaven."));
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("delhome") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof final Player player))
+                        return true;
+
+                    if (commandLabel.equalsIgnoreCase("delhome")){
+                        if (args.length == 0){
+                            ChatNotice.error(player, Component.text("Použití: /delhome <název>"));
+                            player.performCommand("homes");
+                        }
+                        else {
+                            plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], null);
+                            plugin.saveConfig();
+                            ChatNotice.success(player, Component.text("Domov s názvem "+args[0]+" byl úspěšně smazán."));
                         }
                     }
                     return false;
@@ -338,6 +364,7 @@ public class Standards {
                     if (commandLabel.equalsIgnoreCase("home")){
                         if (args.length == 0){
                             ChatNotice.error(player, Component.text("Použití: /home <název>"));
+                            player.performCommand("homes");
                         }
                         else {
                             if (plugin.getConfig().contains("homes." + player.getUniqueId() + "." + args[0])){
@@ -368,14 +395,14 @@ public class Standards {
                                 for (String key : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId())).getKeys(false)){
                                     sb.append(key).append(" ");
                                 }
-                                ChatNotice.success(player, Component.text("Máš následující domovy: " + sb.toString()));
+                                ChatNotice.info(player, Component.text("Máš následující domovy: " + sb.toString()));
                             }
                             else {
                                 ChatNotice.error(player, Component.text("Nemáš žádné domovy."));
                             }
                         }
                         else {
-                            ChatNotice.error(player, Component.text("Použití: /homelist"));
+                            ChatNotice.error(player, Component.text("Použití: /homes"));
                         }
                     }
                     return false;
@@ -539,7 +566,7 @@ public class Standards {
         }
 
 
-        Location spawn = new Location(Bukkit.getWorld("world"), 22.5, 50, 39.5, 90, 0);
+        Location spawn = new Location(Bukkit.getWorld("Spawn"), 22.5, 50, 39.5, 90, 0);
 
         {
             Bukkit.getCommandMap().register("survival", new Command("spawn") {

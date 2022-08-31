@@ -7,11 +7,14 @@ import com.thenarbox.api.colors.ColorAPI;
 import com.thenarbox.survivalplugin.mechanics.Command;
 import com.thenarbox.survivalplugin.services.Menus;
 import com.thenarbox.survivalplugin.services.SpawnService;
+import com.thenarbox.survivalplugin.services.randomTeleport;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,6 +30,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 import static com.thenarbox.api.Standards.vanishPlayers;
 import static com.thenarbox.survivalplugin.services.SpawnService.spawn;
@@ -34,6 +39,8 @@ import static com.thenarbox.survivalplugin.services.SpawnService.spawn;
 @Log4j2(topic = "SurvivalPlugin")
 public class SurvivalPlugin extends JavaPlugin implements Listener {
 
+    public static HashMap<String, Long> cooldownMap = new HashMap<>();
+    static int cooldownTime = 5;
     ArrayList<String> allowedCommands32 = new ArrayList<>();
 
     public void onEnable() {
@@ -48,6 +55,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
             log.error("PlaceholderAPI is not enabled! Disabling LobbyPlugin...");
             getServer().getPluginManager().disablePlugin(this);
         }
+        getServer().createWorld(new WorldCreator("Spawn"));
         Command.commands();
         Standards.survivalCommands(this);
         Standards.commands(this);
@@ -69,7 +77,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         log.error("SPRÁVA SURVIVAL MEJS.CZ");
     }
 
-    @EventHandler
+   /* @EventHandler
     public void onPlayer(PlayerCommandSendEvent e){
         final var allowedCommands = allowedCommands32;
         final var sentCommands = e.getCommands();
@@ -90,7 +98,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
             e.setCancelled(true);
             ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš oprávnění."));
         }
-    }
+    }*/
 
     @EventHandler
     public void chat(AsyncPlayerChatEvent e){
@@ -100,17 +108,30 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
 
         if (replaced.equals("")){
-            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage());
+            if(cooldownMap.containsKey(player.getName())) {
+                long secondsLeft = ((cooldownMap.get(player.getName())/1000)+cooldownTime) - (System.currentTimeMillis()/1000);
+                if(secondsLeft>0) {
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                    ChatNotice.error(player, Component.text("Nemůžeš odeslílat zprávy takhle rychle. Zkus to znovu za: " + secondsLeft + " sekund."));
+                    e.setCancelled(true);
+                    return;
+                }
+            }
+            cooldownMap.put(player.getName(), System.currentTimeMillis());
+        }
+
+        if (replaced.equals("")){
+            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage().replace("%", "%%"));
         }
         else {
-            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + replaced + " " + ChatColor.WHITE + player.getName() + ": " + e.getMessage());
+            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + replaced + " " + ChatColor.WHITE + player.getName() + ": " + e.getMessage().replace("%", "%%"));
         }
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
-        if (player.getWorld().getName().equals("world")){
+        if (player.getWorld().getName().equals("Spawn")){
             player.teleport(spawn);
         }
         if(!player.hasPlayedBefore()){
@@ -225,8 +246,15 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         player.setFoodLevel(20);
         player.teleport(spawn);
 
-        for (Player players : Bukkit.getOnlinePlayers()){
-            players.sendMessage(ChatColor.DARK_RED + "✟" + ChatColor.GRAY + " | " + ColorAPI.process("<GRADIENT:34eb92>"+player.getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + " zemřel.");
+        if (player.getKiller() != null){
+            for (Player players : Bukkit.getOnlinePlayers()){
+                players.sendMessage(ChatColor.DARK_RED + "✟" + ChatColor.GRAY + " | " + ColorAPI.process("<GRADIENT:34eb92>"+player.getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + " byl zavražděn hráčem " + ColorAPI.process("<GRADIENT:34eb92>"+player.getKiller()+"</GRADIENT:34eb92>") + ChatColor.WHITE + ".");
+            }
+        }
+        else {
+            for (Player players : Bukkit.getOnlinePlayers()){
+                players.sendMessage(ChatColor.DARK_RED + "✟" + ChatColor.GRAY + " | " + ColorAPI.process("<GRADIENT:34eb92>"+player.getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + " zemřel.");
+            }
         }
     }
 

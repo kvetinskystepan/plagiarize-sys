@@ -20,14 +20,64 @@ import java.util.Objects;
 
 public class Menus implements Listener {
 
-    static Inventory inv1;
-    static List<String> lore1, lore2;
+    static Inventory inv1, inv2;
+    static List<String> lore1, lore2, lore3, lore4;
 
 
+    // hex: #769544, #0BD35B
+
+    static String hlasovaniOPocasi = ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4H&x&7&2&9&7&4&5L&x&6&f&9&9&4&6A&x&6&b&9&b&4&6S&x&6&8&9&d&4&7O&x&6&4&9&f&4&8V&x&6&1&a&1&4&9Á&x&5&d&a&3&4&9N&x&5&9&a&6&4&aÍ &x&5&6&a&8&4&bO &x&5&2&a&a&4&cZ&x&4&f&a&c&4&cM&x&4&b&a&e&4&dĚ&x&4&8&b&0&4&eN&x&4&4&b&2&4&fĚ &x&4&1&b&4&5&0P&x&3&d&b&6&5&0O&x&3&9&b&8&5&1Č&x&3&6&b&a&5&2A&x&3&2&b&c&5&3S&x&2&f&b&e&5&3Í &x&2&b&c&0&5&4N&x&2&8&c&2&5&5A &x&2&4&c&5&5&6S&x&2&0&c&7&5&6L&x&1&d&c&9&5&7U&x&1&9&c&b&5&8N&x&1&6&c&d&5&9E&x&1&2&c&f&5&9Č&x&0&f&d&1&5&aN&x&0&b&d&3&5&bO");
+
+    static String hlasovaniServer = ChatColor.translateAlternateColorCodes('&', "");
+
+    static String hlasovaniOCase = ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4H&x&7&1&9&8&4&5L&x&6&d&9&a&4&6A&x&6&8&9&d&4&7S&x&6&3&a&0&4&8O&x&5&f&a&2&4&9V&x&5&a&a&5&4&aÁ&x&5&5&a&8&4&bN&x&5&1&a&b&4&cÍ &x&4&c&a&d&4&dO &x&4&7&b&0&4&eZ&x&4&3&b&3&4&fM&x&3&e&b&5&5&0Ě&x&3&a&b&8&5&1N&x&3&5&b&b&5&2Ě &x&3&0&b&d&5&3Č&x&2&c&c&0&5&4A&x&2&7&c&3&5&5S&x&2&2&c&6&5&6U &x&1&e&c&8&5&7N&x&1&9&c&b&5&8A &x&1&4&c&e&5&9D&x&1&0&d&0&5&aE&x&0&b&d&3&5&bN");
+    static String hlasovaciMenuMain = ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4&lH&x&6&d&9&a&4&6&lL&x&6&4&9&f&4&8&lA&x&5&b&a&5&4&a&lS&x&5&2&a&a&4&c&lO&x&4&9&a&f&4&e&lV&x&4&1&b&4&5&0&lA&x&3&8&b&9&5&1&lC&x&2&f&b&e&5&3&lÍ &x&2&6&c&4&5&5&lM&x&1&d&c&9&5&7&lE&x&1&4&c&e&5&9&lN&x&0&b&d&3&5&b&lU");
     static String difficulty = ChatColor.translateAlternateColorCodes('&', "&x&0&e&f&b&6&dN&x&2&9&f&b&6&eO&x&4&3&f&c&6&fR&x&5&e&f&c&7&0M&x&7&9&f&c&7&0Á&x&9&4&f&c&7&1L&x&a&e&f&d&7&2N&x&c&9&f&d&7&3Í");
-    static String rozloha = ChatColor.translateAlternateColorCodes('&', "&x&0&e&f&b&6&d2&x&2&1&f&b&6&e5 &x&3&3&f&b&6&e0&x&4&6&f&c&6&f0&x&5&9&f&c&6&f0 &x&6&c&f&c&7&0x &x&7&e&f&c&7&12&x&9&1&f&c&7&15 &x&a&4&f&d&7&20&x&b&6&f&d&7&20&x&c&9&f&d&7&30");
-    static String priroda = ChatColor.translateAlternateColorCodes('&', "&x&0&e&f&b&6&d&lP&x&2&d&f&b&6&e&lŘ&x&4&c&f&c&6&f&lÍ&x&6&c&f&c&7&0&lR&x&8&b&f&c&7&1&lO&x&a&a&f&d&7&2&lD&x&c&9&f&d&7&3&lA");
-    static String name1 = ChatColor.translateAlternateColorCodes('&', "&x&0&e&f&b&6&d&lH&x&2&3&f&b&6&e&lL&x&3&8&f&b&6&e&lA&x&4&c&f&c&6&f&lV&x&6&1&f&c&7&0&lN&x&7&6&f&c&7&0&lÍ &x&8&b&f&c&7&1&lM&x&9&f&f&d&7&2&lE&x&b&4&f&d&7&2&lN&x&c&9&f&d&7&3&lU");
+    static String rozloha = ChatColor.translateAlternateColorCodes('&', "&x&c&a&f&f&7&42&x&9&b&f&f&7&35 &x&6&c&f&f&7&10&x&3&c&f&f&7&00&x&0&d&f&f&6&e0 &x&6&c&f&c&7&0x &x&c&a&f&f&7&42&x&9&b&f&f&7&35 &x&6&c&f&f&7&10&x&3&c&f&f&7&00&x&0&d&f&f&6&e0");
+    static String priroda = ChatColor.translateAlternateColorCodes('&', "&x&0&b&d&3&5&b&lP&x&1&d&c&9&5&7&lŘ&x&2&f&b&e&5&3&lÍ&x&4&1&b&4&5&0&lR&x&5&2&a&a&4&c&lO&x&6&4&9&f&4&8&lD&x&7&6&9&5&4&4&lA");
+    static String name1 = ChatColor.translateAlternateColorCodes('&', "&x&0&b&d&3&5&b&lH&x&1&7&c&c&5&8&lL&x&2&3&c&5&5&6&lA&x&2&f&b&e&5&3&lV&x&3&b&b&7&5&1&lN&x&4&6&b&1&4&e&lÍ &x&5&2&a&a&4&c&lM&x&5&e&a&3&4&9&lE&x&6&a&9&c&4&7&lN&x&7&6&9&5&4&4&lU");
+
+
+    // HLASOVACI MENU
+    public static void voteMenuMain(Player player){
+        lore3 = new ArrayList<>();
+        lore4 = new ArrayList<>();
+        inv2 = Bukkit.createInventory(null, 27, hlasovaciMenuMain);
+
+
+        ItemStack item1 = new ItemStack(Material.CLOCK);
+        ItemMeta itemMeta1 = item1.getItemMeta();
+        itemMeta1.setDisplayName(hlasovaniOCase);
+        lore3.add(" ");
+        lore3.add(ChatColor.WHITE + "Po kliknutí zahájíš hlasování");
+        lore3.add(ChatColor.WHITE + "o změně času na den!");
+        lore3.add(" ");
+        lore3.add(ChatColor.DARK_GRAY + "Pokud již den je, hlasovat nemůžeš.");
+        itemMeta1.setLore(lore3);
+        item1.setItemMeta(itemMeta1);
+
+
+        inv2.setItem(11, item1);
+
+
+        ItemStack item2 = new ItemStack(Material.BUCKET);
+        ItemMeta itemMeta2 = item2.getItemMeta();
+        itemMeta2.setDisplayName(hlasovaniOPocasi);
+        lore4.add(" ");
+        lore4.add(ChatColor.WHITE + "Po kliknutí zahájíš hlasování");
+        lore4.add(ChatColor.WHITE + "o změně počasí na slunečno!");
+        lore4.add(" ");
+        lore4.add(ChatColor.DARK_GRAY + "Pokud již slunečno je, hlasovat nemůžeš.");
+        itemMeta2.setLore(lore4);
+        item2.setItemMeta(itemMeta2);
+
+
+        inv2.setItem(15, item2);
+        player.openInventory(inv2);
+    }
+
+
+
 
 
     // HLAVNÍ MENU
@@ -65,6 +115,14 @@ public class Menus implements Listener {
     @EventHandler
     public void InventoryClickEvent(InventoryClickEvent e){
         Player player = (Player) e.getWhoClicked();
+
+        if (e.getView().getTitle().equals(hlasovaciMenuMain)){
+            e.setCancelled(true);
+            if (e.getCurrentItem() == null)
+                return;
+        }
+
+
         if (e.getView().getTitle().equals(name1)){
             e.setCancelled(true);
             if(e.getCurrentItem() == null)

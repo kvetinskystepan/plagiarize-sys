@@ -16,8 +16,8 @@ public class randomTeleport implements Listener {
     static int randomZ = 0;
     static Random random = new Random();
     public static void teleport(Player player, World world){
-        randomX = random.nextInt(25000);
-        randomZ = random.nextInt(25000);
+        randomX = random.nextInt(-12000, 12000);
+        randomZ = random.nextInt(-12000, 12000);
         ChatNotice.success(player, Component.text("Teleportuji tě na náhodné místo v přírodě..."));
         player.teleport(world.getHighestBlockAt(randomX, randomZ).getLocation());
         player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);

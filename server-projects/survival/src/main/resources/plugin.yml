@@ -5,5 +5,5 @@ api-version: 1.19
 prefix: [ SURVIVALPLUGIN ]
 authors: [ TheNarbox ]
 description: Survival plugin for Mejs.cz
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, Vault]
 

@@ -1,4 +1,4 @@
-package com.thenarbox.authplugin;
+package com.thenarbox.boxfightplugin;
 
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;

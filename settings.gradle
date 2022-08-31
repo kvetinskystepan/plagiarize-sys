@@ -19,6 +19,8 @@ include ':api-server:lobby'
 project(':api-server:lobby').projectDir = file("server-projects/lobby")
 include ':api-server:survival'
 project(':api-server:survival').projectDir = file("server-projects/survival")
+include ':api-server:boxfight'
+project(':api-server:boxfight').projectDir = file("server-projects/boxfight")
 
 // proxyside projects
 include ':api-proxy:proxy'

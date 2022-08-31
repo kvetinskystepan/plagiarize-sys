@@ -24,7 +24,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -74,7 +74,9 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         log.error("SPRÁVA SURVIVAL MEJS.CZ");
     }
 
-   /* @EventHandler
+    // CAFF74
+    // 0DFF6E
+   @EventHandler
     public void onPlayer(PlayerCommandSendEvent e){
         final var allowedCommands = allowedCommands32;
         final var sentCommands = e.getCommands();
@@ -95,7 +97,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
             e.setCancelled(true);
             ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš oprávnění."));
         }
-    }*/
+    }
 
     @EventHandler
     public void chat(AsyncPlayerChatEvent e){
@@ -225,27 +227,10 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent e){
         e.setDeathMessage(null);
-        e.setCancelled(true);
-
         Player player = e.getPlayer();
-
-        for (ItemStack items : player.getInventory().getContents()){
-            if (items != null){
-                player.getWorld().dropItemNaturally(player.getLocation(), items);
-            }
-        }
-
-        player.getInventory().clear();
-        player.setLevel(0);
-        player.setExp(0);
-        player.getActivePotionEffects().clear();
-        player.setHealth(player.getMaxHealth());
-        player.setFoodLevel(20);
-        player.teleport(spawn);
-
         if (player.getKiller() != null){
             for (Player players : Bukkit.getOnlinePlayers()){
-                players.sendMessage(ChatColor.DARK_RED + "✟" + ChatColor.GRAY + " | " + ColorAPI.process("<GRADIENT:34eb92>"+player.getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + " byl zavražděn hráčem " + ColorAPI.process("<GRADIENT:34eb92>"+player.getKiller()+"</GRADIENT:34eb92>") + ChatColor.WHITE + ".");
+                players.sendMessage(ChatColor.DARK_RED + "✟" + ChatColor.GRAY + " | " + ColorAPI.process("<GRADIENT:34eb92>"+player.getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + " byl zavražděn hráčem " + ColorAPI.process("<GRADIENT:34eb92>"+player.getKiller().getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + ".");
             }
         }
         else {
@@ -253,6 +238,13 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
                 players.sendMessage(ChatColor.DARK_RED + "✟" + ChatColor.GRAY + " | " + ColorAPI.process("<GRADIENT:34eb92>"+player.getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + " zemřel.");
             }
         }
+        e.getPlayer().teleport(spawn);
+    }
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent e){
+        Player player = e.getPlayer();
+        player.setMetadata("previouslocation", new FixedMetadataValue(this, player.getLocation()));
     }
 
 }

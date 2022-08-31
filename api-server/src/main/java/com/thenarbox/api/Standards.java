@@ -10,6 +10,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +26,10 @@ import static org.bukkit.Bukkit.getServer;
 @Log4j2(topic = "Standards")
 public class Standards {
 
+    public static HashMap<String, Long> cooldownRepair = new HashMap<>();
+    public static HashMap<String, Long> cooldownHealth = new HashMap<>();
+    static int cooldownHeal = 600;
+    static int cooldownRepairTime = 600;
     public static ArrayList<String> vanishPlayers = new ArrayList<String>();
 
     public class View{
@@ -272,6 +281,68 @@ public class Standards {
     public static void survivalCommands(Plugin plugin){
 
         {
+            Bukkit.getCommandMap().register("survival", new Command("pay") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("pay")) {
+
+                    }
+                    return false;
+                }
+            });
+
+
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("penize") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("penize")) {
+                        String money = PlaceholderAPI.setPlaceholders(player, "%liteeco_balance%");
+                        ChatNotice.info(player, Component.text("Tvůj zůstatek je: " + ColorAPI.process("<GRADIENT:34eb92>"+money+"</GRADIENT:34eb92>") + " Ⓒ"));
+                    }
+
+                    return false;
+                }
+            });
+
+
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("coins") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("coins")) {
+                        String money = PlaceholderAPI.setPlaceholders(player, "%liteeco_balance%");
+                        ChatNotice.info(player, Component.text("Tvůj zůstatek je: " + ColorAPI.process("<GRADIENT:34eb92>"+money+"</GRADIENT:34eb92>") + " Ⓒ"));
+                    }
+
+                    return false;
+                }
+            });
+
+
+        }
+
+        {
             Bukkit.getCommandMap().register("survival", new Command("invsee") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
@@ -324,6 +395,33 @@ public class Standards {
                             plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
                             plugin.saveConfig();
                             ChatNotice.success(player, Component.text("Domov s názvem "+args[0]+" byl úspěšně vytvořen."));
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("back") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof final Player player))
+                        return true;
+                    if (commandLabel.equalsIgnoreCase("back")){
+                        if (player.hasPermission("survival.back")){
+                                if (player.getMetadata("previouslocation").size() == 0){
+                                    ChatNotice.error(player, Component.text("Nemáš žádnou předchozí lokaci."));
+                                }
+                                else {
+                                    Location loc = (Location) player.getMetadata("previouslocation").get(0).value();
+                                    player.teleport(loc);
+                                    player.removeMetadata("previouslocation", plugin);
+                                    ChatNotice.success(player, Component.text("Přesunul jsi se na předchozí lokaci."));
+                                }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Helper."));
                         }
                     }
                     return false;
@@ -399,7 +497,7 @@ public class Standards {
                                 ChatNotice.info(player, Component.text("Máš následující domovy: " + sb.toString()));
                             }
                             else {
-                                ChatNotice.error(player, Component.text("Nemáš žádné domovy."));
+                                ChatNotice.error(player, Component.text("Nemáš žádné domovy. Vytvoř si nový pomocí /sethome <název>."));
                             }
                         }
                         else {
@@ -409,11 +507,6 @@ public class Standards {
                     return false;
                 }
             });
-
-
-
-
-
         }
 
         {
@@ -428,12 +521,47 @@ public class Standards {
 
                     if (commandLabel.equalsIgnoreCase("repair")){
                         if (player.hasPermission("survival.repair")){
-                            if (player.getInventory().getItemInMainHand() == null){
-                                ChatNotice.error(player, Component.text("Nemáš v ruce žádný předmět."));
+                            if (player.hasPermission("survival.bypass.cooldown")){
+                                for (ItemStack item : player.getInventory().getContents()){
+                                    if (item == null)
+                                        continue;
+                                    if (!item.hasItemMeta())
+                                        continue;
+
+                                    ItemMeta meta = item.getItemMeta();
+                                    if (meta instanceof Damageable d){
+                                        d.setDamage(0);
+                                    }
+                                }
+                                ChatNotice.success(player, Component.text("Oprava byla úspěšně provedena."));
+                            }
+                            else if(cooldownRepair.containsKey(player.getName())) {
+                                long secondsLeft = ((cooldownRepair.get(player.getName())/1000)+cooldownRepairTime) - (System.currentTimeMillis()/1000);
+                                if(secondsLeft>0) {
+                                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                                    if (secondsLeft/60 < 1){
+                                        ChatNotice.error(player, Component.text("Další oprava bude možná za: " + secondsLeft + " sekund."));
+                                    }
+                                    else {
+                                        ChatNotice.error(player, Component.text("Další oprava bude možná za: " + secondsLeft/60 + " minut."));
+                                    }
+                                    return true;
+                                }
                             }
                             else {
-                                player.getInventory().getItemInMainHand().setDurability((short) 0);
-                                ChatNotice.success(player, Component.text("Předmět byl úspěšně opraven."));
+                                cooldownRepair.put(player.getName(), System.currentTimeMillis());
+                                for (ItemStack item : player.getInventory().getContents()){
+                                    if (item == null)
+                                        continue;
+                                    if (!item.hasItemMeta())
+                                        continue;
+
+                                    ItemMeta meta = item.getItemMeta();
+                                    if (meta instanceof Damageable d){
+                                        d.setDamage(0);
+                                    }
+                                }
+                                ChatNotice.success(player, Component.text("Oprava byla úspěšně provedena."));
                             }
                         }
                         else {
@@ -446,9 +574,6 @@ public class Standards {
 
 
         }
-
-
-
 
 
         {
@@ -558,12 +683,6 @@ public class Standards {
                     return false;
                 }
             });
-
-
-
-
-
-
         }
 
 
@@ -623,7 +742,7 @@ public class Standards {
                                 }
                                 Bukkit.getOnlinePlayers().stream().filter(online -> online != player).forEach(online ->
                                         online.showPlayer(plugin, player));
-                                final String message = ChatColor.GREEN + "+" + ChatColor.GRAY + " | " + ChatColor.AQUA + player.getName() + ChatColor.WHITE + " se připojil.";
+                                final String message = ChatColor.GREEN + "+" + ChatColor.GRAY + " | " + ChatColor.GOLD + ColorAPI.process("<GRADIENT:34eb92>"+player.getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + " se připojil.";
                                 for (Player p : Bukkit.getOnlinePlayers())
                                     p.sendMessage(message);
                                 ChatNotice.warning(player, Component.text("Vanish deaktivován."));
@@ -632,7 +751,7 @@ public class Standards {
                                 vanishPlayers.add(player.getName());
                                 Bukkit.getOnlinePlayers().stream().filter(online -> online != player).forEach(online ->
                                         online.hidePlayer(plugin, player));
-                                String message = ChatColor.RED + "-" + ChatColor.GRAY + " | " + ChatColor.AQUA + player.getName() + ChatColor.WHITE + " se odpojil.";
+                                String message = ChatColor.RED + "-" + ChatColor.GRAY + " | " + ChatColor.GOLD + ColorAPI.process("<GRADIENT:34eb92>"+player.getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + " se odpojil.";
                                 for (Player p : Bukkit.getOnlinePlayers())
                                     p.sendMessage(message);
                                 for (final Player team : Bukkit.getOnlinePlayers()) {
@@ -669,9 +788,30 @@ public class Standards {
                     if (commandLabel.equalsIgnoreCase("heal")){
                         if (player.hasPermission("survival.heal")){
                             if (args.length < 1){
-                                player.setHealth(player.getMaxHealth());
-                                player.setFoodLevel(20);
-                                ChatNotice.success(player, Component.text("Byl jsi vyléčen."));
+                                if (player.hasPermission("survival.bypass.cooldown")){
+                                    player.setHealth(player.getMaxHealth());
+                                    player.setFoodLevel(20);
+                                    ChatNotice.success(player, Component.text("Byl jsi vyléčen."));
+                                }
+                                else if(cooldownHealth.containsKey(player.getName())) {
+                                    long secondsLeft = ((cooldownHealth.get(player.getName())/1000)+cooldownHeal) - (System.currentTimeMillis()/1000);
+                                    if(secondsLeft>0) {
+                                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                                        if (secondsLeft/60 < 1){
+                                            ChatNotice.error(player, Component.text("Další uzdravení bude možné za: " + secondsLeft + " sekund."));
+                                        }
+                                        else {
+                                            ChatNotice.error(player, Component.text("Další uzdravení bude možné za: " + secondsLeft/60 + " minut."));
+                                        }
+                                        return true;
+                                    }
+                                }
+                                else {
+                                    cooldownHealth.put(player.getName(), System.currentTimeMillis());
+                                    player.setHealth(player.getMaxHealth());
+                                    player.setFoodLevel(20);
+                                    ChatNotice.success(player, Component.text("Byl jsi vyléčen."));
+                                }
                             }
                             if (args.length == 1){
                                 if (player.hasPermission("survival.heal.other")){
@@ -1013,10 +1153,5 @@ public class Standards {
                 }
             });
         }
-    }
-
-    @EventHandler
-    public void onInteract(PlayerInteractEvent event){
-
     }
 }

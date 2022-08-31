@@ -1,0 +1,7 @@
+name: BoxFightPlugin
+version: '${project.version}'
+main: com.thenarbox.boxfightplugin.BoxFightPlugin
+api-version: 1.19
+prefix: [ BOXFIGHTPLUGIN ]
+authors: [ TheNarbox ]
+description: BoxFight system for Mejs.cz

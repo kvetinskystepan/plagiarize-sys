@@ -1,6 +1,5 @@
 package com.thenarbox.survivalplugin.services;
 
-import com.thenarbox.api.colors.ColorAPI;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,11 +9,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemStack;
 
-import static com.thenarbox.api.Standards.vanishPlayers;
 import static org.bukkit.Bukkit.getServer;
 
 public class SpawnService implements Listener {
@@ -24,8 +20,7 @@ public class SpawnService implements Listener {
     public static void spawnSettings(){
         spawn = new Location(Bukkit.getWorld("Spawn"), 22.5, 50, 39.5, 90, 0);
 
-        final var spawn_world = getServer().
-                getWorld("Spawn");
+        final var spawn_world = getServer().getWorld("Spawn");
 
         spawn_world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         spawn_world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);

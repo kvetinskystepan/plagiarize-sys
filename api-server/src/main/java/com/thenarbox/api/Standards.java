@@ -6,6 +6,8 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandException;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,6 +20,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -116,33 +119,6 @@ public class Standards {
         getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
 
         {
-            Bukkit.getCommandMap().register("global", new Command("reset") {
-                @Override
-                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-                    if (!(sender instanceof  Player))
-                        return false;
-                    final Player player = (Player) sender;
-                    if (commandLabel.equalsIgnoreCase("reset")){
-                        if (player.hasPermission("standards.reset")){
-                            Bukkit.getOnlinePlayers().forEach(player1 -> {
-                                PlayerChangeServerEvent.connect(player1, "Lobby-1");
-                                ChatNotice.info(player1, Component.text("Server se restartuje, byl jsi přepojen na Lobby!"));
-                            });
-                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                Bukkit.getServer().shutdown();
-                            }, 100L);
-                        }
-                        else {
-                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Developer."));
-                        }
-                    }
-                    return true;
-                }
-            });
-
-        }
-
-        {
             Bukkit.getCommandMap().register("global", new Command("uroven") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
@@ -216,6 +192,22 @@ public class Standards {
             });
 
         }
+
+        getServer().getCommandMap().register("", new Command("restart") {
+            @Override
+            public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                if (!(sender instanceof  Player))
+                    return false;
+
+                final Player player = (Player) sender;
+                if (commandLabel.equalsIgnoreCase("restart")){
+                    ChatNotice.error(player, Component.text("Tento příkaz je vypnutý."));
+                    return false;
+                }
+                return false;
+            }
+        });
+
 
         {
 

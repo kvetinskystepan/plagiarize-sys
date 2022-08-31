@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+//#9F47C8
+//#F092FF
 @Log4j2(topic = "LobbyPlugin")
 public class LobbyPlugin extends JavaPlugin implements Listener {
 
@@ -88,7 +90,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     {
         item = new ItemStack(Material.COMPASS);
         ItemMeta meta1 = item.getItemMeta();
-        String name = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lH&x&1&4&f&4&c&0&lL&x&1&c&e&9&a&c&lA&x&2&5&d&e&9&9&lV&x&2&d&d&3&8&5&lN&x&3&6&c&7&7&2&lÍ &x&3&e&b&c&5&e&lM&x&4&7&b&1&4&b&lE&x&4&f&a&6&3&7&lN&x&5&8&9&b&2&4&lU");
+        String name = ChatColor.translateAlternateColorCodes('&', "&x&9&f&4&7&c&8H&x&a&8&4&f&c&el&x&b&1&5&8&d&4a&x&b&a&6&0&d&av&x&c&3&6&8&e&0n&x&c&c&7&1&e&7í &x&d&5&7&9&e&dM&x&d&e&8&1&f&3e&x&e&7&8&a&f&9n&x&f&0&9&2&f&fu " + ChatColor.GRAY + "(Pravé kliknutí)");
         meta1.setDisplayName(name);
         item.setItemMeta(meta1);
     }
@@ -97,7 +99,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     {
         item3 = new ItemStack(Material.NAME_TAG);
         ItemMeta meta2 = item3.getItemMeta();
-        String name = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lO&x&1&a&e&b&b&0&lB&x&2&a&d&7&8&d&lC&x&3&9&c&3&6&a&lH&x&4&9&a&f&4&7&lO&x&5&8&9&b&2&4&lD");
+        String name = ChatColor.translateAlternateColorCodes('&', "&x&9&f&4&7&c&8O&x&a&f&5&6&d&3b&x&b&f&6&5&d&ec&x&d&0&7&4&e&9h&x&e&0&8&3&f&4o&x&f&0&9&2&f&fd " + ChatColor.GRAY + "(Pravé kliknutí)");
         meta2.setDisplayName(name);
         item3.setItemMeta(meta2);
     }
@@ -110,7 +112,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
         ItemStack item2 = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta3 = (SkullMeta) item2.getItemMeta();
-        String name = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lP&x&1&a&e&b&b&0&lR&x&2&a&d&7&8&d&lO&x&3&9&c&3&6&a&lF&x&4&9&a&f&4&7&lI&x&5&8&9&b&2&4&lL");
+        String name = ChatColor.translateAlternateColorCodes('&', "&x&9&f&4&7&c&8P&x&a&f&5&6&d&3r&x&b&f&6&5&d&eo&x&d&0&7&4&e&9f&x&e&0&8&3&f&4i&x&f&0&9&2&f&fl " + ChatColor.GRAY + "(Pravé kliknutí)");
         meta3.setDisplayName(ChatColor.AQUA + name);
         meta3.setOwner(player.getName());
         item2.setItemMeta(meta3);

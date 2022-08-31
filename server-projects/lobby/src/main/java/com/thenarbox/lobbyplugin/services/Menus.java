@@ -202,7 +202,7 @@ public class Menus
                 lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:32002%")));
                 if (!status.equals("&cOffline")){
                     lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:32002%")));
-                    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
+                    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &x&9&f&4&7&c&81&x&b&3&5&a&d&6.&x&c&8&6&d&e&41&x&d&c&7&f&f&19&x&f&0&9&2&f&f+"));
                     lore.add(ChatColor.GRAY + " ");
                     lore.add(ChatColor.translateAlternateColorCodes('&', "&8&oResidence, Práce, Úkoly a mnoho dalšího..."));
                     lore.add(ChatColor.GRAY + " ");
@@ -217,7 +217,7 @@ public class Menus
                 lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:64000%")));
                 if (!status.equals("&cOffline")){
                     lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:64000%")));
-                    lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Doporučená verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
+                    lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Doporučená verze: &x&9&f&4&7&c&81&x&b&3&5&a&d&6.&x&c&8&6&d&e&41&x&d&c&7&f&f&19&x&f&0&9&2&f&f+"));
                     lore20.add(ChatColor.GRAY + " ");
                     lore20.add(ChatColor.translateAlternateColorCodes('&', "&8&oServer pro naše stavitele :)"));
                     lore20.add(ChatColor.GRAY + " ");
@@ -239,11 +239,11 @@ public class Menus
     static ItemStack item;
     static ItemStack item1;
 
-    static String name2 = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lP&x&1&a&e&b&b&0&lR&x&2&a&d&7&8&d&lO&x&3&9&c&3&6&a&lF&x&4&9&a&f&4&7&lI&x&5&8&9&b&2&4&lL");
+    static String name2 = ChatColor.translateAlternateColorCodes('&', "&x&9&f&4&7&c&8P&x&a&f&5&6&d&3R&x&b&f&6&5&d&eO&x&d&0&7&4&e&9F&x&e&0&8&3&f&4I&x&f&0&9&2&f&fL");
 
-    static String name1 = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lO&x&1&a&e&b&b&0&lB&x&2&a&d&7&8&d&lC&x&3&9&c&3&6&a&lH&x&4&9&a&f&4&7&lO&x&5&8&9&b&2&4&lD");
+    static String name1 = ChatColor.translateAlternateColorCodes('&', "&x&9&f&4&7&c&8O&x&a&f&5&6&d&3B&x&b&f&6&5&d&eC&x&d&0&7&4&e&9H&x&e&0&8&3&f&4O&x&f&0&9&2&f&fD");
 
-    static String name = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lH&x&1&4&f&4&c&0&lL&x&1&c&e&9&a&c&lA&x&2&5&d&e&9&9&lV&x&2&d&d&3&8&5&lN&x&3&6&c&7&7&2&lÍ &x&3&e&b&c&5&e&lM&x&4&7&b&1&4&b&lE&x&4&f&a&6&3&7&lN&x&5&8&9&b&2&4&lU");
+    static String name = ChatColor.translateAlternateColorCodes('&', "&x&9&f&4&7&c&8H&x&a&8&4&f&c&el&x&b&1&5&8&d&4a&x&b&a&6&0&d&av&x&c&3&6&8&e&0n&x&c&c&7&1&e&7í &x&d&5&7&9&e&dM&x&d&e&8&1&f&3e&x&e&7&8&a&f&9n&x&f&0&9&2&f&fu");
 
     public static void mainMenu(Player player, Plugin plugin)
     {
@@ -252,14 +252,14 @@ public class Menus
         inv = Bukkit.createInventory(null, 45, name);
         item = new ItemStack(Material.GRASS_BLOCK, 1);
         meta = item.getItemMeta();
-        String metaName = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lS&x&0&c&f&2&c&e&lU&x&0&e&e&4&c&a&lR&x&0&f&d&7&c&5&lV&x&1&0&c&9&c&0&lI&x&1&2&b&c&b&c&lV&x&1&3&a&e&b&7&lA&x&1&4&a&1&b&2&lL &x&1&6&9&3&a&e&l1&x&1&7&8&6&a&9&l.&x&1&8&7&8&a&4&l1&x&1&a&6&b&a&0&l9&x&1&b&5&d&9&b&l+");
+        String metaName = ChatColor.translateAlternateColorCodes('&', "&x&9&f&4&7&c&8S&x&a&6&4&e&c&du&x&a&e&5&5&d&2r&x&b&5&5&b&d&7v&x&b&c&6&2&d&ci&x&c&4&6&9&e&1v&x&c&b&7&0&e&6a&x&d&3&7&7&e&bl &x&d&a&7&e&f&01&x&e&1&8&4&f&5.&x&e&9&8&b&f&a1&x&f&0&9&2&f&f9");
         meta.setDisplayName(metaName);
         lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + " ");
         lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:32002%")));
         if (!status.equals("&cOffline")){
             lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:32002%")));
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
+            lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &x&9&f&4&7&c&81&x&b&3&5&a&d&6.&x&c&8&6&d&e&41&x&d&c&7&f&f&19&x&f&0&9&2&f&f+"));
             lore.add(ChatColor.GRAY + " ");
             lore.add(ChatColor.translateAlternateColorCodes('&', "&8&oResidence, Práce, Úkoly a mnoho dalšího..."));
             lore.add(ChatColor.GRAY + " ");
@@ -271,12 +271,12 @@ public class Menus
         lore20 = new ArrayList<>();
         item1 = new ItemStack(Material.WOODEN_AXE, 1);
         meta1 = item1.getItemMeta();
-        meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lB&x&0&d&e&f&c&d&lU&x&0&e&d&f&c&8&lI&x&1&0&c&e&c&2&lL&x&1&1&b&e&b&d&lD &x&1&3&a&e&b&7&lS&x&1&5&9&e&b&1&lE&x&1&6&8&e&a&c&lR&x&1&8&7&d&a&6&lV&x&1&9&6&d&a&1&lE&x&1&b&5&d&9&b&lR"));
+        meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&x&9&f&4&7&c&8B&x&a&7&4&f&c&eu&x&a&f&5&6&d&3i&x&b&7&5&e&d&9l&x&b&f&6&5&d&ed &x&c&8&6&d&e&4S&x&d&0&7&4&e&9e&x&d&8&7&c&e&fr&x&e&0&8&3&f&4v&x&e&8&8&b&f&ae&x&f&0&9&2&f&fr"));
         lore20.add(" ");
         lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:64000%")));
         if (!status.equals("&cOffline")){
             lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:64000%")));
-            lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Doporučená verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
+            lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Doporučená verze: &x&9&f&4&7&c&81&x&b&3&5&a&d&6.&x&c&8&6&d&e&41&x&d&c&7&f&f&19&x&f&0&9&2&f&f+"));
             lore20.add(ChatColor.GRAY + " ");
             lore20.add(ChatColor.translateAlternateColorCodes('&', "&8&oServer pro naše stavitele :)"));
             lore20.add(ChatColor.GRAY + " ");
@@ -285,7 +285,7 @@ public class Menus
         meta1.setLore(lore20);
         item1.setItemMeta(meta1);
 
-        String discord = ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3/&x&0&d&e&8&c&bd&x&1&0&d&1&c&3i&x&1&2&b&a&b&bs&x&1&4&a&2&b&3c&x&1&6&8&b&a&bo&x&1&9&7&4&a&3r&x&1&b&5&d&9&bd");
+        String discord = ChatColor.translateAlternateColorCodes('&', "&x&9&f&4&7&c&8/&x&a&b&5&2&d&0d&x&b&6&5&c&d&8i&x&c&2&6&7&e&0s&x&c&d&7&2&e&7c&x&d&9&7&d&e&fo&x&e&4&8&7&f&7r&x&f&0&9&2&f&fd");
 
         lore30 = new ArrayList<>();
         ItemStack item2 = new ItemStack(Material.COMPASS, 1);

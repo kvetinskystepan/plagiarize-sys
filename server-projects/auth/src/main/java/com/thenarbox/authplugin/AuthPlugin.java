@@ -1,4 +1,4 @@
-package com.thenarbox.boxfightplugin;
+package com.thenarbox.authplugin;
 
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
@@ -40,6 +40,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
         whitelist.add("Skymmel");
         whitelist.add("ItzCowinka_");
         whitelist.add("Pan_Okurka");
+        whitelist.add("lenfig");
         {
             Standards.worlds();
             Standards.commands(this);

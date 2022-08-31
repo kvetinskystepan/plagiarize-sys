@@ -35,7 +35,7 @@ public class CommandMechanic implements Listener {
                     }
                     String message = "";
                     Map<String, ServerInfo> allServer = ProxyServer.getInstance().getServers();
-                    for (ServerInfo info : allServer.values()){
+                    for (ServerInfo info : allServer.values()) {
                         if (info.canAccess(player))
                             message += info.getName() + ", ";
                     }
@@ -48,7 +48,7 @@ public class CommandMechanic implements Listener {
                 public void execute(CommandSender sender, String[] args) {
                     ProxiedPlayer player = (ProxiedPlayer) sender;
                     if (!player.hasPermission("proxyserver.ranklist")) {
-                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Vedení."));
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
                         return;
                     }
                     ChatNotice.infoComponent(player, Component.text("Skupiny: majitel, vedení, v.developer, developer, v.helper, helper, v.builder, builder, eventer, default"));
@@ -60,27 +60,26 @@ public class CommandMechanic implements Listener {
                 public void execute(CommandSender sender, String[] args) {
                     ProxiedPlayer player = (ProxiedPlayer) sender;
                     if (!player.hasPermission("proxyserver.setrank")) {
-                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Vedení."));
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
                         return;
-                    };
+                    }
+                    ;
                     if (args.length < 2) {
                         ChatNotice.error(player, Component.text("Použití: /setrank <jméno> <skupina> | <doba ve dnech>"));
                         return;
                     }
-                    if (args.length == 2){
+                    if (args.length == 2) {
                         String name = args[0];
                         String group = args[1];
                         if (!group.equalsIgnoreCase("majitel") && !group.equalsIgnoreCase("vedení") && !group.equalsIgnoreCase("v.developer") && !group.equalsIgnoreCase("developer") && !group.equalsIgnoreCase("v.helper") && !group.equalsIgnoreCase("helper") && !group.equalsIgnoreCase("v.builder") && !group.equalsIgnoreCase("builder") && !group.equalsIgnoreCase("eventer") && !group.equalsIgnoreCase("default")) {
                             ChatNotice.error(player, Component.text("Neplatná skupina. Zkus nahlédnout do /ranklist pro více informací."));
-                        }
-                        else {
+                        } else {
 
                             ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " clear");
                             ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " parent add " + group);
                             ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group));
                         }
-                    }
-                    else if (args.length == 3){
+                    } else if (args.length == 3) {
                         String name = args[0];
                         int time;
                         String group = args[1];
@@ -92,21 +91,69 @@ public class CommandMechanic implements Listener {
                         }
                         if (!group.equalsIgnoreCase("majitel") && !group.equalsIgnoreCase("vedení") && !group.equalsIgnoreCase("v.developer") && !group.equalsIgnoreCase("developer") && !group.equalsIgnoreCase("v.helper") && !group.equalsIgnoreCase("helper") && !group.equalsIgnoreCase("v.builder") && !group.equalsIgnoreCase("builder") && !group.equalsIgnoreCase("eventer") && !group.equalsIgnoreCase("default")) {
                             ChatNotice.error(player, Component.text("Neplatná skupina. Zkus nahlédnout do /ranklist pro více informací."));
-                        }
-                        else {
+                        } else {
                             ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " clear");
                             ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + name + " parent addtemp " + group + " " + time + "d");
                             ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group + " v délce trvání: " + time + " dnů."));
                         }
-                    }
-                    else if (args.length > 3){
+                    } else if (args.length > 3) {
                         ChatNotice.error(player, Component.text("Použití: /setrank <jméno> <skupina> | <doba ve dnech>"));
                     }
 
                 }
             });
 
-           /* ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("server") {
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("send") {
+                @Override
+                public void execute(CommandSender sender, String[] args) {
+                    ProxiedPlayer player = (ProxiedPlayer) sender;
+                    if (!player.hasPermission("proxyserver.send")) {
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                        return;
+                    }
+                    if (args.length < 2) {
+                        ChatNotice.error(player, Component.text("Použití: /send <jméno> <server>"));
+                        return;
+                    }
+                    String name = args[0];
+                    String server = args[1];
+                    if (ProxyServer.getInstance().getPlayer(name) == null) {
+                        ChatNotice.error(player, Component.text("Tento hráč není online."));
+                        return;
+                    }
+                    if (ProxyServer.getInstance().getServerInfo(server) == null) {
+                        ChatNotice.error(player, Component.text("Tento server neexistuje."));
+                        return;
+                    }
+                    ProxiedPlayer target = ProxyServer.getInstance().getPlayer(name);
+                    ServerInfo targetServer = ProxyServer.getInstance().getServerInfo(server);
+                    target.connect(targetServer);
+                    ChatNotice.success(player, Component.text("Hráč " + name + " byl úspěšně přesunut na server " + server));
+                }
+            });
+
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("find") {
+                @Override
+                public void execute(CommandSender sender, String[] args) {
+                    ProxiedPlayer player = (ProxiedPlayer) sender;
+                    if (!player.hasPermission("proxyserver.find")) {
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Helper."));
+                        return;
+                    }
+                    if (args.length == 0) {
+                        ChatNotice.error(player, Component.text("Použití: /find <jméno>"));
+                        return;
+                    }
+                    ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
+                    if (target == null) {
+                        ChatNotice.error(player, Component.text("Hráč nebyl nalezen."));
+                        return;
+                    }
+                    ChatNotice.success(player, Component.text("Hráč " + target.getName() + " je na serveru " + target.getServer().getInfo().getName() + "."));
+                }
+            });
+
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("server") {
                 @Override
                 public void execute(CommandSender sender, String[] args) {
                     ProxiedPlayer player = (ProxiedPlayer) sender;
@@ -114,13 +161,13 @@ public class CommandMechanic implements Listener {
                         ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Developer."));
                         return;
                     }
-                    if (args.length == 0) {
+                    if (args.length != 1) {
                         ChatNotice.error(player, Component.text("Použití: /server <server>"));
                         return;
                     }
                     ServerInfo info = ProxyServer.getInstance().getServerInfo(args[0]);
                     if (info == null) {
-                        ChatNotice.error(player, Component.text("Server nebyl nalezen."));
+                        ChatNotice.error(player, Component.text("Server nebyl nalezen. Dostupné servery nalezneš v /serverlist"));
                         return;
                     }
                     if (!info.canAccess(player)) {
@@ -128,9 +175,9 @@ public class CommandMechanic implements Listener {
                         return;
                     }
                     player.connect(info);
-                    ChatNotice.success(player, Component.text("Připojuji se k serveru " + info.getName() + "."));
+                    ChatNotice.success(player, Component.text("Připojuji tě k serveru " + info.getName() + "."));
                 }
-            });*/
+            });
 
 
             ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("discord") {

@@ -323,7 +323,7 @@ public class Standards {
                         else {
                             plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
                             plugin.saveConfig();
-                            ChatNotice.success(player, Component.text("Domov byl úspěšně nastaven."));
+                            ChatNotice.success(player, Component.text("Domov s názvem "+args[0]+" byl úspěšně vytvořen."));
                         }
                     }
                     return false;
@@ -369,7 +369,7 @@ public class Standards {
                         else {
                             if (plugin.getConfig().contains("homes." + player.getUniqueId() + "." + args[0])){
                                 player.teleport(Objects.requireNonNull(plugin.getConfig().getLocation("homes." + player.getUniqueId() + "." + args[0])));
-                                ChatNotice.success(player, Component.text("Byl jsi úspěšně teleportován na domov " + args[0]));
+                                ChatNotice.success(player, Component.text("Byl jsi úspěšně teleportován na " + args[0]));
                             }
                             else {
                                 ChatNotice.error(player, Component.text("Domov s tímto názvem nebyl nalezen."));
@@ -390,7 +390,8 @@ public class Standards {
 
                     if (commandLabel.equalsIgnoreCase("homes")){
                         if (args.length == 0){
-                            if (plugin.getConfig().contains("homes." + player.getUniqueId())){
+                            var section = plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId());
+                            if (section != null && !section.getKeys(false).isEmpty()){
                                 StringBuilder sb = new StringBuilder();
                                 for (String key : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId())).getKeys(false)){
                                     sb.append(key).append(" ");

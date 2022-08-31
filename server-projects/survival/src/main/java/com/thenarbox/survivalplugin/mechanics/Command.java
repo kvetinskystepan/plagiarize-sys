@@ -2,10 +2,9 @@ package com.thenarbox.survivalplugin.mechanics;
 
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.survivalplugin.services.Menus;
-import com.thenarbox.survivalplugin.services.randomTeleport;
+import com.thenarbox.survivalplugin.services.RandomTeleport;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -58,7 +57,7 @@ public class Command implements Listener {
                             }
                         }
                         cooldowns.put(player.getName(), System.currentTimeMillis());
-                        randomTeleport.teleport(player, Objects.requireNonNull(Bukkit.getWorld("world")));
+                        RandomTeleport.teleport(player, Objects.requireNonNull(Bukkit.getWorld("world")));
                         return true;
                     }
 

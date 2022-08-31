@@ -184,6 +184,9 @@ public class Menus
     // MAIN MENU
 
     public static void updateInventory(final Player player, final Plugin plugin) {
+        String status = PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:32002%");
+        String status1 = PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:64000%");
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -196,8 +199,8 @@ public class Menus
 
                 lore.clear();
                 lore.add(ChatColor.GRAY + " ");
-                lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 32002)));
-                if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:32002%")));
+                if (!status.equals("&cOffline")){
                     lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:32002%")));
                     lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
                     lore.add(ChatColor.GRAY + " ");
@@ -211,8 +214,8 @@ public class Menus
 
                 lore20.clear();
                 lore20.add(" ");
-                lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 64000)));
-                if (!Server.status("172.18.0.1", 64000).equals(ChatColor.RED + "Offline")){
+                lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:64000%")));
+                if (!status.equals("&cOffline")){
                     lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:64000%")));
                     lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Doporučená verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
                     lore20.add(ChatColor.GRAY + " ");
@@ -244,6 +247,8 @@ public class Menus
 
     public static void mainMenu(Player player, Plugin plugin)
     {
+        String status = PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:32002%");
+        String status1 = PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:64000%");
         inv = Bukkit.createInventory(null, 45, name);
         item = new ItemStack(Material.GRASS_BLOCK, 1);
         meta = item.getItemMeta();
@@ -251,8 +256,8 @@ public class Menus
         meta.setDisplayName(metaName);
         lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + " ");
-        lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 32002)));
-        if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:32002%")));
+        if (!status.equals("&cOffline")){
             lore.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:32002%")));
             lore.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
             lore.add(ChatColor.GRAY + " ");
@@ -268,8 +273,8 @@ public class Menus
         meta1 = item1.getItemMeta();
         meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&x&0&b&f&f&d&3&lB&x&0&d&e&f&c&d&lU&x&0&e&d&f&c&8&lI&x&1&0&c&e&c&2&lL&x&1&1&b&e&b&d&lD &x&1&3&a&e&b&7&lS&x&1&5&9&e&b&1&lE&x&1&6&8&e&a&c&lR&x&1&8&7&d&a&6&lV&x&1&9&6&d&a&1&lE&x&1&b&5&d&9&b&lR"));
         lore20.add(" ");
-        lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + Server.status("172.18.0.1", 64000)));
-        if (!Server.status("172.18.0.1", 64000).equals(ChatColor.RED + "Offline")){
+        lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:64000%")));
+        if (!status.equals("&cOffline")){
             lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:64000%")));
             lore20.add(ChatColor.translateAlternateColorCodes('&', "&7Doporučená verze: &x&0&b&f&f&d&31&x&0&f&d&7&c&5.&x&1&3&a&e&b&71&x&1&7&8&6&a&99&x&1&b&5&d&9&b+"));
             lore20.add(ChatColor.GRAY + " ");

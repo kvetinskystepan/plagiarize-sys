@@ -7,7 +7,6 @@ import com.thenarbox.api.colors.ColorAPI;
 import com.thenarbox.survivalplugin.mechanics.Command;
 import com.thenarbox.survivalplugin.services.Menus;
 import com.thenarbox.survivalplugin.services.SpawnService;
-import com.thenarbox.survivalplugin.services.randomTeleport;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -27,11 +26,9 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 import static com.thenarbox.api.Standards.vanishPlayers;
 import static com.thenarbox.survivalplugin.services.SpawnService.spawn;

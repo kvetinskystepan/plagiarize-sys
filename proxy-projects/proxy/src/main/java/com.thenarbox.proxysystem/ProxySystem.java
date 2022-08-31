@@ -4,13 +4,18 @@ import com.thenarbox.proxysystem.messages.PrivateMessages;
 import com.thenarbox.proxysystem.motd.Motd;
 import lombok.Getter;
 import me.clip.placeholderapi.libs.kyori.adventure.Adventure;
+import me.clip.placeholderapi.libs.kyori.adventure.text.Component;
+import me.clip.placeholderapi.libs.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.w3c.dom.Text;
 
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 public final class ProxySystem extends Plugin implements Listener {
@@ -49,8 +54,19 @@ public final class ProxySystem extends Plugin implements Listener {
             final var playerServer = player.getServer();
             if(playerServer == null)
                 return;
-            final String serverName = ChatColor.translateAlternateColorCodes('&', "&x&0&4&d&d&f&b&lM&x&0&c&d&6&f&b&lE&x&1&4&d&0&f&c&lJ&x&1&c&c&9&f&c&lS&x&2&4&c&2&f&c&l.&x&2&c&b&c&f&d&lC&x&3&4&b&5&f&d&lZ");
-            player.setTabHeader(new TextComponent("\n" + serverName + "\n" + "\n" + ChatColor.GRAY + "discord.mejs.cz" + "\n"), new TextComponent("\n" + "  " + ChatColor.WHITE + "Hráčů: " + ChatColor.AQUA + ProxyServer.getInstance().getPlayers().size() + ChatColor.GRAY + " | " + ChatColor.WHITE + "Server: " + ChatColor.AQUA + player.getServer().getInfo().getMotd() + ChatColor.GRAY + " | " + ChatColor.WHITE + "Ping: " + ChatColor.AQUA + player.getPing() + "  "));
+
+            final var latency = TextComponent.fromLegacyText("§x§0§f§6§2§a§f");
+            final var server = TextComponent.fromLegacyText("§x§0§f§6§2§a§f");
+            final var playerCount = TextComponent.fromLegacyText("§x§0§f§6§2§a§f");
+            final var serverName = TextComponent.fromLegacyText("§x§1§5§8§f§f§f§lM§x§2§b§7§b§f§f§lE§x§4§1§6§6§f§f§lJ§x§5§7§5§2§f§f§lS§x§6§c§3§e§f§f§l.§x§8§2§2§9§f§f§lC§x§9§8§1§5§f§f§lZ");
+
+            final ComponentBuilder builder = new ComponentBuilder();
+            final ComponentBuilder builder1 = new ComponentBuilder();
+
+            builder.append("\n").append(serverName).append("\n \n").append(ChatColor.GRAY + "discord.mejs.cz").append("\n");
+            builder1.append("\n").append(" ").append(Color.WHITE + "Hráčů: " + playerCount + ProxyServer.getInstance().getPlayers().size()).append(ChatColor.GRAY + " | ").append(ChatColor.WHITE + "Server: " + server + player.getServer().getInfo().getMotd()).append(ChatColor.GRAY + " | ").append(ChatColor.WHITE + "Ping: " + latency + player.getPing()).append(" ");
+
+            player.setTabHeader(new TextComponent(builder.create()), new TextComponent(builder1.create()));
         }
     }
 

@@ -8,3 +8,8 @@ description: BoxFight system for Mejs.cz
 depend:
   - Vault
   - PlaceholderAPI
+commands:
+  restart:
+    permission: global.restart
+    description: Odpojí a restartuje server
+    aliases: [ restart ]

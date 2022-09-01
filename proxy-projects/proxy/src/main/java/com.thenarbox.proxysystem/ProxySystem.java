@@ -50,8 +50,8 @@ public final class ProxySystem extends Plugin implements Listener {
             if(playerServer == null)
                 return;
 
-            final var color = TextComponent.fromLegacyText("§x§0§f§6§2§a§f");
-            final var serverName = TextComponent.fromLegacyText("§x§1§5§8§f§f§f§lM§x§2§b§7§b§f§f§lE§x§4§1§6§6§f§f§lJ§x§5§7§5§2§f§f§lS§x§6§c§3§e§f§f§l.§x§8§2§2§9§f§f§lC§x§9§8§1§5§f§f§lZ");
+            final var color = TextComponent.fromLegacyText("§x§1§7§b§3§c§8");
+            final var serverName = TextComponent.fromLegacyText("§x§1§7§b§3§c§8§lM§x§1§9§c§0§c§4§lE§x§1§c§c§c§c§0§lJ§x§1§e§d§9§b§c§lS§x§2§0§e§6§b§8§l.§x§2§3§f§2§b§4§lC§x§2§5§f§f§b§0§lZ");
 
             final ComponentBuilder builder = new ComponentBuilder();
             final ComponentBuilder builder1 = new ComponentBuilder();

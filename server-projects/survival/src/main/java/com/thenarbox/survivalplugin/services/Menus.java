@@ -1,6 +1,8 @@
 package com.thenarbox.survivalplugin.services;
 
+import com.thenarbox.api.ChatNotice;
 import com.thenarbox.survivalplugin.SurvivalPlugin;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -117,15 +119,48 @@ public class Menus implements Listener {
             if (e.getCurrentItem() == null)
                 return;
             if (e.getCurrentItem().getType() == Material.CLOCK){
+                if (!player.getWorld().getName().equals("world")){
+                    ChatNotice.error(player, Component.text("V tomto světě nemůžeš hlasovat!"));
+                    player.closeInventory();
+                    return;
+                }
+                if (player.getWorld().getFullTime() < 13000 && player.getWorld().getFullTime() > 1000){
+                    ChatNotice.error(player, Component.text("Hlasovat o dni můžeš pouze v noci!"));
+                    player.closeInventory();
+                    return;
+                }
                 Voting.changeToDayTimeVoting(SurvivalPlugin.getPlugin(SurvivalPlugin.class), player);
-                player.closeInventory();
-                player.performCommand("ano");
+                if (Voting.votedNo.contains(player.getName()) || Voting.votedYes.contains(player.getName())){
+                    player.closeInventory();
+                }
+                else {
+                    player.closeInventory();
+                    player.performCommand("ano");
+                }
             }
 
             if (e.getCurrentItem().getType() == Material.BUCKET){
-                Voting.changeToSunnyVoting(SurvivalPlugin.getPlugin(SurvivalPlugin.class), player);
-                player.closeInventory();
-                player.performCommand("ano");
+                if (!player.getWorld().getName().equals("world")){
+                    ChatNotice.error(player, Component.text("V tomto světě nemůžeš hlasovat!"));
+                    player.closeInventory();
+                    return;
+                }
+                if (player.getWorld().isThundering() || player.getWorld().hasStorm() || !player.getWorld().isClearWeather()){
+                    Voting.changeToSunnyVoting(SurvivalPlugin.getPlugin(SurvivalPlugin.class), player);
+                    if (Voting.votedNo.contains(player.getName()) || Voting.votedYes.contains(player.getName())){
+                        player.closeInventory();
+                    }
+                    else {
+                        player.closeInventory();
+                        player.performCommand("ano");
+                    }
+                }
+                else {
+                    ChatNotice.error(player, Component.text("V tuto chvíli nemůžeš hlasovat protože neprobíhá bouře ani neprší!"));
+                    player.closeInventory();
+                    return;
+                }
+
             }
         }
 

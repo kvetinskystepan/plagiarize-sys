@@ -56,6 +56,8 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         log.error("Probíhá inicializace...50%");
         SpawnService.spawnSettings();
         WorldService.worldSettings();
+        WorldService.endSettings();
+        WorldService.netherSettings();
         getServer().getPluginManager()
                 .registerEvents(this, this);
         getServer().getPluginManager()
@@ -65,6 +67,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         getServer().getPluginManager()
                 .registerEvents(new Voting(), this);
         Voting.votingCmds();
+
 
         allowedCommands32 = AllowedCommands.initSurvivalMysql();
 
@@ -137,6 +140,9 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         if(!player.hasPlayedBefore()){
             Kits.defaultKit(player);
             player.teleport(spawn);
+        }
+        if (Voting.voting){
+            Voting.bar.addPlayer(player);
         }
         Bukkit.getOnlinePlayers().forEach(online -> {
             if(vanishPlayers.contains(player.getName()))

@@ -5,15 +5,11 @@ import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
 import com.thenarbox.api.colors.ColorAPI;
 import com.thenarbox.survivalplugin.mechanics.Command;
-import com.thenarbox.survivalplugin.services.Menus;
-import com.thenarbox.survivalplugin.services.SpawnService;
+import com.thenarbox.survivalplugin.services.*;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -59,12 +55,16 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         Standards.View.tab(this);
         log.error("Probíhá inicializace...50%");
         SpawnService.spawnSettings();
+        WorldService.worldSettings();
         getServer().getPluginManager()
                 .registerEvents(this, this);
         getServer().getPluginManager()
                 .registerEvents(new SpawnService(), this);
         getServer().getPluginManager()
                 .registerEvents(new Menus(), this);
+        getServer().getPluginManager()
+                .registerEvents(new Voting(), this);
+        Voting.votingCmds();
 
         allowedCommands32 = AllowedCommands.initSurvivalMysql();
 
@@ -81,6 +81,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         final var allowedCommands = allowedCommands32;
         final var sentCommands = e.getCommands();
         sentCommands.retainAll(allowedCommands);
+        sentCommands.remove("cmil");
     }
 
     @EventHandler
@@ -134,6 +135,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
             player.teleport(spawn);
         }
         if(!player.hasPlayedBefore()){
+            Kits.defaultKit(player);
             player.teleport(spawn);
         }
         Bukkit.getOnlinePlayers().forEach(online -> {
@@ -238,7 +240,18 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
                 players.sendMessage(ChatColor.DARK_RED + "✟" + ChatColor.GRAY + " | " + ColorAPI.process("<GRADIENT:34eb92>"+player.getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + " zemřel.");
             }
         }
-        e.getPlayer().teleport(spawn);
+        player.setMetadata("previouslocation", new FixedMetadataValue(this, player.getLocation()));
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent e){
+        Player player = e.getPlayer();
+        if (player.getBedSpawnLocation() != null){
+            e.setRespawnLocation(player.getBedSpawnLocation());
+        }
+        else {
+            e.setRespawnLocation(new Location(Bukkit.getWorld("Spawn"), 22.5, 50, 39.5, 90, 0));
+        }
     }
 
     @EventHandler

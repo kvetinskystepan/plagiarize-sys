@@ -1,5 +1,6 @@
 package com.thenarbox.survivalplugin.services;
 
+import com.thenarbox.survivalplugin.SurvivalPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -115,6 +116,17 @@ public class Menus implements Listener {
             e.setCancelled(true);
             if (e.getCurrentItem() == null)
                 return;
+            if (e.getCurrentItem().getType() == Material.CLOCK){
+                Voting.changeToDayTimeVoting(SurvivalPlugin.getPlugin(SurvivalPlugin.class), player);
+                player.closeInventory();
+                player.performCommand("ano");
+            }
+
+            if (e.getCurrentItem().getType() == Material.BUCKET){
+                Voting.changeToSunnyVoting(SurvivalPlugin.getPlugin(SurvivalPlugin.class), player);
+                player.closeInventory();
+                player.performCommand("ano");
+            }
         }
 
 

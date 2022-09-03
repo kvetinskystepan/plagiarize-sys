@@ -193,22 +193,6 @@ public class Standards {
 
         }
 
-        getServer().getCommandMap().register("", new Command("restart") {
-            @Override
-            public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-                if (!(sender instanceof  Player))
-                    return false;
-
-                final Player player = (Player) sender;
-                if (commandLabel.equalsIgnoreCase("restart")){
-                    ChatNotice.error(player, Component.text("Tento příkaz je vypnutý."));
-                    return false;
-                }
-                return false;
-            }
-        });
-
-
         {
 
             Bukkit.getCommandMap().register("global", new Command("fly") {
@@ -273,6 +257,112 @@ public class Standards {
     public static void survivalCommands(Plugin plugin){
 
         {
+            Bukkit.getCommandMap().register("survival", new Command("prace") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("prace")) {
+                        player.performCommand("jobs join");
+                    }
+                    return false;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("anvil") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("anvil")) {
+                        if (player.hasPermission("survival.anvil")){
+                            player.openAnvil(player.getLocation(), true);
+                            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 1);
+                            ChatNotice.success(player, Component.text("Otevřel si přenosnou kovadlinu."));
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("wb") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("wb")) {
+                        if (player.hasPermission("survival.wb")){
+                            player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+                            player.openWorkbench(player.getLocation(), true);
+                            ChatNotice.success(player, Component.text("Otevřel si přenosný pracovní stůl."));
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("obchod") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("obchod")) {
+                        Location shop = new Location(Bukkit.getWorld("Spawn"), -168.5, 51, 21.5, 125, 0);
+                        player.teleport(shop);
+                        ChatNotice.success(player, Component.text("Byl jsi teleportován do obchodu."));
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+                        player.playEffect(player.getLocation(), Effect.ENDER_SIGNAL, 1);
+                    }
+                    return false;
+                }
+            });
+
+
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("shop") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("shop")) {
+                        Location shop = new Location(Bukkit.getWorld("Spawn"), -168.5, 51, 21.5, 125, 0);
+                        player.teleport(shop);
+                        ChatNotice.success(player, Component.text("Byl jsi teleportován do obchodu."));
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+                        player.playEffect(player.getLocation(), Effect.ENDER_SIGNAL, 1);
+                    }
+                    return false;
+                }
+            });
+
+
+        }
+
+        {
             Bukkit.getCommandMap().register("survival", new Command("pay") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
@@ -281,8 +371,62 @@ public class Standards {
                     }
                     final Player player = (Player) sender;
                     if (commandLabel.equalsIgnoreCase("pay")) {
-
+                        if (args.length == 2){
+                            Player target = Bukkit.getPlayer(args[0]);
+                            if (target != null){
+                                if (Integer.parseInt(args[1]) > 0){
+                                    String playerMoney = PlaceholderAPI.setPlaceholders(player, "%vault_eco_balance%");
+                                    if (Integer.parseInt(playerMoney) >= Integer.parseInt(args[1])){
+                                        getServer().dispatchCommand(getServer().getConsoleSender(), "money remove " + player.getName() + " " + args[1]);
+                                        getServer().dispatchCommand(getServer().getConsoleSender(), "money add " + target.getName() + " " + args[1]);
+                                        ChatNotice.success(player, Component.text("Odeslal jsi " + args[1] + " coinů hráči " + target.getName() + "."));
+                                        ChatNotice.info(target, Component.text("Obdržel jsi " + args[1] + " coinů od hráče " + player.getName() + "."));
+                                    }
+                                    else {
+                                        ChatNotice.error(player, Component.text("Nemáš dostatek coinů na účtu."));
+                                    }
+                                }
+                                else {
+                                    ChatNotice.error(player, Component.text("Musíš zadat číslo větší než 0."));
+                                }
+                            }
+                            else {
+                                ChatNotice.error(player, Component.text(ChatColor.WHITE + "Hráč " + args[0] + " není online."));
+                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Použití: /pay <hráč> <částka>"));
+                        }
                     }
+                    return false;
+                }
+            });
+
+
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("clear") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+
+                    final Player player = (Player) sender;
+
+                    if (commandLabel.equalsIgnoreCase("clear")) {
+                        if (player.hasPermission("survival.clear")){
+                            player.clearActiveItem();
+                            player.getInventory().clear();
+                            player.getInventory().setArmorContents(null);
+                            ChatNotice.success(player, Component.text("Všechny předměty byly odebrány z tvého inventáře."));
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Developer."));
+                        }
+                    }
+
                     return false;
                 }
             });
@@ -301,7 +445,7 @@ public class Standards {
                     final Player player = (Player) sender;
 
                     if (commandLabel.equalsIgnoreCase("penize")) {
-                        String money = PlaceholderAPI.setPlaceholders(player, "%liteeco_balance%");
+                        String money = PlaceholderAPI.setPlaceholders(player, "%vault_eco_balance%");
                         ChatNotice.info(player, Component.text("Tvůj zůstatek je: " + ColorAPI.process("<GRADIENT:34eb92>"+money+"</GRADIENT:34eb92>") + " Ⓒ"));
                     }
 
@@ -323,8 +467,47 @@ public class Standards {
                     final Player player = (Player) sender;
 
                     if (commandLabel.equalsIgnoreCase("coins")) {
-                        String money = PlaceholderAPI.setPlaceholders(player, "%liteeco_balance%");
-                        ChatNotice.info(player, Component.text("Tvůj zůstatek je: " + ColorAPI.process("<GRADIENT:34eb92>"+money+"</GRADIENT:34eb92>") + " Ⓒ"));
+                        if (args.length == 0){
+                            String money = PlaceholderAPI.setPlaceholders(player, "%vault_eco_balance%");
+                            ChatNotice.info(player, Component.text("Tvůj zůstatek je: " + ColorAPI.process("<GRADIENT:34eb92>"+money+"</GRADIENT:34eb92>") + " Ⓒ"));
+                        }
+                        else if (args.length == 3){
+                            if (args[0].equals("convert")){
+                                Player target = Bukkit.getPlayer(args[1]);
+                                if (target != null){
+                                    if (target != player){
+                                        if (Float.parseFloat(args[2]) > 0){
+                                            String money = PlaceholderAPI.setPlaceholders(player, "%vault_eco_balance%");
+                                            if (Float.parseFloat(money) >= Float.parseFloat(args[2])){
+                                                getServer().dispatchCommand(getServer().getConsoleSender(), "money take " + player.getName() + " " + args[2]);
+                                                getServer().dispatchCommand(getServer().getConsoleSender(), "money give " + target.getName() + " " + args[2]);
+                                                ChatNotice.success(player, Component.text("Odeslal jsi " + args[2] + " coinů hráči " + target.getName() + "."));
+                                                ChatNotice.info(target, Component.text("Obdržel jsi " + args[2] + " coinů od hráče " + player.getName() + "."));
+                                            }
+                                            else {
+                                                ChatNotice.error(player, Component.text("Nemáš dostatek coinů na účtu."));
+                                            }
+                                        }
+                                        else {
+                                            ChatNotice.error(player, Component.text("Musíš zadat platnou částku k odeslání."));
+                                        }
+                                    }
+                                    else {
+                                        ChatNotice.error(player, Component.text("Nemůžeš poslat peníze sám sobě."));
+                                    }
+                                }
+                                else {
+                                    ChatNotice.error(player, Component.text(ChatColor.WHITE + "Hráč " + args[1] + " není online."));
+                                }
+                            }
+                            else {
+                                ChatNotice.error(player, Component.text("Použití: /coins convert <hráč> <částka>"));
+                            }
+                        }
+                        else {
+                            ChatNotice.error(player, Component.text("Použití: /coins convert <hráč> <částka>"));
+                        }
+
                     }
 
                     return false;
@@ -523,6 +706,7 @@ public class Standards {
                                     ItemMeta meta = item.getItemMeta();
                                     if (meta instanceof Damageable d){
                                         d.setDamage(0);
+                                        item.setItemMeta(meta);
                                     }
                                 }
                                 ChatNotice.success(player, Component.text("Oprava byla úspěšně provedena."));

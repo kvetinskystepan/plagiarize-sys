@@ -121,7 +121,6 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
 
         String replaced = ChatColor.translateAlternateColorCodes('&', Rank.getRankPrefix(PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%")));
         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
-
         if (replaced.equals("")){
             if(cooldownMap.containsKey(player.getName())) {
                 long secondsLeft = ((cooldownMap.get(player.getName())/1000)+cooldownTime) - (System.currentTimeMillis()/1000);

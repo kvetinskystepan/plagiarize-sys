@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Menus implements Listener {
 
-    static Inventory inv1, inv2;
+    static Inventory inv1, inv2, inv3;
     static List<String> lore1, lore2, lore3, lore4;
 
 
@@ -27,6 +27,7 @@ public class Menus implements Listener {
     // nether: #FF0624, #FF4B56
     // end: #950EFF, #CF10FF
 
+    static String jobsMenu = ChatColor.translateAlternateColorCodes('&', "&8&lJobs Menu");
     static String hlasovaniOPocasi = ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4H&x&7&2&9&7&4&5L&x&6&f&9&9&4&6A&x&6&b&9&b&4&6S&x&6&8&9&d&4&7O&x&6&4&9&f&4&8V&x&6&1&a&1&4&9Á&x&5&d&a&3&4&9N&x&5&9&a&6&4&aÍ &x&5&6&a&8&4&bO &x&5&2&a&a&4&cZ&x&4&f&a&c&4&cM&x&4&b&a&e&4&dĚ&x&4&8&b&0&4&eN&x&4&4&b&2&4&fĚ &x&4&1&b&4&5&0P&x&3&d&b&6&5&0O&x&3&9&b&8&5&1Č&x&3&6&b&a&5&2A&x&3&2&b&c&5&3S&x&2&f&b&e&5&3Í &x&2&b&c&0&5&4N&x&2&8&c&2&5&5A &x&2&4&c&5&5&6S&x&2&0&c&7&5&6L&x&1&d&c&9&5&7U&x&1&9&c&b&5&8N&x&1&6&c&d&5&9E&x&1&2&c&f&5&9Č&x&0&f&d&1&5&aN&x&0&b&d&3&5&bO");
 
     static String hlasovaniServer = ChatColor.translateAlternateColorCodes('&', "");
@@ -37,6 +38,16 @@ public class Menus implements Listener {
     static String rozloha = ChatColor.translateAlternateColorCodes('&', "&x&c&a&f&f&7&42&x&9&b&f&f&7&35 &x&6&c&f&f&7&10&x&3&c&f&f&7&00&x&0&d&f&f&6&e0 &x&6&c&f&c&7&0x &x&c&a&f&f&7&42&x&9&b&f&f&7&35 &x&6&c&f&f&7&10&x&3&c&f&f&7&00&x&0&d&f&f&6&e0");
     static String priroda = ChatColor.translateAlternateColorCodes('&', "&x&0&b&d&3&5&b&lP&x&1&d&c&9&5&7&lŘ&x&2&f&b&e&5&3&lÍ&x&4&1&b&4&5&0&lR&x&5&2&a&a&4&c&lO&x&6&4&9&f&4&8&lD&x&7&6&9&5&4&4&lA");
     static String name1 = ChatColor.translateAlternateColorCodes('&', "&x&0&b&d&3&5&b&lH&x&1&7&c&c&5&8&lL&x&2&3&c&5&5&6&lA&x&2&f&b&e&5&3&lV&x&3&b&b&7&5&1&lN&x&4&6&b&1&4&e&lÍ &x&5&2&a&a&4&c&lM&x&5&e&a&3&4&9&lE&x&6&a&9&c&4&7&lN&x&7&6&9&5&4&4&lU");
+
+
+    // PRACOVNI MENU
+    public static void jobsMenu(Player player){
+        inv3 = Bukkit.createInventory(null, 45, jobsMenu);
+        
+
+
+        player.openInventory(inv3);
+    }
 
 
     // HLASOVACI MENU

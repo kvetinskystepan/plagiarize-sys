@@ -4,6 +4,7 @@ import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
 import com.thenarbox.api.colors.ColorAPI;
+import com.thenarbox.api.ranks.Rank;
 import com.thenarbox.survivalplugin.mechanics.Command;
 import com.thenarbox.survivalplugin.services.*;
 import lombok.extern.log4j.Log4j2;
@@ -27,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.thenarbox.api.Standards.vanishPlayers;
-import static com.thenarbox.survivalplugin.services.SpawnService.spawn;
 
 @Log4j2(topic = "SurvivalPlugin")
 public class SurvivalPlugin extends JavaPlugin implements Listener {
@@ -68,6 +68,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
                 .registerEvents(new Voting(), this);
         Voting.votingCmds();
 
+        warningSystem();
 
         allowedCommands32 = AllowedCommands.initSurvivalMysql();
 
@@ -75,6 +76,17 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         log.error("Inicializace proběhla úspěšně.");
         log.error(" ");
         log.error("SPRÁVA SURVIVAL MEJS.CZ");
+
+    }
+
+    public void warningSystem(){
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            for(Player player : Bukkit.getOnlinePlayers()){
+                if(player.getWorld().getName().equals("world")){
+                    ChatNotice.warning(player, Component.text("VAROVÁNÍ! Svět na kterém se nacházíte bude ke dni 13.9.2022 smazán a to z důvodu předgenerace nového světa pro otevření serveru 14.9.2022!"));
+                }
+            }
+        }, 0, 36000);
     }
 
     // CAFF74
@@ -107,7 +119,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     public void chat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
 
-        String replaced = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%"));
+        String replaced = ChatColor.translateAlternateColorCodes('&', Rank.getRankPrefix(PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%")));
         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
 
         if (replaced.equals("")){
@@ -135,11 +147,11 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
         if (player.getWorld().getName().equals("Spawn")){
-            player.teleport(spawn);
+            player.teleport(new Location(Bukkit.getWorld("Spawn"), 22.5, 50, 39.5, 90, 0));
         }
         if(!player.hasPlayedBefore()){
             Kits.defaultKit(player);
-            player.teleport(spawn);
+            player.teleport(new Location(Bukkit.getWorld("Spawn"), 22.5, 50, 39.5, 90, 0));
         }
         if (Voting.voting){
             Voting.bar.addPlayer(player);

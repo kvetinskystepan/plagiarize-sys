@@ -3,6 +3,7 @@ package com.thenarbox.lobbyplugin;
 import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
+import com.thenarbox.api.ranks.Rank;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.api.PlayerChangeServerEvent;
 import com.thenarbox.lobbyplugin.services.Menus;
@@ -111,6 +112,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
+        e.getPlayer().clearTitle();
         player.getInventory().clear();
 
         ItemStack item2 = new ItemStack(Material.PLAYER_HEAD);
@@ -142,7 +144,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     public void chat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
 
-        String replaced = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%"));
+        String replaced = ChatColor.translateAlternateColorCodes('&', Rank.getRankPrefix(PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%")));
         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
 
         if (replaced.equals("")){

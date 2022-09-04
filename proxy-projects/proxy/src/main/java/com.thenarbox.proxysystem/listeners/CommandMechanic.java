@@ -184,7 +184,7 @@ public class CommandMechanic implements Listener {
                 @Override
                 public void execute(CommandSender sender, String[] args) {
                     ProxiedPlayer player = (ProxiedPlayer) sender;
-                    TextComponent mainComponent = new TextComponent( "Náš discord (klikni pro otevření): " );
+                    TextComponent mainComponent = new TextComponent( "Náš discord: " );
                     TextComponent subComponent = new TextComponent( "discord.mejs.cz" );
                     subComponent.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( "Klikni pro otevření" ).create() ) );
                     subComponent.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL, "https://discord.mejs.cz" ) );

@@ -1,6 +1,7 @@
 package com.thenarbox.api;
 
 import com.thenarbox.api.colors.ColorAPI;
+import com.thenarbox.api.ranks.Rank;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -41,53 +43,20 @@ public class Standards {
             final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
             Bukkit.getScheduler().runTaskTimer(plugin, () -> {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    String suffix = PlaceholderAPI.setPlaceholders(player, "%luckperms_suffix%");
-                    if (suffix.equalsIgnoreCase("majitel")){
-                        priority = "A";
-                    }
-                    else if (suffix.equalsIgnoreCase("vedení")){
-                        priority = "B";
-                    }
-                    else if (suffix.equalsIgnoreCase("v.developer")){
-                        priority = "C";
-                    }
-                    else if (suffix.equalsIgnoreCase("developer")){
-                        priority = "D";
-                    }
-                    else if (suffix.equalsIgnoreCase("v.helper")){
-                        priority = "E";
-                    }
-                    else if (suffix.equalsIgnoreCase("helper")){
-                        priority = "F";
-                    }
-                    else if (suffix.equalsIgnoreCase("v.builder")){
-                        priority = "G";
-                    }
-                    else if (suffix.equalsIgnoreCase("builder")){
-                        priority = "H";
-                    }
-                    else if (suffix.equalsIgnoreCase("eventer")){
-                        priority = "I";
-                    }
-                    else if (suffix.equalsIgnoreCase("hráč")){
-                        priority = "J";
-                    }
-                    else {
-                        priority = "K";
-                    }
+                    String prefix = PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%");
+                    priority = Rank.getRankPriority(prefix);
                     var team = scoreboard.getTeam(priority + player.getName());
                     if(team == null)
                         team = scoreboard.registerNewTeam(priority + player.getName());
-                    String prefix = PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%");
-                    if (suffix.equalsIgnoreCase("hráč")){
+                    if (prefix.equalsIgnoreCase("Hráč")){
                         team.setPrefix("");
                     }
                     else {
-                        team.setPrefix(ChatColor.translateAlternateColorCodes('&', prefix) + " " + ChatColor.WHITE);
+                        team.setPrefix(ChatColor.translateAlternateColorCodes('&', Rank.getRankPrefix(prefix)) + " " + ChatColor.WHITE);
                     }
                     team.addPlayer(player);
                 }
-            }, 0, 20);
+            }, 0, 30);
         }
     }
 

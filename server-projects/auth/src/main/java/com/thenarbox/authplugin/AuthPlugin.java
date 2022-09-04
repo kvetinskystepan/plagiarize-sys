@@ -40,7 +40,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
         whitelist.add("Skymmel");
         whitelist.add("ItzCowinka_");
         whitelist.add("Pan_Okurka");
-        whitelist.add("lenfig");
+        whitelist.add("Mata08");
         {
             Standards.worlds();
             Standards.commands(this);
@@ -130,7 +130,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
         Player player = e.getPlayer();
         if (!whitelist.contains(player.getName())){
             player.kickPlayer(ChatColor.RED + "Přístup na server byl zamítnut \n \n" + ChatColor.WHITE + "Herní jméno: " + ChatColor.GOLD + player.getName() + "\n" + ChatColor.WHITE + "UUID: " + ChatColor.GOLD + player.getUniqueId() + "\n" + ChatColor.WHITE + "IP: " + ChatColor.GOLD + player.getAddress().getAddress().getHostAddress());
-            log.error("Player " + player.getName() + " byl vyhozen protože není na seznamu povolených hráčů");
+            log.error("Hráč " + player.getName() + " byl vyhozen protože není na seznamu povolených hráčů");
             return;
         }
         player.hidePlayer(player);
@@ -139,6 +139,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
             online.hidePlayer(player);
         });
         player.teleport(new Location(Bukkit.getWorld("world"), -48.5, 65.5, 34.5, -50, 0));
+        player.sendTitle(ChatColor.translateAlternateColorCodes('§', "§x§1§7§b§3§c§8§lM§x§1§9§c§0§c§4§lE§x§1§c§c§c§c§0§lJ§x§1§e§d§9§b§c§lS§x§2§0§e§6§b§8§l.§x§2§3§f§2§b§4§lC§x§2§5§f§f§b§0§lZ"), ChatColor.WHITE + "Prosím přihlaš se nebo zaregistruj", 10, 70, 20);
         player.setGameMode(getServer().getDefaultGameMode());
         player.setMaxHealth(20);
         player.setFoodLevel(20);
@@ -151,6 +152,7 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
     }
     @EventHandler
     public void Quit(PlayerQuitEvent e){
+        e.getPlayer().clearTitle();
         e.setQuitMessage(null);
     }
     @EventHandler

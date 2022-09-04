@@ -31,7 +31,7 @@ public class RandomTeleport implements Listener {
             }
             player.teleport(world.getHighestBlockAt(randomX, randomZ).getLocation());
             player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-            ChatNotice.success(player, Component.text("Byl jsi teleportován na náhodné místo v přírodě."));
+            ChatNotice.success(player, Component.text("Byl/a jsi teleportován/a na náhodné místo v přírodě."));
             ChatNotice.info(player, Component.text("Tvé souřadnice: X: " + player.getLocation().getBlockX() + ", Y: " + player.getLocation().getBlockZ()));
             player.playEffect(player.getLocation(), Effect.ENDER_SIGNAL, 1);
         });

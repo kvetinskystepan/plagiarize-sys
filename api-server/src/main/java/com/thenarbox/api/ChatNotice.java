@@ -14,11 +14,11 @@ public class ChatNotice {
     }
 
     public static void infoHover(Player player, TextComponent component){
-        player.sendMessage(ChatColor.AQUA + "✎ "  + ChatColor.GRAY + "| " + ChatColor.WHITE + component.toPlainText());
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&x&1&7&b&3&c&8✎ ") + ChatColor.GRAY + "| " + ChatColor.WHITE + component.toPlainText());
     }
 
     public static void info(Player player, Component component){
-        player.sendMessage(ChatColor.AQUA + "✎ "  + ChatColor.GRAY + "| " + ChatColor.WHITE + PlainTextComponentSerializer.plainText().serialize(component));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&x&1&7&b&3&c&8✎ ") + ChatColor.GRAY + "| " + ChatColor.WHITE + PlainTextComponentSerializer.plainText().serialize(component));
     }
 
     public static void error(Player player, Component component){

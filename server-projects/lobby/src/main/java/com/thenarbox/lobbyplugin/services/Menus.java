@@ -328,7 +328,7 @@ public class Menus
         meta.setOwner(player.getName());
         item.setItemMeta(meta);
 
-        String rank = PlaceholderAPI.setPlaceholders(player, "%luckperms_suffix%");
+        String rank = PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%");
         String rank1 = rank.toLowerCase();
         String duration = PlaceholderAPI.setPlaceholders(player, " %luckperms_group_expiry_time_"+rank1+"%");
         lore1.add(" ");
@@ -511,7 +511,7 @@ public class Menus
                 return;
             }
             if (e.getCurrentItem().getType() == Material.PAPER){
-                TextComponent mainComponent = new TextComponent( "Náš web (klikni pro otevření): " );
+                TextComponent mainComponent = new TextComponent( "Náš web: " );
                 TextComponent subComponent = new TextComponent( "www.mejs.cz" );
                 subComponent.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( "Klikni pro otevření" ).create() ) );
                 subComponent.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL, "https://mejs.cz" ) );

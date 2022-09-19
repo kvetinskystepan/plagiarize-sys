@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -20,7 +21,7 @@ import java.util.List;
 public class Menus implements Listener {
 
     static Inventory inv1, inv2, inv3;
-    static List<String> lore1, lore2, lore3, lore4;
+    static List<String> lore1, lore2, lore3, lore4, lore5;
 
 
     // hex: #769544, #0BD35B
@@ -30,7 +31,7 @@ public class Menus implements Listener {
     static String jobsMenu = ChatColor.translateAlternateColorCodes('&', "&8&lJobs Menu");
     static String hlasovaniOPocasi = ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4H&x&7&2&9&7&4&5L&x&6&f&9&9&4&6A&x&6&b&9&b&4&6S&x&6&8&9&d&4&7O&x&6&4&9&f&4&8V&x&6&1&a&1&4&9Á&x&5&d&a&3&4&9N&x&5&9&a&6&4&aÍ &x&5&6&a&8&4&bO &x&5&2&a&a&4&cZ&x&4&f&a&c&4&cM&x&4&b&a&e&4&dĚ&x&4&8&b&0&4&eN&x&4&4&b&2&4&fĚ &x&4&1&b&4&5&0P&x&3&d&b&6&5&0O&x&3&9&b&8&5&1Č&x&3&6&b&a&5&2A&x&3&2&b&c&5&3S&x&2&f&b&e&5&3Í &x&2&b&c&0&5&4N&x&2&8&c&2&5&5A &x&2&4&c&5&5&6S&x&2&0&c&7&5&6L&x&1&d&c&9&5&7U&x&1&9&c&b&5&8N&x&1&6&c&d&5&9E&x&1&2&c&f&5&9Č&x&0&f&d&1&5&aN&x&0&b&d&3&5&bO");
 
-    static String hlasovaniServer = ChatColor.translateAlternateColorCodes('&', "");
+    static String residence = ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4&lR&x&6&9&9&d&4&7&lE&x&5&b&a&5&4&a&lS&x&4&e&a&c&4&d&lI&x&4&1&b&4&5&0&lD&x&3&3&b&c&5&2&lE&x&2&6&c&4&5&5&lN&x&1&8&c&b&5&8&lC&x&0&b&d&3&5&b&lE");
 
     static String hlasovaniOCase = ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4H&x&7&1&9&8&4&5L&x&6&d&9&a&4&6A&x&6&8&9&d&4&7S&x&6&3&a&0&4&8O&x&5&f&a&2&4&9V&x&5&a&a&5&4&aÁ&x&5&5&a&8&4&bN&x&5&1&a&b&4&cÍ &x&4&c&a&d&4&dO &x&4&7&b&0&4&eZ&x&4&3&b&3&4&fM&x&3&e&b&5&5&0Ě&x&3&a&b&8&5&1N&x&3&5&b&b&5&2Ě &x&3&0&b&d&5&3Č&x&2&c&c&0&5&4A&x&2&7&c&3&5&5S&x&2&2&c&6&5&6U &x&1&e&c&8&5&7N&x&1&9&c&b&5&8A &x&1&4&c&e&5&9D&x&1&0&d&0&5&aE&x&0&b&d&3&5&bN");
     static String hlasovaciMenuMain = ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4&lH&x&6&d&9&a&4&6&lL&x&6&4&9&f&4&8&lA&x&5&b&a&5&4&a&lS&x&5&2&a&a&4&c&lO&x&4&9&a&f&4&e&lV&x&4&1&b&4&5&0&lA&x&3&8&b&9&5&1&lC&x&2&f&b&e&5&3&lÍ &x&2&6&c&4&5&5&lM&x&1&d&c&9&5&7&lE&x&1&4&c&e&5&9&lN&x&0&b&d&3&5&b&lU");
@@ -108,6 +109,31 @@ public class Menus implements Listener {
         itemMeta1.setLore(lore1);
         item1.setItemMeta(itemMeta1);
 
+        ItemStack item3 = new ItemStack(Material.WOODEN_HOE, 1);
+        ItemMeta itemMeta3 = item3.getItemMeta();
+        itemMeta3.setDisplayName(residence);
+        lore3 = new ArrayList<>();
+        lore3.add(ChatColor.GRAY + " ");
+        if (player.hasPermission("residence.group.default")){
+            lore3.add(ChatColor.WHITE + "Maximální rozloha: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&41&x&6&4&9&f&4&80&x&5&2&a&a&4&c0&x&4&1&b&4&5&0x&x&2&f&b&e&5&31&x&1&d&c&9&5&70&x&0&b&d&3&5&b0"));
+            lore3.add(ChatColor.WHITE + "Počet residencí: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&43"));
+            lore3.add(ChatColor.WHITE + "Cena za blok: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&41") + " coin");
+            lore3.add(ChatColor.WHITE + "Změna zprávy residence: " + ChatColor.translateAlternateColorCodes('&', "&4&l✖"));
+        }
+        else if (player.hasPermission("residence.group.team")){
+            lore3.add(ChatColor.WHITE + "Maximální rozloha: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&41&x&6&9&9&d&4&70&x&5&b&a&5&4&a0&x&4&e&a&c&4&d0&x&4&1&b&4&5&0x&x&3&3&b&c&5&21&x&2&6&c&4&5&50&x&1&8&c&b&5&80&x&0&b&d&3&5&b0"));
+            lore3.add(ChatColor.WHITE + "Počet residencí: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&410"));
+            lore3.add(ChatColor.WHITE + "Cena za blok: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&40.7") + " coin");
+            lore3.add(ChatColor.WHITE + "Změna zprávy residence: " + ChatColor.translateAlternateColorCodes('&', "&a&l✔"));
+        }
+        else {
+            lore3.add(ChatColor.translateAlternateColorCodes('&', "&fBez práva na residenci &4&l✖"));
+        }
+        itemMeta3.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        itemMeta3.setLore(lore3);
+        item3.setItemMeta(itemMeta3);
+
+
         ItemStack item2 = new ItemStack(Material.OAK_SIGN, 1);
         ItemMeta itemMeta2 = item2.getItemMeta();
         itemMeta2.setDisplayName(name1);
@@ -117,6 +143,7 @@ public class Menus implements Listener {
 
         inv1.setItem(20, item1);
         inv1.setItem(4, item2);
+        inv1.setItem(21, item3);
         player.openInventory(inv1);
     }
 

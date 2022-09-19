@@ -3,6 +3,7 @@ package com.thenarbox.boxfightplugin;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
 import com.thenarbox.api.colors.ColorAPI;
+import com.thenarbox.api.ranks.Rank;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -65,9 +66,8 @@ public final class BoxFightPlugin extends JavaPlugin implements Listener {
     public void chat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
 
-        String replaced = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%"));
+        String replaced = ChatColor.translateAlternateColorCodes('&', Rank.getRankPrefix(PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%")));
         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
-
         if (replaced.equals("")){
             if(cooldownMap.containsKey(player.getName())) {
                 long secondsLeft = ((cooldownMap.get(player.getName())/1000)+cooldownTime) - (System.currentTimeMillis()/1000);

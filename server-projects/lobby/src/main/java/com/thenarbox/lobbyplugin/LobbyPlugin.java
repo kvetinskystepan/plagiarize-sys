@@ -1,5 +1,6 @@
 package com.thenarbox.lobbyplugin;
 
+import com.google.common.io.ByteStreams;
 import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
@@ -30,6 +31,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -55,7 +58,9 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         {
             Standards.worlds();
             Standards.commands(this);
+            Standards.proxyLinks(this);
         }
+
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         PlayerChangeServerEvent.instance = this;
         location = new Location(Bukkit.getWorld("world"), 390.5, 89, 209.5, -90, 0);

@@ -1,5 +1,6 @@
 package com.thenarbox.api;
 
+import com.google.common.io.ByteStreams;
 import com.thenarbox.api.colors.ColorAPI;
 import com.thenarbox.api.ranks.Rank;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +20,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,6 +38,20 @@ public class Standards {
     static int cooldownHeal = 600;
     static int cooldownRepairTime = 600;
     public static ArrayList<String> vanishPlayers = new ArrayList<String>();
+
+    public static void proxyLinks(Plugin plugin){
+        getServer().getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", new PluginMessageListener() {
+            @Override
+            public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
+                var stream = ByteStreams.newDataInput(message);
+                var subChannel = stream.readUTF();
+                if (!subChannel.equals("SYS"))
+                    return;
+                var action = stream.readUTF();
+                getServer().dispatchCommand(getServer().getConsoleSender(), action);
+            }
+        });
+    }
 
     public class View{
         static String priority = "A";

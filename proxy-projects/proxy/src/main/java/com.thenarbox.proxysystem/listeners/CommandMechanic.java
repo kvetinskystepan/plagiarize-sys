@@ -1,5 +1,6 @@
 package com.thenarbox.proxysystem.listeners;
 
+import com.google.common.io.ByteStreams;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.proxysystem.ProxySystem;
 import net.kyori.adventure.text.Component;
@@ -16,6 +17,7 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class CommandMechanic implements Listener {
     public CommandMechanic() {
@@ -24,6 +26,72 @@ public class CommandMechanic implements Listener {
 
     public static void Commands(){
         {
+
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("suspension") {
+                @Override
+                public void execute(CommandSender sender, String[] args) {
+                    ProxiedPlayer player = (ProxiedPlayer) sender;
+                    if (!player.hasPermission("punishments.suspension")) {
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Helper."));
+                        return;
+                    }
+                    if (args.length != 1) {
+                        ChatNotice.error(player, Component.text("Použití: /suspension <hráč>"));
+                        return;
+                    }
+
+                    ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
+
+                    if (target == null) {
+                        ChatNotice.error(player, Component.text("Hráč nenalezen."));
+                        return;
+                    }
+
+                    var stream = ByteStreams.newDataOutput();
+                    stream.writeUTF("SYS");
+                    stream.writeUTF("points reset " + target.getName());
+                    target.getServer().sendData("BungeeCord", stream.toByteArray());
+
+                    ChatNotice.warning(target, Component.text("Byl jsi odpojen. Tvůj účet byl pozastaven."));
+                    ChatNotice.success(player, Component.text("Účet hráče " + target.getName() + " byl pozastaven na dobu 30 dnů."));
+
+                    ProxyServer.getInstance().getScheduler().schedule(ProxySystem.getStaticInstance(), () -> {
+                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "ban " + target.getName() + " Suspension");
+                    }, 5, TimeUnit.SECONDS).getId();
+
+                }
+            });
+
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("f-suspension") {
+                @Override
+                public void execute(CommandSender sender, String[] args) {
+                    ProxiedPlayer player = (ProxiedPlayer) sender;
+                    if (!player.hasPermission("punishments.f-suspension")) {
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Helper."));
+                        return;
+                    }
+                    if (args.length != 1) {
+                        ChatNotice.error(player, Component.text("Použití: /f-suspension <hráč>"));
+                        ChatNotice.warning(player, Component.text("Poznámka: Tento příkaz je pouze pro případy, kdy se jedná o závažné porušení pravidel."));
+                        ChatNotice.warning(player, Component.text("Poznámka: Tuto akci nelze vrátit!"));
+                        return;
+                    }
+
+                    ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
+                    if (target == null) {
+                        ChatNotice.error(player, Component.text("Hráč nenalezen."));
+                        return;
+                    }
+
+                    ChatNotice.success(player, Component.text("Účet hráče " + target.getName() + " byl permanentně zabanován."));
+                    ChatNotice.warning(target, Component.text("Byl jsi odpojen. Tvůj účet byl permanentně zabanován."));
+
+                    ProxyServer.getInstance().getScheduler().schedule(ProxySystem.getStaticInstance(), () -> {
+                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "ban " + target.getName() + " Permanent");
+                    }, 5, TimeUnit.SECONDS).getId();
+                }
+            });
+
 
             ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("serverlist") {
                 @Override

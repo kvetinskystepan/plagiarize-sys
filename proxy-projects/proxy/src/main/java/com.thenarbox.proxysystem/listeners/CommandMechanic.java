@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.Title;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -52,6 +53,8 @@ public class CommandMechanic implements Listener {
                     stream.writeUTF("points reset " + target.getName());
                     target.getServer().sendData("BungeeCord", stream.toByteArray());
 
+                    target.connect(ProxyServer.getInstance().getServerInfo("Lobby-1"));
+                    target.setDisplayName("banned user");
                     ChatNotice.warning(target, Component.text("Byl jsi odpojen. Tvůj účet byl pozastaven."));
                     ChatNotice.success(player, Component.text("Účet hráče " + target.getName() + " byl pozastaven na dobu 30 dnů."));
 

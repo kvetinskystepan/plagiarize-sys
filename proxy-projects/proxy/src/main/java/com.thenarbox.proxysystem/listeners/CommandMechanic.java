@@ -54,13 +54,13 @@ public class CommandMechanic implements Listener {
                     target.getServer().sendData("BungeeCord", stream.toByteArray());
 
                     target.connect(ProxyServer.getInstance().getServerInfo("Lobby-1"));
-                    target.setDisplayName("banned user");
+                    ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + target.getName() + " clear");
                     ChatNotice.warning(target, Component.text("Byl jsi odpojen. Tvůj účet byl pozastaven."));
                     ChatNotice.success(player, Component.text("Účet hráče " + target.getName() + " byl pozastaven na dobu 30 dnů."));
 
                     ProxyServer.getInstance().getScheduler().schedule(ProxySystem.getStaticInstance(), () -> {
                         ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "ban " + target.getName() + " Suspension");
-                    }, 5, TimeUnit.SECONDS).getId();
+                    }, 8, TimeUnit.SECONDS).getId();
 
                 }
             });
@@ -86,12 +86,19 @@ public class CommandMechanic implements Listener {
                         return;
                     }
 
+                    var stream = ByteStreams.newDataOutput();
+                    stream.writeUTF("SYS");
+                    stream.writeUTF("points reset " + target.getName());
+                    target.getServer().sendData("BungeeCord", stream.toByteArray());
+
+                    target.connect(ProxyServer.getInstance().getServerInfo("Lobby-1"));
+                    ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + target.getName() + " clear");
                     ChatNotice.success(player, Component.text("Účet hráče " + target.getName() + " byl permanentně zabanován."));
                     ChatNotice.warning(target, Component.text("Byl jsi odpojen. Tvůj účet byl permanentně zabanován."));
 
                     ProxyServer.getInstance().getScheduler().schedule(ProxySystem.getStaticInstance(), () -> {
-                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "ban " + target.getName() + " Permanent");
-                    }, 5, TimeUnit.SECONDS).getId();
+                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "ban " + target.getName() + " Suspension");
+                    }, 8, TimeUnit.SECONDS).getId();
                 }
             });
 

@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +22,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -148,10 +150,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         if (player.getWorld().getName().equals("Spawn")){
             player.teleport(new Location(Bukkit.getWorld("Spawn"), 22.5, 50, 39.5, 90, 0));
         }
-        if(!player.hasPlayedBefore()){
-            Kits.defaultKit(player);
-            player.teleport(new Location(Bukkit.getWorld("Spawn"), 22.5, 50, 39.5, 90, 0));
-        }
+
         if (Voting.voting){
             Voting.bar.addPlayer(player);
         }
@@ -159,6 +158,21 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
             if(vanishPlayers.contains(player.getName()))
                 e.getPlayer().hidePlayer(this, online);
         });
+
+        if(!player.hasPlayedBefore()){
+            player.teleport(new Location(Bukkit.getWorld("Spawn"), 22.5, 50, 39.5, 90, 0));
+            Kits.defaultKit(player);
+            if(player.hasPermission("survival.kits.vip"))
+                Kits.vipKit(player);
+
+            Firework fw = player.getWorld().spawn(player.getLocation(), Firework.class);
+            FireworkMeta fwm = fw.getFireworkMeta();
+            FireworkEffect.Builder builder = FireworkEffect.builder();
+            fwm.addEffect(builder.flicker(true).trail(true).with(FireworkEffect.Type.BALL_LARGE).withColor(Color.AQUA).withFade(Color.BLUE).build());
+            fwm.setPower(2);
+            fw.setFireworkMeta(fwm);
+        }
+
         e.setJoinMessage(ChatColor.GREEN + "+" + ChatColor.GRAY + " | " + ChatColor.GOLD + ColorAPI.process("<GRADIENT:34eb92>"+player.getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + " se připojil.");
     }
 

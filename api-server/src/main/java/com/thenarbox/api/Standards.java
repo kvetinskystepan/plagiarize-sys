@@ -88,7 +88,7 @@ public class Standards {
             world.setGameRule(GameRule.DO_FIRE_TICK, false);
             world.setGameRule(GameRule.MOB_GRIEFING, false);
             world.setGameRule(GameRule.FALL_DAMAGE, false);
-            world.setGameRule(GameRule.SPAWN_RADIUS, 1000000);
+            world.setGameRule(GameRule.SPAWN_RADIUS, 0);
             world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
             world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
             world.setGameRule(GameRule.RANDOM_TICK_SPEED, 0);

@@ -503,6 +503,8 @@ public class Menus
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                 player.closeInventory();
                 ChatNotice.success(player, Component.text("Kontaktuji autentifikační server..."));
+                ChatNotice.success(player, Component.text("Prosím čekejte..."));
+                ChatNotice.error(player, Component.text("Server se podařilo kontaktovat avšak odpověď na požadavek byla: " + ChatColor.RED + "Zamítnuto"));
             }
         }
 

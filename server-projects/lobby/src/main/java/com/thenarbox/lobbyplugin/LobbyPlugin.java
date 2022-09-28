@@ -256,7 +256,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void kill(EntityDamageEvent e){
-        e.setCancelled(true);
+       e.setCancelled(true);
     }
 
     @EventHandler
@@ -281,7 +281,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent e){
-        e.setCancelled(true);
+       e.setCancelled(true);
     }
 
     @EventHandler

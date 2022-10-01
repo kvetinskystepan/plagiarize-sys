@@ -6,6 +6,7 @@ import com.thenarbox.survivalplugin.services.Menus;
 import com.thenarbox.survivalplugin.services.RandomTeleport;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -54,9 +55,25 @@ public class Command implements Listener {
                         if (args.length == 0){
                             ChatNotice.info(player, Component.text("Použití: /kit <název>"));
                             if (player.hasPermission("survival.kits.vip")){
-                                ChatNotice.info(player, Component.text("Dostupné kity: default, vip"));
+                                if(cooldowns1.containsKey(player.getName()) && cooldowns2.containsKey(player.getName()) ) {
+                                    ChatNotice.info(player, Component.text("Dostupné kity: " + ChatColor.STRIKETHROUGH + "default" + ChatColor.WHITE + ", " + ChatColor.STRIKETHROUGH + "vip"));
+                                }
+                                else if (cooldowns1.containsKey(player.getName())){
+                                    ChatNotice.info(player, Component.text("Dostupné kity: " + ChatColor.STRIKETHROUGH + "default" + ChatColor.WHITE + ", vip"));
+                                }
+                                else if (cooldowns2.containsKey(player.getName())){
+                                    ChatNotice.info(player, Component.text("Dostupné kity: default, " + ChatColor.STRIKETHROUGH + "vip"));
+                                }
+                                else {
+                                    ChatNotice.info(player, Component.text("Dostupné kity: default, vip"));
+                                }
                             } else {
-                                ChatNotice.info(player, Component.text("Dostupné kity: default"));
+                                if (cooldowns1.containsKey(player.getName())){
+                                    ChatNotice.info(player, Component.text("Dostupné kity: "+ChatColor.STRIKETHROUGH+"default"));
+                                }
+                                else {
+                                    ChatNotice.info(player, Component.text("Dostupné kity: default"));
+                                }
                             }
                         }
                         else if (args.length == 1){

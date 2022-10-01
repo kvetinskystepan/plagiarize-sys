@@ -162,8 +162,12 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         if(!player.hasPlayedBefore()){
             player.teleport(new Location(Bukkit.getWorld("Spawn"), 22.5, 50, 39.5, 90, 0));
             Kits.defaultKit(player);
-            if(player.hasPermission("survival.kits.vip"))
+            Command.cooldowns1.put(player.getName(), System.currentTimeMillis());
+            if(player.hasPermission("survival.kits.vip")){
                 Kits.vipKit(player);
+                Command.cooldowns2.put(player.getName(), System.currentTimeMillis());
+            }
+
 
             Firework fw = player.getWorld().spawn(player.getLocation(), Firework.class);
             FireworkMeta fwm = fw.getFireworkMeta();

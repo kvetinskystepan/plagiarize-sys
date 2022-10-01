@@ -97,7 +97,7 @@ public class CommandMechanic implements Listener {
                     ChatNotice.warning(target, Component.text("Byl jsi odpojen. Tvůj účet byl permanentně zabanován."));
 
                     ProxyServer.getInstance().getScheduler().schedule(ProxySystem.getStaticInstance(), () -> {
-                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "ban " + target.getName() + " Suspension");
+                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "ban " + target.getName() + " Permanent");
                     }, 8, TimeUnit.SECONDS).getId();
                 }
             });

@@ -161,12 +161,12 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     }
 
 
-    @EventHandler
+    /*@EventHandler
     public void onPlayer(PlayerCommandSendEvent e){
         final var allowedCommands = allowedCommands480;
         final var sentCommands = e.getCommands();
         sentCommands.retainAll(allowedCommands);
-    }
+    }*/
 
     @EventHandler
     public void interact(PlayerInteractEvent e){
@@ -197,7 +197,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         }
     }
 
-    @EventHandler
+    /*@EventHandler
     public void command(PlayerCommandPreprocessEvent e){
         Player player = e.getPlayer();
         final var commandMessage = e.getMessage().toLowerCase();
@@ -211,7 +211,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             e.setCancelled(true);
             ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš oprávnění."));
         }
-    }
+    }*/
 
     @EventHandler
     public void onTnT(final EntityExplodeEvent e) {

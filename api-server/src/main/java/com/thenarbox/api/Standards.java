@@ -998,6 +998,9 @@ public class Standards {
                             ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
                         }
                     }
+                    else {
+                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
+                    }
                     return true;
                 }
             });

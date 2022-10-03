@@ -162,6 +162,24 @@ public class Command implements Listener {
         }
 
         {
+            Bukkit.getCommandMap().register("survival", new org.bukkit.command.Command("odmeny") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof Player))
+                        return false;
+
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("odmeny")){
+                        player.performCommand("rewards");
+                    }
+
+                    return false;
+                }
+            });
+
+        }
+
+        {
             Bukkit.getCommandMap().register("survival", new org.bukkit.command.Command("menu") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {

@@ -21,7 +21,7 @@ import java.util.List;
 public class Menus implements Listener {
 
     static Inventory inv1, inv2, inv3;
-    static List<String> lore1, lore2, lore3, lore4, lore5;
+    static List<String> lore1, lore2, lore3, lore4, lore5, lore6, lore7, lore8, lore9, lore10;
 
 
     // hex: #769544, #0BD35B
@@ -53,7 +53,7 @@ public class Menus implements Listener {
 
     // HLASOVACI MENU
     public static void voteMenuMain(Player player){
-        lore3 = new ArrayList<>();
+        lore5 = new ArrayList<>();
         lore4 = new ArrayList<>();
         inv2 = Bukkit.createInventory(null, 27, hlasovaciMenuMain);
 
@@ -61,12 +61,12 @@ public class Menus implements Listener {
         ItemStack item1 = new ItemStack(Material.CLOCK);
         ItemMeta itemMeta1 = item1.getItemMeta();
         itemMeta1.setDisplayName(hlasovaniOCase);
-        lore3.add(" ");
-        lore3.add(ChatColor.WHITE + "Po kliknutí zahájíš hlasování");
-        lore3.add(ChatColor.WHITE + "o změně času na den!");
-        lore3.add(" ");
-        lore3.add(ChatColor.DARK_GRAY + "Pokud již den je, hlasovat nemůžeš.");
-        itemMeta1.setLore(lore3);
+        lore5.add(" ");
+        lore5.add(ChatColor.WHITE + "Po kliknutí zahájíš hlasování");
+        lore5.add(ChatColor.WHITE + "o změně času na den!");
+        lore5.add(" ");
+        lore5.add(ChatColor.DARK_GRAY + "Pokud již den je, hlasovat nemůžeš.");
+        itemMeta1.setLore(lore5);
         item1.setItemMeta(itemMeta1);
 
 
@@ -114,17 +114,17 @@ public class Menus implements Listener {
         itemMeta3.setDisplayName(residence);
         lore3 = new ArrayList<>();
         lore3.add(ChatColor.GRAY + " ");
-        if (player.hasPermission("residence.group.default")){
-            lore3.add(ChatColor.WHITE + "Maximální rozloha: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&41&x&6&4&9&f&4&80&x&5&2&a&a&4&c0&x&4&1&b&4&5&0x&x&2&f&b&e&5&31&x&1&d&c&9&5&70&x&0&b&d&3&5&b0"));
-            lore3.add(ChatColor.WHITE + "Počet residencí: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&43"));
-            lore3.add(ChatColor.WHITE + "Cena za blok: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&41") + " coin");
-            lore3.add(ChatColor.WHITE + "Změna zprávy residence: " + ChatColor.translateAlternateColorCodes('&', "&4&l✖"));
-        }
-        else if (player.hasPermission("residence.group.team")){
+        if (player.hasPermission("residence.group.team")){
             lore3.add(ChatColor.WHITE + "Maximální rozloha: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&41&x&6&9&9&d&4&70&x&5&b&a&5&4&a0&x&4&e&a&c&4&d0&x&4&1&b&4&5&0x&x&3&3&b&c&5&21&x&2&6&c&4&5&50&x&1&8&c&b&5&80&x&0&b&d&3&5&b0"));
             lore3.add(ChatColor.WHITE + "Počet residencí: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&410"));
             lore3.add(ChatColor.WHITE + "Cena za blok: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&40.7") + " coin");
             lore3.add(ChatColor.WHITE + "Změna zprávy residence: " + ChatColor.translateAlternateColorCodes('&', "&a&l✔"));
+        }
+        else if (player.hasPermission("residence.group.default")){
+            lore3.add(ChatColor.WHITE + "Maximální rozloha: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&41&x&6&4&9&f&4&80&x&5&2&a&a&4&c0&x&4&1&b&4&5&0x&x&2&f&b&e&5&31&x&1&d&c&9&5&70&x&0&b&d&3&5&b0"));
+            lore3.add(ChatColor.WHITE + "Počet residencí: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&43"));
+            lore3.add(ChatColor.WHITE + "Cena za blok: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&41") + " coin");
+            lore3.add(ChatColor.WHITE + "Změna zprávy residence: " + ChatColor.translateAlternateColorCodes('&', "&4&l✖"));
         }
         else {
             lore3.add(ChatColor.translateAlternateColorCodes('&', "&fBez práva na residenci &4&l✖"));
@@ -133,6 +133,76 @@ public class Menus implements Listener {
         itemMeta3.setLore(lore3);
         item3.setItemMeta(itemMeta3);
 
+        ItemStack item4 = new ItemStack(Material.BLACK_BED, 1);
+        ItemMeta itemMeta4 = item4.getItemMeta();
+        itemMeta4.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4&lD&x&6&1&a&1&4&9&lO&x&4&b&a&e&4&d&lM&x&3&6&b&a&5&2&lO&x&2&0&c&7&5&6&lV&x&0&b&d&3&5&b&lY"));
+        lore6 = new ArrayList<>();
+        lore6.add(ChatColor.GRAY + " ");
+        lore6.add(ChatColor.WHITE + "Seznam svých domovů si ");
+        lore6.add(ChatColor.WHITE + "zobrazíš pomocí " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4/&x&6&1&a&1&4&9h&x&4&b&a&e&4&do&x&3&6&b&a&5&2m&x&2&0&c&7&5&6e&x&0&b&d&3&5&bs"));
+        lore6.add(ChatColor.GRAY + " ");
+        lore6.add(ChatColor.WHITE + "Pokud ale žádný domov ještě nemáš ");
+        lore6.add(ChatColor.WHITE + "můžeš si ho založit pomocí ");
+        lore6.add(ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4/&x&6&c&9&b&4&6h&x&6&3&a&0&4&8o&x&5&9&a&6&4&am&x&4&f&a&c&4&ce &x&4&5&b&1&4&e<&x&3&c&b&7&5&1n&x&3&2&b&c&5&3á&x&2&8&c&2&5&5z&x&1&e&c&8&5&7e&x&1&5&c&d&5&9v&x&0&b&d&3&5&b>"));
+        itemMeta4.setLore(lore6);
+        item4.setItemMeta(itemMeta4);
+
+        ItemStack item5 = new ItemStack(Material.GOLD_INGOT, 1);
+        ItemMeta itemMeta5 = item5.getItemMeta();
+        itemMeta5.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4&lM&x&6&b&9&b&4&6&lĚ&x&6&1&a&1&4&9&lN&x&5&6&a&8&4&b&lA &x&4&b&a&e&4&d&lA &x&4&1&b&4&5&0&lP&x&3&6&b&a&5&2&lL&x&2&b&c&0&5&4&lA&x&2&0&c&7&5&6&lT&x&1&6&c&d&5&9&lB&x&0&b&d&3&5&b&lY"));
+        lore7 = new ArrayList<>();
+        lore7.add(ChatColor.GRAY + " ");
+        lore7.add(ChatColor.WHITE + "Náš server používá jako měnu ");
+        lore7.add(ChatColor.WHITE + "coiny se kterýma můžeš nakupovat ");
+        lore7.add(ChatColor.WHITE + "v obchodě ale také za ně platit");
+        lore7.add(ChatColor.WHITE + "residence a další.");
+        lore7.add(ChatColor.GRAY + " ");
+        lore7.add(ChatColor.WHITE + "Vydělat si peníze můžeš například");
+        lore7.add(ChatColor.WHITE + "pomocí /prace ");
+        lore7.add(ChatColor.WHITE + " ");
+        lore7.add(ChatColor.WHITE + "Převody mezi hráči můžeš provádět");
+        lore7.add(ChatColor.WHITE + "pomocí " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4/&x&7&2&9&7&4&5c&x&6&e&9&a&4&6o&x&6&a&9&c&4&7i&x&6&6&9&f&4&8n&x&6&1&a&1&4&8s &x&5&d&a&3&4&9c&x&5&9&a&6&4&ao&x&5&5&a&8&4&bn&x&5&1&a&a&4&cv&x&4&d&a&d&4&de&x&4&9&a&f&4&er&x&4&5&b&2&4&ft &x&4&1&b&4&5&0<&x&3&c&b&6&5&0h&x&3&8&b&9&5&1r&x&3&4&b&b&5&2á&x&3&0&b&e&5&3č&x&2&c&c&0&5&4> &x&2&8&c&2&5&5<&x&2&4&c&5&5&6č&x&2&0&c&7&5&7á&x&1&b&c&9&5&7s&x&1&7&c&c&5&8t&x&1&3&c&e&5&9k&x&0&f&d&1&5&aa&x&0&b&d&3&5&b>"));
+        itemMeta5.setLore(lore7);
+        item5.setItemMeta(itemMeta5);
+
+        ItemStack item6 = new ItemStack(Material.NETHERRACK, 1);
+        ItemMeta itemMeta6 = item6.getItemMeta();
+        itemMeta6.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4&lE&x&6&a&9&c&4&7&lN&x&5&e&a&3&4&9&lD &x&5&2&a&a&4&c&lA &x&4&6&b&1&4&e&lN&x&3&b&b&7&5&1&lE&x&2&f&b&e&5&3&lT&x&2&3&c&5&5&6&lH&x&1&7&c&c&5&8&lE&x&0&b&d&3&5&b&lR"));
+        lore8 = new ArrayList<>();
+        lore8.add(ChatColor.GRAY + " ");
+        lore8.add(ChatColor.WHITE + "Do endu nebo netheru se dostaneš");
+        lore8.add(ChatColor.WHITE + "pouze pomocí portálů které jsou");
+        lore8.add(ChatColor.WHITE + "v normální přírodě. ");
+        lore8.add(ChatColor.WHITE + " ");
+        lore8.add(ChatColor.WHITE + "END a NETHER se resetuje jednou za měsíc");
+        lore8.add(ChatColor.WHITE + "Rozloha těchto světů je 5000x5000");
+        lore8.add(ChatColor.WHITE + "Díky resetováním těchto světů můžeme");
+        lore8.add(ChatColor.WHITE + "zaručit, že i nováčci mohou získat");
+        lore8.add(ChatColor.WHITE + "všechny materiály z endu nebo netheru.");
+        itemMeta6.setLore(lore8);
+        item6.setItemMeta(itemMeta6);
+
+        ItemStack item7 = new ItemStack(Material.NAME_TAG, 1);
+        ItemMeta itemMeta7 = item7.getItemMeta();
+        itemMeta7.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4&lK&x&5&2&a&a&4&c&lI&x&2&f&b&e&5&3&lT&x&0&b&d&3&5&b&lY"));
+        lore9 = new ArrayList<>();
+        lore9.add(ChatColor.GRAY + " ");
+        lore9.add(ChatColor.WHITE + "Na serveru máme aktuálně k dispozici");
+        lore9.add(ChatColor.WHITE + "2 kity. Dostupnost ověříš pomocí " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4/&x&5&b&a&5&4&ak&x&4&1&b&4&5&0i&x&2&6&c&4&5&5t&x&0&b&d&3&5&bs"));
+        itemMeta7.setLore(lore9);
+        item7.setItemMeta(itemMeta7);
+
+        ItemStack item8 = new ItemStack(Material.EMERALD, 1);
+        ItemMeta itemMeta8 = item8.getItemMeta();
+        itemMeta8.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4&lO&x&6&1&a&1&4&9&lB&x&4&b&a&e&4&d&lC&x&3&6&b&a&5&2&lH&x&2&0&c&7&5&6&lO&x&0&b&d&3&5&b&lD"));
+        lore10 = new ArrayList<>();
+        lore10.add(ChatColor.GRAY + " ");
+        lore10.add(ChatColor.WHITE + "Na serveru máme tržnici s vesničany");
+        lore10.add(ChatColor.WHITE + "kteří prodávají různé věci. ");
+        lore10.add(ChatColor.WHITE + "Do obchodu se dostaneš pomocí");
+        lore10.add(ChatColor.WHITE + "příkazu " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4/&x&6&4&9&f&4&8o&x&5&2&a&a&4&cb&x&4&1&b&4&5&0c&x&2&f&b&e&5&3h&x&1&d&c&9&5&7o&x&0&b&d&3&5&bd"));
+        itemMeta8.setLore(lore10);
+        item8.setItemMeta(itemMeta8);
 
 
 
@@ -146,6 +216,12 @@ public class Menus implements Listener {
         inv1.setItem(20, item1);
         inv1.setItem(4, item2);
         inv1.setItem(21, item3);
+        inv1.setItem(22, item4);
+        inv1.setItem(23, item5);
+        inv1.setItem(24, item6);
+        inv1.setItem(30, item7);
+        inv1.setItem(32, item8);
+
         player.openInventory(inv1);
     }
 

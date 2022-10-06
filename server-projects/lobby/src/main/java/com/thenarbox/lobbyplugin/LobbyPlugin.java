@@ -1,6 +1,5 @@
 package com.thenarbox.lobbyplugin;
 
-import com.google.common.io.ByteStreams;
 import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
@@ -8,8 +7,6 @@ import com.thenarbox.api.ranks.Rank;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.api.PlayerChangeServerEvent;
 import com.thenarbox.lobbyplugin.services.Menus;
-import io.papermc.paper.event.player.AsyncChatEvent;
-import io.papermc.paper.event.player.ChatEvent;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -31,12 +28,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.messaging.PluginMessageListener;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 //#9F47C8
 //#F092FF
@@ -47,6 +40,9 @@ import java.util.TimerTask;
 public class LobbyPlugin extends JavaPlugin implements Listener {
 
     ArrayList<String> allowedCommands480 = new ArrayList<>();
+
+    @Getter
+    private static LobbyPlugin instance;
 
     @Getter
     Location location = null;
@@ -61,6 +57,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             Standards.proxyLinks(this);
         }
 
+        instance = this;
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         PlayerChangeServerEvent.instance = this;
         location = new Location(Bukkit.getWorld("world"), 390.5, 89, 209.5, -90, 0);
@@ -82,6 +79,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
         allowedCommands480 = AllowedCommands.initMysql();
         Standards.View.tab(this);
+        allowedCommands480.add("friends");
         log.error(" ");
         log.error("Inicializace proběhla úspěšně.");
         log.error(" ");
@@ -161,12 +159,12 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
     }
 
 
-    /*@EventHandler
+    @EventHandler
     public void onPlayer(PlayerCommandSendEvent e){
         final var allowedCommands = allowedCommands480;
         final var sentCommands = e.getCommands();
         sentCommands.retainAll(allowedCommands);
-    }*/
+    }
 
     @EventHandler
     public void interact(PlayerInteractEvent e){
@@ -197,7 +195,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         }
     }
 
-    /*@EventHandler
+    @EventHandler
     public void command(PlayerCommandPreprocessEvent e){
         Player player = e.getPlayer();
         final var commandMessage = e.getMessage().toLowerCase();
@@ -211,7 +209,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
             e.setCancelled(true);
             ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš oprávnění."));
         }
-    }*/
+    }
 
     @EventHandler
     public void onTnT(final EntityExplodeEvent e) {
@@ -241,7 +239,7 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlace(BlockPlaceEvent e){
-        e.setCancelled(true);
+       e.setCancelled(true);
     }
 
     @EventHandler

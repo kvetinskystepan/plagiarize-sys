@@ -93,14 +93,14 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
 
     // CAFF74
     // 0DFF6E
-   @EventHandler
+
+  /* @EventHandler
     public void onPlayer(PlayerCommandSendEvent e){
         final var allowedCommands = allowedCommands32;
         final var sentCommands = e.getCommands();
         sentCommands.retainAll(allowedCommands);
         sentCommands.remove("cmil");
         sentCommands.remove("rewards");
-        sentCommands.remove("shop");
     }
 
     @EventHandler
@@ -117,7 +117,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
             e.setCancelled(true);
             ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš oprávnění."));
         }
-    }
+    }*/
 
     @EventHandler
     public void chat(AsyncPlayerChatEvent e){

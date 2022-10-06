@@ -52,8 +52,8 @@ public class SpawnService implements Listener {
     public void onFallDamage(EntityDamageEvent e) {
         if ((e.getEntity() instanceof Player player)){
             player = (Player)e.getEntity();
-            if(player.getWorld().getName().equals("Spawn"))
-                e.setCancelled(true);
+            //if(player.getWorld().getName().equals("Spawn"))
+              //  e.setCancelled(true);
         }
     }
 
@@ -69,8 +69,8 @@ public class SpawnService implements Listener {
     public void noPvP(EntityDamageByEntityEvent e) {
         if ((e.getEntity() instanceof Player player)){
             player = (Player)e.getEntity();
-            if(player.getWorld().getName().equals("Spawn"))
-                e.setCancelled(true);
+         //   if(player.getWorld().getName().equals("Spawn"))
+          //      e.setCancelled(true);
         }
     }
 
@@ -78,7 +78,7 @@ public class SpawnService implements Listener {
     public void onBlockPlace(BlockPlaceEvent e) {
         Player player = e.getPlayer();
         if (player.getWorld().getName().equals("Spawn")) {
-            e.setCancelled(true);
+      //      e.setCancelled(true);
         }
     }
 
@@ -86,7 +86,7 @@ public class SpawnService implements Listener {
     public void onBlockBreak(BlockBreakEvent e) {
         Player player = e.getPlayer();
         if (player.getWorld().getName().equals("Spawn")) {
-            e.setCancelled(true);
+       //     e.setCancelled(true);
         }
     }
 
@@ -102,7 +102,7 @@ public class SpawnService implements Listener {
     public void onInteract(PlayerInteractEvent e){
         Player player = e.getPlayer();
         if (player.getWorld().getName().equals("Spawn")) {
-            e.setCancelled(true);
+         //   e.setCancelled(true);
         }
     }
 

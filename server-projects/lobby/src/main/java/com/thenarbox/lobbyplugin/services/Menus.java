@@ -1,8 +1,11 @@
 package com.thenarbox.lobbyplugin.services;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.PlayerChangeServerEvent;
 import com.thenarbox.api.services.Server;
+import com.thenarbox.lobbyplugin.LobbyPlugin;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -26,6 +29,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -44,6 +48,8 @@ public class Menus
     static String obchodDoplnky = "&x&9&f&4&7&c&8O&x&a&5&4&d&c&cb&x&a&b&5&3&d&0c&x&b&2&5&8&d&5h&x&b&8&5&e&d&9o&x&b&e&6&4&d&dd &x&c&4&6&a&e&1s &x&c&b&6&f&e&6D&x&d&1&7&5&e&ao&x&d&7&7&b&e&ep&x&d&d&8&1&f&2l&x&e&4&8&6&f&7ň&x&e&a&8&c&f&bk&x&f&0&9&2&f&fy";
 
     static String obchodUrovne = "&x&9&f&4&7&c&8O&x&a&5&4&d&c&cb&x&a&b&5&3&d&0h&x&b&2&5&8&d&5o&x&b&8&5&e&d&9d &x&b&e&6&4&d&ds &x&c&4&6&a&e&1Ú&x&c&b&6&f&e&6r&x&d&1&7&5&e&ao&x&d&7&7&b&e&ev&x&d&d&8&1&f&2n&x&e&4&8&6&f&7ě&x&e&a&8&c&f&bm&x&f&0&9&2&f&fi";
+
+    static String passwordChange = "&x&9&f&4&7&c&8Z&x&a&8&4&f&c&em&x&b&1&5&8&d&4ě&x&b&a&6&0&d&an&x&c&3&6&8&e&0a &x&c&c&7&1&e&7h&x&d&5&7&9&e&de&x&d&e&8&1&f&3s&x&e&7&8&a&f&9l&x&f&0&9&2&f&fa";
 
     // SHOP MENU
 
@@ -249,6 +255,7 @@ public class Menus
 
     static String name = ChatColor.translateAlternateColorCodes('&', "&x&9&f&4&7&c&8H&x&a&8&4&f&c&el&x&b&1&5&8&d&4a&x&b&a&6&0&d&av&x&c&3&6&8&e&0n&x&c&c&7&1&e&7í &x&d&5&7&9&e&dM&x&d&e&8&1&f&3e&x&e&7&8&a&f&9n&x&f&0&9&2&f&fu");
 
+    static String friendsSettings = "&x&9&f&4&7&c&8N&x&a&3&4&b&c&ba&x&a&7&4&e&c&ds&x&a&b&5&2&d&0t&x&a&e&5&5&d&2a&x&b&2&5&9&d&5v&x&b&6&5&c&d&8e&x&b&a&6&0&d&an&x&b&e&6&4&d&dí &x&c&2&6&7&e&0s&x&c&6&6&b&e&2y&x&c&9&6&e&e&5s&x&c&d&7&2&e&7t&x&d&1&7&5&e&aé&x&d&5&7&9&e&dm&x&d&9&7&d&e&fu &x&d&d&8&0&f&2p&x&e&1&8&4&f&5ř&x&e&4&8&7&f&7á&x&e&8&8&b&f&at&x&e&c&8&e&f&ce&x&f&0&9&2&f&fl";
     public static void mainMenu(Player player, Plugin plugin)
     {
         String status = PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:32002%");
@@ -418,9 +425,9 @@ public class Menus
         lore9 = new ArrayList<>();
         ItemStack item = new ItemStack(Material.TRIPWIRE_HOOK, 1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lZměna hesla"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', passwordChange));
         lore9.add(ChatColor.GRAY + " ");
-        lore9.add(ChatColor.GRAY + "Klikni pro změnu hesla");
+        lore9.add(ChatColor.DARK_GRAY + "Klikni pro změnu hesla");
         meta.setLore(lore9);
         item.setItemMeta(meta);
 
@@ -432,9 +439,9 @@ public class Menus
         lore15 = new ArrayList<>();
         ItemStack item1 = new ItemStack(Material.BOOK, 1);
         ItemMeta meta1 = item1.getItemMeta();
-        meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lNastavení systému přátel"));
+        meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', friendsSettings));
         lore15.add(ChatColor.GRAY + " ");
-        lore15.add(ChatColor.GRAY + "Klikni pro nastavení systému přátel");
+        lore15.add(ChatColor.DARK_GRAY + "Klikni pro nastavení systému přátel");
         item1.setItemMeta(meta1);
         item1.setLore(lore15);
 
@@ -442,24 +449,6 @@ public class Menus
         inv2.setItem(12, item1);
         inv2.setItem(11, item);
         player.openInventory(inv2);
-    }
-
-
-    // FRIENDS SETTINGS
-
-
-
-    public static void friendsSettings(Player player){
-        inv5 = Bukkit.createInventory(null, 9, "Nastavení systému přátel");
-
-        ItemStack item5 = new ItemStack(Material.ARROW, 1);
-        ItemMeta meta5 = item5.getItemMeta();
-        meta5.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lZpět do nastavení"));
-        item5.setItemMeta(meta5);
-
-        inv5.setItem(8, item5);
-
-        player.openInventory(inv5);
     }
 
 
@@ -494,8 +483,8 @@ public class Menus
             }
 
             if (e.getCurrentItem().getType() == Material.BOOK){
-                player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 1);
-                friendsSettings(player);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                player.closeInventory();
                 return;
             }
 

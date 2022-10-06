@@ -304,6 +304,28 @@ public class Standards {
         }
 
         {
+            Bukkit.getCommandMap().register("survival", new Command("shop") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("shop")) {
+                        Location shop = new Location(Bukkit.getWorld("Spawn"), -168.5, 51, 21.5, 125, 0);
+                        player.teleport(shop);
+                        ChatNotice.success(player, Component.text("Byl jsi teleportován do obchodu."));
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+                        player.playEffect(player.getLocation(), Effect.ENDER_SIGNAL, 1);
+                    }
+                    return false;
+                }
+            });
+
+
+        }
+
+        {
             Bukkit.getCommandMap().register("survival", new Command("obchod") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {

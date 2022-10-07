@@ -16,8 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 
 public class Voting implements Listener {
 

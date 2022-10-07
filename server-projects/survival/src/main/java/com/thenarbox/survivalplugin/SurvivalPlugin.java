@@ -69,9 +69,6 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         getServer().getPluginManager()
                 .registerEvents(new Voting(), this);
         Voting.votingCmds();
-
-        warningSystem();
-
         allowedCommands32 = AllowedCommands.initSurvivalMysql();
 
         log.error(" ");
@@ -81,20 +78,10 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
 
     }
 
-    public void warningSystem(){
-        Bukkit.getScheduler().runTaskTimer(this, () -> {
-            for(Player player : Bukkit.getOnlinePlayers()){
-                if(player.getWorld().getName().equals("world")){
-                    ChatNotice.warning(player, Component.text("VAROVÁNÍ! Svět na kterém se nacházíte bude ke dni 13.9.2022 smazán a to z důvodu předgenerace nového světa pro otevření serveru 14.9.2022!"));
-                }
-            }
-        }, 0, 36000);
-    }
-
     // CAFF74
     // 0DFF6E
 
-  /* @EventHandler
+    @EventHandler
     public void onPlayer(PlayerCommandSendEvent e){
         final var allowedCommands = allowedCommands32;
         final var sentCommands = e.getCommands();
@@ -117,7 +104,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
             e.setCancelled(true);
             ChatNotice.error(player, Component.text("Na provedení tohoto příkazu nemáš oprávnění."));
         }
-    }*/
+    }
 
     @EventHandler
     public void chat(AsyncPlayerChatEvent e){

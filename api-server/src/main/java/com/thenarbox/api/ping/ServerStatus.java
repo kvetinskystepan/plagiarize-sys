@@ -25,6 +25,7 @@ public class ServerStatus {
                 cache.put(port, data);
                 return data;
             } catch (final IOException e) {
+                cache.remove(port);
                 return null;
             }
         });

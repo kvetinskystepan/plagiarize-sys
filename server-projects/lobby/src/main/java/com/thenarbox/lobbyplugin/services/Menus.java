@@ -1,9 +1,12 @@
 package com.thenarbox.lobbyplugin.services;
 
+import com.google.common.io.ByteStreams;
+import com.sun.tools.javac.Main;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.PlayerChangeServerEvent;
 import com.thenarbox.api.ping.ServerStatus;
 import com.thenarbox.api.services.Server;
+import com.thenarbox.lobbyplugin.LobbyPlugin;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -482,6 +485,10 @@ public class Menus
 
             if (e.getCurrentItem().getType() == Material.BOOK){
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                final var data = ByteStreams.newDataOutput();
+                data.writeUTF("ExecuteCommand");
+                data.writeUTF("friends settings");
+                player.sendPluginMessage(LobbyPlugin.getInstance(), "BungeeCord", data.toByteArray());
                 player.closeInventory();
                 return;
             }
@@ -589,7 +596,7 @@ public class Menus
             }
 
             if (e.getCurrentItem().getType() == Material.IRON_SWORD){
-                if ){
+                if (ServerStatus.cachedServerStatus(32003) != null){
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     PlayerChangeServerEvent.connect(player, "BoxFight");
                     player.closeInventory();

@@ -1,5 +1,6 @@
 package com.thenarbox.proxysystem;
 import com.thenarbox.proxysystem.listeners.CommandMechanic;
+import com.thenarbox.proxysystem.listeners.ProxyListener;
 import com.thenarbox.proxysystem.messages.PrivateMessages;
 import com.thenarbox.proxysystem.motd.Motd;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public final class ProxySystem extends Plugin implements Listener {
         ProxyServer.getInstance().getPluginManager().registerListener(this, new PrivateMessages());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new Motd());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new CommandMechanic());
+        ProxyServer.getInstance().getPluginManager().registerListener(this, new ProxyListener());
         CommandMechanic.Commands();
 
         ProxyServer.getInstance().getScheduler().schedule(this, new Runnable() {

@@ -38,7 +38,9 @@ public class PlayerChangeServerEvent extends Event implements Cancellable {
             try {
                 out.writeUTF("Connect");
                 out.writeUTF(serverName);
-            } catch(IOException ex) {}
+            } catch(IOException ex) {
+                return;
+            }
             player.sendPluginMessage(instance, "BungeeCord", b.toByteArray());
         }
     }

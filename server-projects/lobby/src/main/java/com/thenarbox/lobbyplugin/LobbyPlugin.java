@@ -3,6 +3,7 @@ package com.thenarbox.lobbyplugin;
 import com.thenarbox.api.AllowedCommands;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
+import com.thenarbox.api.ping.ServerStatus;
 import com.thenarbox.api.ranks.Rank;
 import com.thenarbox.lobbyplugin.extenders.DoubleJump;
 import com.thenarbox.api.PlayerChangeServerEvent;
@@ -76,6 +77,12 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
                 .registerEvents(new DoubleJump(), this);
         getServer().getPluginManager()
                 .registerEvents(new Menus(), this);
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            ServerStatus.queryServerStatus("172.18.0.1", 30002);
+            ServerStatus.queryServerStatus("172.18.0.1", 30003);
+            ServerStatus.queryServerStatus("172.18.0.1", 64000);
+        }, 0, 20*60*5);
 
         allowedCommands480 = AllowedCommands.initMysql();
         Standards.View.tab(this);

@@ -78,11 +78,6 @@ public class LobbyPlugin extends JavaPlugin implements Listener {
         getServer().getPluginManager()
                 .registerEvents(new Menus(), this);
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-            ServerStatus.queryServerStatus("172.18.0.1", 30002);
-            ServerStatus.queryServerStatus("172.18.0.1", 30003);
-            ServerStatus.queryServerStatus("172.18.0.1", 64000);
-        }, 0, 20*60*5);
 
         allowedCommands480 = AllowedCommands.initMysql();
         Standards.View.tab(this);

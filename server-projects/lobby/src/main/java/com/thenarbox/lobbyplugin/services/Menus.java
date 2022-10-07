@@ -570,43 +570,32 @@ public class Menus
                 return;
             }
 
-            if (e.getCurrentItem().getType() == Material.GRASS_BLOCK){
-                if (ServerStatus.cachedServerStatus(32002) != null) {
-                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                    PlayerChangeServerEvent.connect(player, "Survival");
-                    player.closeInventory();
-                }
-                else {
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
-                    player.closeInventory();
-                    ChatNotice.error(player, Component.text("Server je offline!"));
-                }
+            final String name;
+            final int port;
+            switch (e.getCurrentItem().getType()) {
+                case GRASS_BLOCK -> { name = "Survival"; port = 32002; }
+                case WOODEN_AXE ->  { name = "Build";    port = 64000; }
+                case IRON_SWORD ->  { name = "BoxFight"; port = 32003; }
+                default -> { name = null; port = -1; }
             }
-            if (e.getCurrentItem().getType() == Material.WOODEN_AXE){
-                if (ServerStatus.cachedServerStatus(64000) != null){
-                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                    PlayerChangeServerEvent.connect(player, "Build");
-                    player.closeInventory();
-                }
-                else {
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
-                    player.closeInventory();
-                    ChatNotice.error(player, Component.text("Server je offline!"));
-                }
-            }
+            if(port == -1)
+                return;
 
-            if (e.getCurrentItem().getType() == Material.IRON_SWORD){
-                if (ServerStatus.cachedServerStatus(32003) != null){
-                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                    PlayerChangeServerEvent.connect(player, "BoxFight");
-                    player.closeInventory();
+            ServerStatus.queryServerStatus("172.18.0.1", port).thenAccept(result -> {
+                if(result != null) {
+                    Bukkit.getScheduler().runTask(LobbyPlugin.getInstance(), () -> {
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                        PlayerChangeServerEvent.connect(player, name);
+                        player.closeInventory();
+                    });
+                } else {
+                    Bukkit.getScheduler().runTask(LobbyPlugin.getInstance(), () -> {
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                        ChatNotice.error(player, Component.text("Server je momentálně nedostupný."));
+                        player.closeInventory();
+                    });
                 }
-                else {
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
-                    player.closeInventory();
-                    ChatNotice.error(player, Component.text("Server je offline!"));
-                }
-            }
+            });
         }
     }
 }

@@ -1,11 +1,9 @@
 package com.thenarbox.lobbyplugin.services;
 
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
 import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.PlayerChangeServerEvent;
+import com.thenarbox.api.ping.ServerStatus;
 import com.thenarbox.api.services.Server;
-import com.thenarbox.lobbyplugin.LobbyPlugin;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -29,11 +27,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Menus
         implements Listener {
@@ -176,6 +171,7 @@ public class Menus
 
     // MAIN MENU
 
+
     public static void updateInventory(final Player player, final Plugin plugin) {
         String status = PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:32002%");
         String status1 = PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:64000%");
@@ -205,6 +201,7 @@ public class Menus
                 }
                 meta.setLore(lore);
                 item.setItemMeta(meta);
+                inv.setItem(22, item);
 
 
                 lore20.clear();
@@ -222,7 +219,6 @@ public class Menus
 
                 if (player.hasPermission("proxyserver.build.join"))
                     inv.setItem(36, item1);
-                inv.setItem(21, item);
 
                 lore21.clear();
                 lore21.add(" ");
@@ -236,6 +232,7 @@ public class Menus
                 meta3.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 meta3.setLore(lore21);
                 item3.setItemMeta(meta3);
+                inv.setItem(21, item3);
 
 
             }
@@ -341,8 +338,8 @@ public class Menus
         inv.setItem(4, item2);
         if (player.hasPermission("proxyserver.build.join"))
             inv.setItem(36, item1);
-        inv.setItem(21, item);
-        inv.setItem(22, item3);
+        inv.setItem(21, item3);
+        inv.setItem(22, item);
         inv.setItem(23, item4);
         player.openInventory(inv);
         updateInventory(player, plugin);
@@ -456,6 +453,7 @@ public class Menus
 
 
 
+
     @EventHandler
     public void InventoryClickEvent(InventoryClickEvent e){
         Player player = (Player) e.getWhoClicked();
@@ -566,7 +564,7 @@ public class Menus
             }
 
             if (e.getCurrentItem().getType() == Material.GRASS_BLOCK){
-                if (!Server.status("172.18.0.1", 32002).equals(ChatColor.RED + "Offline")){
+                if (ServerStatus.cachedServerStatus(32002) != null) {
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     PlayerChangeServerEvent.connect(player, "Survival");
                     player.closeInventory();
@@ -578,7 +576,7 @@ public class Menus
                 }
             }
             if (e.getCurrentItem().getType() == Material.WOODEN_AXE){
-                if (!Server.status("172.18.0.1", 64000).equals(ChatColor.RED + "Offline")){
+                if (ServerStatus.cachedServerStatus(64000) != null){
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     PlayerChangeServerEvent.connect(player, "Build");
                     player.closeInventory();
@@ -591,7 +589,7 @@ public class Menus
             }
 
             if (e.getCurrentItem().getType() == Material.IRON_SWORD){
-                if (!Server.status("172.18.0.1", 32003).equals(ChatColor.RED + "Offline")){
+                if ){
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     PlayerChangeServerEvent.connect(player, "BoxFight");
                     player.closeInventory();

@@ -1,4 +1,4 @@
-package com.thenarbox.api.ping;
+package com.thenarbox.api.ping.mcping;
 
 import com.google.gson.Gson;
 
@@ -18,8 +18,8 @@ public class MinecraftPing {
      * @param hostname - a valid String hostname
      * @return {@link MinecraftPingReply}
      */
-    public MinecraftPingReply getPing(final String hostname) throws IOException {
-        return this.getPing(new MinecraftPingOptions().setHostname(hostname));
+    public static MinecraftPingReply getPing(final String hostname) throws IOException {
+        return getPing(new MinecraftPingOptions().setHostname(hostname));
     }
 
     /**
@@ -28,7 +28,7 @@ public class MinecraftPing {
      * @param options - a filled instance of {@link MinecraftPingOptions}
      * @return {@link MinecraftPingReply}
      */
-    public MinecraftPingReply getPing(final MinecraftPingOptions options) throws IOException {
+    public static MinecraftPingReply getPing(final MinecraftPingOptions options) throws IOException {
         MinecraftPingUtil.validate(options.getHostname(), "Hostname cannot be null.");
         MinecraftPingUtil.validate(options.getPort(), "Port cannot be null.");
 

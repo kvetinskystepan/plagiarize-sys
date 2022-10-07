@@ -1,4 +1,4 @@
-package com.thenarbox.api.ping;
+package com.thenarbox.api.ping.mcping;
 
 public class MinecraftPingOptions {
 

@@ -8,25 +8,17 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandException;
-import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -339,49 +331,6 @@ public class Standards {
                         ChatNotice.success(player, Component.text("Byl jsi teleportován do obchodu."));
                         player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                         player.playEffect(player.getLocation(), Effect.ENDER_SIGNAL, 1);
-                    }
-                    return false;
-                }
-            });
-
-
-        }
-
-        {
-            Bukkit.getCommandMap().register("survival", new Command("pay") {
-                @Override
-                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-                    if(!(sender instanceof Player)) {
-                        return true;
-                    }
-                    final Player player = (Player) sender;
-                    if (commandLabel.equalsIgnoreCase("pay")) {
-                        if (args.length == 2){
-                            Player target = Bukkit.getPlayer(args[0]);
-                            if (target != null){
-                                if (Integer.parseInt(args[1]) > 0){
-                                    String playerMoney = PlaceholderAPI.setPlaceholders(player, "%vault_eco_balance%");
-                                    if (Integer.parseInt(playerMoney) >= Integer.parseInt(args[1])){
-                                        getServer().dispatchCommand(getServer().getConsoleSender(), "money remove " + player.getName() + " " + args[1]);
-                                        getServer().dispatchCommand(getServer().getConsoleSender(), "money add " + target.getName() + " " + args[1]);
-                                        ChatNotice.success(player, Component.text("Odeslal jsi " + args[1] + " coinů hráči " + target.getName() + "."));
-                                        ChatNotice.info(target, Component.text("Obdržel jsi " + args[1] + " coinů od hráče " + player.getName() + "."));
-                                    }
-                                    else {
-                                        ChatNotice.error(player, Component.text("Nemáš dostatek coinů na účtu."));
-                                    }
-                                }
-                                else {
-                                    ChatNotice.error(player, Component.text("Musíš zadat číslo větší než 0."));
-                                }
-                            }
-                            else {
-                                ChatNotice.error(player, Component.text(ChatColor.WHITE + "Hráč " + args[0] + " není online."));
-                            }
-                        }
-                        else {
-                            ChatNotice.error(player, Component.text("Použití: /pay <hráč> <částka>"));
-                        }
                     }
                     return false;
                 }

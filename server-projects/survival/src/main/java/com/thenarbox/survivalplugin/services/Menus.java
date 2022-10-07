@@ -40,17 +40,6 @@ public class Menus implements Listener {
     static String priroda = ChatColor.translateAlternateColorCodes('&', "&x&0&b&d&3&5&b&lP&x&1&d&c&9&5&7&lŘ&x&2&f&b&e&5&3&lÍ&x&4&1&b&4&5&0&lR&x&5&2&a&a&4&c&lO&x&6&4&9&f&4&8&lD&x&7&6&9&5&4&4&lA");
     static String name1 = ChatColor.translateAlternateColorCodes('&', "&x&0&b&d&3&5&b&lH&x&1&7&c&c&5&8&lL&x&2&3&c&5&5&6&lA&x&2&f&b&e&5&3&lV&x&3&b&b&7&5&1&lN&x&4&6&b&1&4&e&lÍ &x&5&2&a&a&4&c&lM&x&5&e&a&3&4&9&lE&x&6&a&9&c&4&7&lN&x&7&6&9&5&4&4&lU");
 
-
-    // PRACOVNI MENU
-    public static void jobsMenu(Player player){
-        inv3 = Bukkit.createInventory(null, 45, jobsMenu);
-        
-
-
-        player.openInventory(inv3);
-    }
-
-
     // HLASOVACI MENU
     public static void voteMenuMain(Player player){
         lore5 = new ArrayList<>();

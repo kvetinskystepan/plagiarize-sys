@@ -1,4 +1,4 @@
-package com.thenarbox.api.ping;
+package com.thenarbox.api.ping.mcping;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

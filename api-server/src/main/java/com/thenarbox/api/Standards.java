@@ -242,7 +242,23 @@ public class Standards {
                     }
                     final Player player = (Player) sender;
                     if (commandLabel.equalsIgnoreCase("prace")) {
-                        player.performCommand("jobs join");
+                        player.performCommand("jobs:jobs join");
+                    }
+                    return false;
+                }
+            });
+        }
+
+        {
+            Bukkit.getCommandMap().register("survival", new Command("jobs") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if(!(sender instanceof Player)) {
+                        return true;
+                    }
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("jobs")) {
+                        player.performCommand("jobs:jobs join");
                     }
                     return false;
                 }

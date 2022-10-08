@@ -34,7 +34,7 @@ public class SpawnService implements Listener {
         spawn_world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
         spawn_world.setGameRule(GameRule.RANDOM_TICK_SPEED, 0);
 
-        spawn_world.setTime(6000);
+        spawn_world.setTime(18000);
         spawn_world.setStorm(false);
         spawn_world.setThundering(false);
         spawn_world.setWeatherDuration(0);

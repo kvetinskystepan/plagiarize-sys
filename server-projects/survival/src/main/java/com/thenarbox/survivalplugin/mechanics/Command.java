@@ -29,6 +29,26 @@ public class Command implements Listener {
     public static void commands(){
 
         {
+            Bukkit.getCommandMap().register("survival", new org.bukkit.command.Command("ec") {
+                @Override
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                    if (!(sender instanceof Player))
+                        return false;
+                    final Player player = (Player) sender;
+                    if (commandLabel.equalsIgnoreCase("ec")){
+                        if (player.hasPermission("survival.ec")){
+                            player.openInventory(player.getEnderChest());
+                        } else {
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
+                        }
+                    }
+                    return false;
+                }
+            });
+
+        }
+
+        {
             Bukkit.getCommandMap().register("survival", new org.bukkit.command.Command("hlasovani") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {

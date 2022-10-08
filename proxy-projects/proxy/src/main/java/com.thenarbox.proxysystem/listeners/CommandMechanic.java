@@ -17,6 +17,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 
+import java.io.Console;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 

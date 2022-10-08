@@ -1,14 +1,19 @@
 package com.thenarbox.survivalplugin.services;
 
 import org.bukkit.*;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.*;
 
 import static org.bukkit.Bukkit.getServer;
@@ -38,6 +43,40 @@ public class SpawnService implements Listener {
         spawn_world.setStorm(false);
         spawn_world.setThundering(false);
         spawn_world.setWeatherDuration(0);
+    }
+
+
+    @EventHandler
+    public void onPlayerAction(PlayerInteractEntityEvent event){
+        if (event.getPlayer().getLocation().getWorld().getName().equals("Spawn")){
+             event.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onFrames(BlockPhysicsEvent event){
+        if(event.getBlock().getType() == Material.ITEM_FRAME){
+            event.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onFrameBreak(HangingBreakByEntityEvent event){
+        if(event.getEntity().getLocation().getWorld().getName().equals("Spawn")){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onFramePlace(HangingPlaceEvent event) {
+        if(event.getEntity().getLocation().getWorld().getName().equals("Spawn")){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onFrame(HangingBreakEvent event){
+        if(event.getEntity().getLocation().getWorld().getName().equals("Spawn")){
+            event.setCancelled(true);
+        }
     }
 
 
@@ -72,13 +111,19 @@ public class SpawnService implements Listener {
             if(player.getWorld().getName().equals("Spawn"))
                e.setCancelled(true);
         }
+
+        if((e.getEntity() instanceof ItemFrame frame)){
+            frame = (ItemFrame)e.getEntity();
+            if(frame.getLocation().getWorld().getName().equals("Spawn"))
+                e.setCancelled(true);
+        }
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         Player player = e.getPlayer();
         if (player.getWorld().getName().equals("Spawn")) {
-            e.setCancelled(true);
+           e.setCancelled(true);
         }
     }
 

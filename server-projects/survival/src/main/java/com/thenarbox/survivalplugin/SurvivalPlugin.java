@@ -88,6 +88,7 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         sentCommands.retainAll(allowedCommands);
         sentCommands.remove("cmil");
         sentCommands.remove("rewards");
+        sentCommands.remove("jobs:jobs");
     }
 
     @EventHandler

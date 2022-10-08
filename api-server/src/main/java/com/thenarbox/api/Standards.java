@@ -250,22 +250,6 @@ public class Standards {
         }
 
         {
-            Bukkit.getCommandMap().register("survival", new Command("jobs") {
-                @Override
-                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-                    if(!(sender instanceof Player)) {
-                        return true;
-                    }
-                    final Player player = (Player) sender;
-                    if (commandLabel.equalsIgnoreCase("jobs")) {
-                        player.performCommand("jobs:jobs join");
-                    }
-                    return false;
-                }
-            });
-        }
-
-        {
             Bukkit.getCommandMap().register("survival", new Command("anvil") {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
@@ -516,10 +500,38 @@ public class Standards {
                         else if (plugin.getConfig().get("homes." + player.getUniqueId() + "." + args[0]) != null){
                             ChatNotice.error(player, Component.text("Tento název domova již existuje."));
                         }
+                        else if (player.hasPermission("survival.homes.team")){
+                            if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() >= 10){
+                                ChatNotice.error(player, Component.text("Týmový domov může mít maximálně 10 domovů."));
+                            }
+                            else {
+                                plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
+                                plugin.saveConfig();
+                                ChatNotice.success(player, Component.text("Domov s názvem "+args[0]+" byl úspěšně vytvořen."));
+                            }
+                        }
+                        else if (player.hasPermission("survival.homes.vip")){
+                            if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() >= 5){
+                                ChatNotice.error(player, Component.text("Můžeš mít maximálně 5 domovů."));
+                            }
+                            else {
+                                plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
+                                plugin.saveConfig();
+                                ChatNotice.success(player, Component.text("Domov s názvem "+args[0]+" byl úspěšně vytvořen."));
+                            }
+                        }
+                        else if (player.hasPermission("survival.homes.player"))  {
+                            if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() >= 3){
+                                ChatNotice.error(player, Component.text("Nemůžeš mít více než 3 domovy."));
+                            }
+                            else {
+                                plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
+                                plugin.saveConfig();
+                                ChatNotice.success(player, Component.text("Domov s názvem "+args[0]+" byl úspěšně vytvořen."));
+                            }
+                        }
                         else {
-                            plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
-                            plugin.saveConfig();
-                            ChatNotice.success(player, Component.text("Domov s názvem "+args[0]+" byl úspěšně vytvořen."));
+                            ChatNotice.error(player, Component.text("Nemáš oprávnění si založit domov."));
                         }
                     }
                     return false;
@@ -565,6 +577,9 @@ public class Standards {
                         if (args.length == 0){
                             ChatNotice.error(player, Component.text("Použití: /delhome <název>"));
                             player.performCommand("homes");
+                        }
+                        else if (plugin.getConfig().get("homes." + player.getUniqueId() + "." + args[0]) == null){
+                            ChatNotice.error(player, Component.text("Tento domov neexistuje."));
                         }
                         else {
                             plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], null);

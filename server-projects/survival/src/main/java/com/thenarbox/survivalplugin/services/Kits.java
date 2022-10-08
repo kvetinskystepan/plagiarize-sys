@@ -6,6 +6,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 public class Kits implements Listener {
 
+    public static void sponzorKit(Player player){
+
+    }
     public static void defaultKit(Player player){
         player.getInventory().addItem(new ItemStack(Material.STONE_PICKAXE));
         player.getInventory().addItem(new ItemStack(Material.BREAD, 20));

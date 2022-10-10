@@ -895,11 +895,6 @@ public class Standards {
                                 String message = ChatColor.RED + "-" + ChatColor.GRAY + " | " + ChatColor.GOLD + ColorAPI.process("<GRADIENT:34eb92>"+player.getName()+"</GRADIENT:34eb92>") + ChatColor.WHITE + " se odpojil.";
                                 for (Player p : Bukkit.getOnlinePlayers())
                                     p.sendMessage(message);
-                                for (final Player team : Bukkit.getOnlinePlayers()) {
-                                    if (!player.hasPermission("survival.vanish.info"))
-                                        continue;
-                                    ChatNotice.info(team, Component.text("Člen " + player.getName() + " si aktivoval vanish."));
-                                }
                                 player.setGameMode(GameMode.SURVIVAL);
                                 player.setAllowFlight(true);
                                 player.setFlying(true);

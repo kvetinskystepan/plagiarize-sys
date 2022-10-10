@@ -127,11 +127,6 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
             return;
         }
         Player player = e.getPlayer();
-        if (!whitelist.contains(player.getName())){
-            player.kickPlayer(ChatColor.RED + "Přístup na server byl zamítnut \n \n" + ChatColor.WHITE + "Herní jméno: " + ChatColor.GOLD + player.getName() + "\n" + ChatColor.WHITE + "UUID: " + ChatColor.GOLD + player.getUniqueId() + "\n" + ChatColor.WHITE + "IP: " + ChatColor.GOLD + player.getAddress().getAddress().getHostAddress());
-            log.error("Hráč " + player.getName() + " byl vyhozen protože není na seznamu povolených hráčů");
-            return;
-        }
         player.hidePlayer(player);
         Bukkit.getOnlinePlayers().forEach(online -> {
             player.hidePlayer(online);

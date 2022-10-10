@@ -21,7 +21,7 @@ import java.util.List;
 public class Menus implements Listener {
 
     static Inventory inv1, inv2, inv3;
-    static List<String> lore1, lore2, lore3, lore4, lore5, lore6, lore7, lore8, lore9, lore10;
+    static List<String> lore1, lore2, lore3, lore4, lore5, lore6, lore7, lore8, lore9, lore10, lore11;
 
 
     // hex: #769544, #0BD35B
@@ -40,6 +40,7 @@ public class Menus implements Listener {
     static String priroda = ChatColor.translateAlternateColorCodes('&', "&x&0&b&d&3&5&b&lP&x&1&d&c&9&5&7&lŘ&x&2&f&b&e&5&3&lÍ&x&4&1&b&4&5&0&lR&x&5&2&a&a&4&c&lO&x&6&4&9&f&4&8&lD&x&7&6&9&5&4&4&lA");
     static String name1 = ChatColor.translateAlternateColorCodes('&', "&x&0&b&d&3&5&b&lH&x&1&7&c&c&5&8&lL&x&2&3&c&5&5&6&lA&x&2&f&b&e&5&3&lV&x&3&b&b&7&5&1&lN&x&4&6&b&1&4&e&lÍ &x&5&2&a&a&4&c&lM&x&5&e&a&3&4&9&lE&x&6&a&9&c&4&7&lN&x&7&6&9&5&4&4&lU");
 
+    static String hlasovaniONazvu = ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4H&x&7&0&9&9&4&5L&x&6&9&9&c&4&7A&x&6&3&a&0&4&8S&x&5&d&a&4&4&9O&x&5&7&a&7&4&bV&x&5&0&a&b&4&cÁ&x&4&a&a&f&4&dN&x&4&4&b&2&4&fÍ &x&3&d&b&6&5&0P&x&3&7&b&9&5&2R&x&3&1&b&d&5&3O &x&2&a&c&1&5&4S&x&2&4&c&4&5&6E&x&1&e&c&8&5&7R&x&1&8&c&c&5&8V&x&1&1&c&f&5&aE&x&0&b&d&3&5&bR");
     // HLASOVACI MENU
     public static void voteMenuMain(Player player){
         lore5 = new ArrayList<>();
@@ -73,7 +74,18 @@ public class Menus implements Listener {
         itemMeta2.setLore(lore4);
         item2.setItemMeta(itemMeta2);
 
+        ItemStack item3 = new ItemStack(Material.NAME_TAG);
+        ItemMeta itemMeta3 = item3.getItemMeta();
+        itemMeta3.setDisplayName(hlasovaniONazvu);
+        lore11 = new ArrayList<>();
+        lore11.add(" ");
+        lore11.add(ChatColor.WHITE + "Chceš hlasovat pro náš server?");
+        lore11.add(ChatColor.WHITE + "Klikni pro zobrazení odkazu!");
+        lore11.add(" ");
+        itemMeta3.setLore(lore11);
+        item3.setItemMeta(itemMeta3);
 
+        inv2.setItem(13, item3);
         inv2.setItem(15, item2);
         player.openInventory(inv2);
     }
@@ -242,6 +254,11 @@ public class Menus implements Listener {
                     player.closeInventory();
                     player.performCommand("ano");
                 }
+            }
+
+            if (e.getCurrentItem().getType() == Material.NAME_TAG){
+                player.closeInventory();
+                ChatNotice.info(player, Component.text("Hlasovat pro server můžeš zde: https://craftlist.org/mejs-cz"));
             }
 
             if (e.getCurrentItem().getType() == Material.BUCKET){

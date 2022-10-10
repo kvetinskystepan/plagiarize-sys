@@ -441,7 +441,9 @@ public class Menus
         ItemMeta meta1 = item1.getItemMeta();
         meta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', friendsSettings));
         lore15.add(ChatColor.GRAY + " ");
-        lore15.add(ChatColor.DARK_GRAY + "Klikni pro nastavení systému přátel");
+        lore15.add(ChatColor.WHITE + "Nastavit si upozornění, žádosti,");
+        lore15.add(ChatColor.WHITE + "a další si můžeš pomocí: ");
+        lore15.add(ChatColor.translateAlternateColorCodes('&', "&x&9&f&4&7&c&8/&x&a&4&4&c&c&cf&x&a&a&5&1&c&fr&x&a&f&5&6&d&3i&x&b&5&5&b&d&7e&x&b&a&6&0&d&an&x&b&f&6&5&d&ed&x&c&5&6&a&e&2s &x&c&a&6&f&e&5s&x&d&0&7&4&e&9e&x&d&5&7&9&e&dt&x&d&a&7&e&f&0t&x&e&0&8&3&f&4i&x&e&5&8&8&f&8n&x&e&b&8&d&f&bg&x&f&0&9&2&f&fs"));
         item1.setItemMeta(meta1);
         item1.setLore(lore15);
 
@@ -483,22 +485,10 @@ public class Menus
                 return;
             }
 
-            if (e.getCurrentItem().getType() == Material.BOOK){
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                final var data = ByteStreams.newDataOutput();
-                data.writeUTF("ExecuteCommand");
-                data.writeUTF("friends settings");
-                player.sendPluginMessage(LobbyPlugin.getInstance(), "BungeeCord", data.toByteArray());
-                player.closeInventory();
-                return;
-            }
-
             if (e.getCurrentItem().getType() == Material.TRIPWIRE_HOOK) {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                 player.closeInventory();
-                ChatNotice.success(player, Component.text("Kontaktuji autentifikační server..."));
-                ChatNotice.success(player, Component.text("Prosím čekejte..."));
-                ChatNotice.error(player, Component.text("Server se podařilo kontaktovat avšak odpověď na požadavek byla: " + ChatColor.RED + "Zamítnuto"));
+                player.performCommand("cp");
             }
         }
 

@@ -4,14 +4,13 @@ import com.thenarbox.api.ChatNotice;
 import com.thenarbox.api.Standards;
 import com.thenarbox.api.colors.ColorAPI;
 import com.thenarbox.api.ranks.Rank;
+import com.thenarbox.boxfightplugin.listeners.Command;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -20,7 +19,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -49,9 +47,13 @@ public final class BoxFightPlugin extends JavaPlugin implements Listener {
 
         getServer().getPluginManager()
                 .registerEvents(this, this);
+        getServer().getPluginManager()
+                .registerEvents(new Command(), this);
 
+        Command.cmds(this);
         Standards.View.tab(this);
         Standards.commands(this);
+
         log.error(" ");
         log.error("Inicializace proběhla úspěšně.");
         log.error(" ");

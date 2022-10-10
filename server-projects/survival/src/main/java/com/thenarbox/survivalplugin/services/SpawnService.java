@@ -92,7 +92,7 @@ public class SpawnService implements Listener {
         if ((e.getEntity() instanceof Player player)){
             player = (Player)e.getEntity();
             if(player.getWorld().getName().equals("Spawn"))
-                e.setCancelled(true);
+               e.setCancelled(true);
         }
     }
 

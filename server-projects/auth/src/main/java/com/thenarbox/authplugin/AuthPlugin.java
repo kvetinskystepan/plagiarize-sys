@@ -33,24 +33,12 @@ public final class AuthPlugin extends JavaPlugin implements Listener {
 
         whitelist.add("TheNarbox");
         whitelist.add("MistrMisak");
-        whitelist.add("laifaner");
-        whitelist.add("Angelsword3");
-        whitelist.add("Tonda");
         whitelist.add("Pan_bartCZ");
         whitelist.add("Skymmel");
-        whitelist.add("ItzCowinka_");
         whitelist.add("Pan_Okurka");
-        whitelist.add("Mata08");
-        whitelist.add("Medveduus");
-        whitelist.add("gugi736");
-        whitelist.add("_Jenek_");
-        whitelist.add("King_Stanley");
-        whitelist.add("Mr_CrazyHD_");
-        whitelist.add("Vaclos");
-        whitelist.add("MrSupporter");
         whitelist.add("_R3HAB_");
-        whitelist.add("FrostLivee");
-        whitelist.add("OfficialVysko");
+        whitelist.add("Angelsword3");
+        whitelist.add("Nicolasik");
 
         {
             Standards.worlds();

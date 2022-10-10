@@ -29,16 +29,16 @@ public class CommandMechanic implements Listener {
     public static void Commands(){
         {
 
-            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("suspension") {
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("block") {
                 @Override
                 public void execute(CommandSender sender, String[] args) {
                     ProxiedPlayer player = (ProxiedPlayer) sender;
-                    if (!player.hasPermission("punishments.suspension")) {
+                    if (!player.hasPermission("punishments.block")) {
                         ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Helper."));
                         return;
                     }
                     if (args.length != 1) {
-                        ChatNotice.error(player, Component.text("Použití: /suspension <hráč>"));
+                        ChatNotice.error(player, Component.text("Použití: /block <hráč>"));
                         return;
                     }
 
@@ -57,25 +57,25 @@ public class CommandMechanic implements Listener {
                     target.connect(ProxyServer.getInstance().getServerInfo("Lobby-1"));
                     ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "lpb user " + target.getName() + " clear");
                     ChatNotice.warning(target, Component.text("Byl jsi odpojen. Tvůj účet byl pozastaven."));
-                    ChatNotice.success(player, Component.text("Účet hráče " + target.getName() + " byl pozastaven na dobu 30 dnů."));
+                    ChatNotice.success(player, Component.text("Účet hráče " + target.getName() + " byl pozastaven."));
 
                     ProxyServer.getInstance().getScheduler().schedule(ProxySystem.getStaticInstance(), () -> {
-                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "ban " + target.getName() + " Suspension");
-                    }, 8, TimeUnit.SECONDS).getId();
+                        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "ban " + target.getName() + " Block");
+                    }, 6, TimeUnit.SECONDS).getId();
 
                 }
             });
 
-            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("f-suspension") {
+            ProxyServer.getInstance().getPluginManager().registerCommand(ProxySystem.getStaticInstance(), new Command("pblock") {
                 @Override
                 public void execute(CommandSender sender, String[] args) {
                     ProxiedPlayer player = (ProxiedPlayer) sender;
-                    if (!player.hasPermission("punishments.f-suspension")) {
+                    if (!player.hasPermission("punishments.pblock")) {
                         ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Helper."));
                         return;
                     }
                     if (args.length != 1) {
-                        ChatNotice.error(player, Component.text("Použití: /f-suspension <hráč>"));
+                        ChatNotice.error(player, Component.text("Použití: /pblock <hráč>"));
                         ChatNotice.warning(player, Component.text("Poznámka: Tento příkaz je pouze pro případy, kdy se jedná o závažné porušení pravidel."));
                         ChatNotice.warning(player, Component.text("Poznámka: Tuto akci nelze vrátit!"));
                         return;
@@ -99,7 +99,7 @@ public class CommandMechanic implements Listener {
 
                     ProxyServer.getInstance().getScheduler().schedule(ProxySystem.getStaticInstance(), () -> {
                         ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), "ban " + target.getName() + " Permanent");
-                    }, 8, TimeUnit.SECONDS).getId();
+                    }, 6, TimeUnit.SECONDS).getId();
                 }
             });
 

@@ -501,8 +501,15 @@ public class Standards {
                             ChatNotice.error(player, Component.text("Tento název domova již existuje."));
                         }
                         else if (player.hasPermission("survival.homes.team")){
-                            if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() >= 10){
-                                ChatNotice.error(player, Component.text("Týmový domov může mít maximálně 10 domovů."));
+                            if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() != 0){
+                                if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() >= 10){
+                                    ChatNotice.error(player, Component.text("Můžeš mít maximálně 10 domovů."));
+                                }
+                                else {
+                                    plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
+                                    plugin.saveConfig();
+                                    ChatNotice.success(player, Component.text("Domov s názvem "+args[0]+" byl úspěšně vytvořen."));
+                                }
                             }
                             else {
                                 plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
@@ -511,8 +518,15 @@ public class Standards {
                             }
                         }
                         else if (player.hasPermission("survival.homes.vip")){
-                            if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() >= 5){
-                                ChatNotice.error(player, Component.text("Můžeš mít maximálně 5 domovů."));
+                            if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() != 0){
+                                if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() >= 5){
+                                    ChatNotice.error(player, Component.text("Můžeš mít maximálně 5 domovů."));
+                                }
+                                else {
+                                    plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
+                                    plugin.saveConfig();
+                                    ChatNotice.success(player, Component.text("Domov s názvem "+args[0]+" byl úspěšně vytvořen."));
+                                }
                             }
                             else {
                                 plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
@@ -521,8 +535,15 @@ public class Standards {
                             }
                         }
                         else if (player.hasPermission("survival.homes.player"))  {
-                            if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() >= 3){
-                                ChatNotice.error(player, Component.text("Nemůžeš mít více než 3 domovy."));
+                            if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() != 0){
+                                if (plugin.getConfig().getConfigurationSection("homes." + player.getUniqueId()).getKeys(false).stream().count() >= 3){
+                                    ChatNotice.error(player, Component.text("Můžeš mít maximálně 3 domovy."));
+                                }
+                                else {
+                                    plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());
+                                    plugin.saveConfig();
+                                    ChatNotice.success(player, Component.text("Domov s názvem "+args[0]+" byl úspěšně vytvořen."));
+                                }
                             }
                             else {
                                 plugin.getConfig().set("homes." + player.getUniqueId() + "." + args[0], player.getLocation());

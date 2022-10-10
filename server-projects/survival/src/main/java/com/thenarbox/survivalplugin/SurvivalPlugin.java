@@ -141,6 +141,9 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
             player.teleport(new Location(Bukkit.getWorld("Spawn"), 22.5, 50, 39.5, 90, 0));
         }
 
+        this.getConfig().createSection("homes." + player.getUniqueId());
+        this.saveConfig();
+
         if (Voting.voting){
             Voting.bar.addPlayer(player);
         }

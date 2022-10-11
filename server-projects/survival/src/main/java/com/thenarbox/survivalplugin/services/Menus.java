@@ -142,9 +142,16 @@ public class Menus implements Listener {
         lore6.add(ChatColor.WHITE + "Seznam svých domovů si ");
         lore6.add(ChatColor.WHITE + "zobrazíš pomocí " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4/&x&6&1&a&1&4&9h&x&4&b&a&e&4&do&x&3&6&b&a&5&2m&x&2&0&c&7&5&6e&x&0&b&d&3&5&bs"));
         lore6.add(ChatColor.GRAY + " ");
+        if (player.hasPermission("survival.homes.team"))
+            lore6.add(ChatColor.WHITE + "Maximální počet domovů: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&410"));
+        else if (player.hasPermission("survival.homes.vip"))
+            lore6.add(ChatColor.WHITE + "Maximální počet domovů: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&45"));
+        else
+            lore6.add(ChatColor.WHITE + "Maximální počet domovů: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&43"));
+        lore6.add(ChatColor.GRAY + " ");
         lore6.add(ChatColor.WHITE + "Pokud ale žádný domov ještě nemáš ");
         lore6.add(ChatColor.WHITE + "můžeš si ho založit pomocí ");
-        lore6.add(ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4/&x&6&c&9&b&4&6h&x&6&3&a&0&4&8o&x&5&9&a&6&4&am&x&4&f&a&c&4&ce &x&4&5&b&1&4&e<&x&3&c&b&7&5&1n&x&3&2&b&c&5&3á&x&2&8&c&2&5&5z&x&1&e&c&8&5&7e&x&1&5&c&d&5&9v&x&0&b&d&3&5&b>"));
+        lore6.add(ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&4/&x&6&e&9&9&4&6s&x&6&7&9&e&4&7e&x&5&f&a&2&4&9t&x&5&7&a&7&4&bh&x&5&0&a&b&4&co&x&4&8&b&0&4&em&x&4&1&b&4&5&0e &x&3&9&b&8&5&1<&x&3&1&b&d&5&3n&x&2&a&c&1&5&4á&x&2&2&c&6&5&6z&x&1&a&c&a&5&8e&x&1&3&c&f&5&9v&x&0&b&d&3&5&b>"));
         itemMeta4.setLore(lore6);
         item4.setItemMeta(itemMeta4);
 

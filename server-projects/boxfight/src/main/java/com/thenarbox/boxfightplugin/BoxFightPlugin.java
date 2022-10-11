@@ -13,6 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -64,24 +65,12 @@ public final class BoxFightPlugin extends JavaPlugin implements Listener {
         HandlerList.unregisterAll();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void chat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
 
         String replaced = ChatColor.translateAlternateColorCodes('&', Rank.getRankPrefix(PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%")));
         String level = PlaceholderAPI.setPlaceholders(player, "%playerpoints_points%");
-        if (replaced.equals("")){
-            if(cooldownMap.containsKey(player.getName())) {
-                long secondsLeft = ((cooldownMap.get(player.getName())/1000)+cooldownTime) - (System.currentTimeMillis()/1000);
-                if(secondsLeft>0) {
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
-                    ChatNotice.error(player, Component.text("Nemůžeš odeslílat zprávy takhle rychle. Zkus to znovu za: " + secondsLeft + " sekund."));
-                    e.setCancelled(true);
-                    return;
-                }
-            }
-            cooldownMap.put(player.getName(), System.currentTimeMillis());
-        }
 
         if (replaced.equals("")){
             e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage().replace("%", "%%"));

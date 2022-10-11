@@ -1,6 +1,7 @@
 package com.thenarbox.survivalplugin.services;
 
 import org.bukkit.*;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,7 +35,7 @@ public class SpawnService implements Listener {
         spawn_world.setGameRule(GameRule.DO_FIRE_TICK, false);
         spawn_world.setGameRule(GameRule.MOB_GRIEFING, false);
         spawn_world.setGameRule(GameRule.FALL_DAMAGE, false);
-        spawn_world.setGameRule(GameRule.SPAWN_RADIUS, 1000000);
+        spawn_world.setGameRule(GameRule.SPAWN_RADIUS, 999999999);
         spawn_world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
         spawn_world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
         spawn_world.setGameRule(GameRule.RANDOM_TICK_SPEED, 0);
@@ -54,7 +55,7 @@ public class SpawnService implements Listener {
     }
     @EventHandler
     public void onFrames(BlockPhysicsEvent event){
-        if(event.getBlock().getType() == Material.ITEM_FRAME){
+        if (event.getBlock().getLocation().getWorld().getName().equals("Spawn")){
             event.setCancelled(true);
         }
     }
@@ -89,6 +90,13 @@ public class SpawnService implements Listener {
     }
     @EventHandler
     public void onFallDamage(EntityDamageEvent e) {
+
+        if (e.getEntity() instanceof ArmorStand){
+            if (e.getEntity().getLocation().getWorld().getName().equals("Spawn")){
+                e.setCancelled(true);
+            }
+        }
+
         if ((e.getEntity() instanceof Player player)){
             player = (Player)e.getEntity();
             if(player.getWorld().getName().equals("Spawn"))
@@ -110,6 +118,12 @@ public class SpawnService implements Listener {
             player = (Player)e.getEntity();
             if(player.getWorld().getName().equals("Spawn"))
                e.setCancelled(true);
+        }
+
+        if ((e.getEntity() instanceof ArmorStand)){
+            if (e.getEntity().getLocation().getWorld().getName().equals("Spawn")){
+                e.setCancelled(true);
+            }
         }
 
         if((e.getEntity() instanceof ItemFrame frame)){

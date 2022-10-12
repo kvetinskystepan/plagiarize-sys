@@ -10,6 +10,12 @@ import com.thenarbox.survivalplugin.services.*;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentBuilder;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -28,6 +34,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 import static com.thenarbox.api.Standards.vanishPlayers;
 
@@ -126,7 +133,18 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
         }
 
         if (replaced.equals("")){
-            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage().replace("%", "%%"));
+            ComponentBuilder playerNameBuilder = Component.text().content(player.getName()).color(NamedTextColor.WHITE).hoverEvent(HoverEvent.showText(Component.text("Klikni pro zobrazení profilu hráče.").color(NamedTextColor.GRAY)));
+            playerNameBuilder.clickEvent(ClickEvent.suggestCommand("/msg " + player.getName() + " "));
+            ComponentBuilder builder = Component.text()
+                    .append(Component.text(ChatColor.AQUA + level))
+                    .append(Component.text(ChatColor.GRAY + " | " + ChatColor.WHITE + ""))
+                    .append(playerNameBuilder.build())
+                    .append(Component.text(": " + ChatColor.WHITE + e.getMessage()));
+            for (Player players : e.getRecipients()){
+                players.spigot().sendMessage((BaseComponent) builder.build());
+            }
+            e.setCancelled(true);
+            //e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage().replace("%", "%%"));
         }
         else {
             e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + replaced + " " + ChatColor.WHITE + player.getName() + ": " + e.getMessage().replace("%", "%%"));

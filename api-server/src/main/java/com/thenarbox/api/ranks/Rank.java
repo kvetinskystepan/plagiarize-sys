@@ -24,8 +24,16 @@ public class Rank implements Listener {
                     "H";
             case "Eventer" ->
                     "I";
-            case "Hráč" ->
+            case "Sponzor+" ->
                     "J";
+            case "Sponzor" ->
+                    "K";
+            case "VIP" ->
+                    "L";
+            case "Podporovatel" ->
+                    "M";
+            case "Hráč" ->
+                    "N";
             default -> "";
         };
     }
@@ -50,6 +58,14 @@ public class Rank implements Listener {
                     "&x&f&b&0&e&f&2&lB&x&e&d&1&5&f&4&lU&x&d&f&1&c&f&6&lI&x&d&1&2&4&f&8&lL&x&c&3&2&b&f&9&lD&x&b&5&3&2&f&b&lE&x&a&7&3&9&f&d&lR";
             case "Eventer" ->
                     "&x&f&b&f&b&f&b&lE&x&f&b&f&2&f&b&lV&x&f&c&e&9&f&b&lE&x&f&c&e&0&f&b&lN&x&f&c&d&6&f&b&lT&x&f&d&c&d&f&b&lE&x&f&d&c&4&f&b&lR";
+            case "Sponzor+" ->
+                    "";
+            case "Sponzor" ->
+                    "";
+            case "VIP" ->
+                    "";
+            case "Podporovatel" ->
+                    "";
             default -> "";
         };
     }

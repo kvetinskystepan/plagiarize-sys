@@ -11,7 +11,6 @@ import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentBuilder;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -131,6 +130,8 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
             }
             cooldownMap.put(player.getName(), System.currentTimeMillis());
         }
+
+
 
         if (replaced.equals("")){
             ComponentBuilder playerNameBuilder = Component.text().content(player.getName()).color(NamedTextColor.WHITE).hoverEvent(HoverEvent.showText(Component.text("Klikni pro zobrazení profilu hráče.").color(NamedTextColor.GRAY)));

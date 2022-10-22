@@ -61,7 +61,7 @@ public class Rank implements Listener {
             case "Sponzor+" ->
                     "&x&7&f&e&5&f&b&lS&x&8&5&e&8&f&2&lP&x&8&c&e&c&e&9&lO&x&9&2&e&f&e&0&lN&x&9&8&f&3&d&8&lZ&x&9&e&f&6&c&f&lO&x&a&5&f&a&c&6&lR&x&a&b&f&d&b&d&l+";
             case "Sponzor" ->
-                    "&x&d&7&e&a&0&6&lS&x&d&1&d&6&0&7&lP&x&c&b&c&2&0&8&lO&x&c&6&a&e&0&9&lN&x&c&0&9&9&0&a&lZ&x&b&a&8&5&0&bO&x&b&4&7&1&0&c&lR";
+                    "&x&f&b&e&8&3&d&lS&x&f&9&e&c&5&2&lP&x&f&6&e&f&6&7&lO&x&f&4&f&3&7&c&lN&x&f&1&f&6&9&0&lZ&x&e&f&f&a&a&5&lO&x&e&c&f&d&b&a&lR";
             case "VIP" ->
                     "&x&d&1&e&a&3&9&lV&x&b&c&c&f&1&d&lI&x&a&6&b&4&0&0&lP";
             case "Podporovatel" ->

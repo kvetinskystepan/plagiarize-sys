@@ -121,6 +121,12 @@ public class Menus implements Listener {
             lore3.add(ChatColor.WHITE + "Cena za blok: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&40.7") + " coin");
             lore3.add(ChatColor.WHITE + "Změna zprávy residence: " + ChatColor.translateAlternateColorCodes('&', "&a&l✔"));
         }
+        else if (player.hasPermission("residence.group.vip")){
+            lore3.add(ChatColor.WHITE + "Maximální rozloha: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&42&x&6&4&9&f&4&80&x&5&2&a&a&4&c0&x&4&1&b&4&5&0x&x&2&f&b&e&5&32&x&1&d&c&9&5&70&x&0&b&d&3&5&b0"));
+            lore3.add(ChatColor.WHITE + "Počet residencí: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&45"));
+            lore3.add(ChatColor.WHITE + "Cena za blok: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&40.9") + " coin");
+            lore3.add(ChatColor.WHITE + "Změna zprávy residence: " + ChatColor.translateAlternateColorCodes('&', "&4&l✖"));
+        }
         else if (player.hasPermission("residence.group.default")){
             lore3.add(ChatColor.WHITE + "Maximální rozloha: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&41&x&6&4&9&f&4&80&x&5&2&a&a&4&c0&x&4&1&b&4&5&0x&x&2&f&b&e&5&31&x&1&d&c&9&5&70&x&0&b&d&3&5&b0"));
             lore3.add(ChatColor.WHITE + "Počet residencí: " + ChatColor.translateAlternateColorCodes('&', "&x&7&6&9&5&4&43"));

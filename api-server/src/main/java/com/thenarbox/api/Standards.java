@@ -219,7 +219,7 @@ public class Standards {
                             }
                         }
                         else {
-                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Sponzor."));
                         }
                     }
                     return true;
@@ -262,7 +262,7 @@ public class Standards {
                             ChatNotice.success(player, Component.text("Otevřel si přenosnou kovadlinu."));
                         }
                         else {
-                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Podporovatel."));
                         }
                     }
                     return false;
@@ -285,7 +285,7 @@ public class Standards {
                             ChatNotice.success(player, Component.text("Otevřel si přenosný pracovní stůl."));
                         }
                         else {
-                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
+                            ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je Podporovatel."));
                         }
                     }
                     return false;
@@ -991,9 +991,6 @@ public class Standards {
                         else {
                             ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
                         }
-                    }
-                    else {
-                        ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je VIP."));
                     }
                     return true;
                 }

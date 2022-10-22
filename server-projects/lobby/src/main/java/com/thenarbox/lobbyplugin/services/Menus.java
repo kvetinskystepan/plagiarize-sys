@@ -323,7 +323,7 @@ public class Menus
         lore21.add(ChatColor.translateAlternateColorCodes('&', "&7Status: " + PlaceholderAPI.setPlaceholders(player, "%pinger_isonline_172.18.0.1:32003%")));
         if (!status2.equals("&cOffline")){
             lore21.add(ChatColor.translateAlternateColorCodes('&', "&7Online: &a" + PlaceholderAPI.setPlaceholders(player, "%pinger_players_172.18.0.1:32003%")));
-            lore21.add(ChatColor.translateAlternateColorCodes('&', "&7Doporučená verze: &x&9&f&4&7&c&81&x&b&3&5&a&d&6.&x&c&8&6&d&e&41&x&d&c&7&f&f&19&x&f&0&9&2&f&f+"));
+            lore21.add(ChatColor.translateAlternateColorCodes('&', "&7Verze: &x&9&f&4&7&c&81&x&b&3&5&a&d&6.&x&c&8&6&d&e&41&x&d&c&7&f&f&19&x&f&0&9&2&f&f+"));
             lore21.add(ChatColor.GRAY + " ");
             lore21.add(ChatColor.GRAY + "Klikni pro vstup do hry!");
         }

@@ -46,16 +46,14 @@ public class Standards {
     }
 
     public class View{
-        static String priority = "A";
         public static void tab(Plugin plugin){
             final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
             Bukkit.getScheduler().runTaskTimer(plugin, () -> {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     String prefix = PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%");
-                    priority = Rank.getRankPriority(prefix);
-                    var team = scoreboard.getTeam(priority + player.getName());
+                    var team = scoreboard.getTeam(Rank.getRankPriority(prefix) + player.getName());
                     if(team == null)
-                        team = scoreboard.registerNewTeam(priority + player.getName());
+                        team = scoreboard.registerNewTeam(Rank.getRankPriority(prefix) + player.getName());
                     if (prefix.equalsIgnoreCase("Hráč")){
                         team.setPrefix("");
                     }

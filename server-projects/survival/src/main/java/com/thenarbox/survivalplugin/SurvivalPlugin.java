@@ -131,21 +131,8 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
             cooldownMap.put(player.getName(), System.currentTimeMillis());
         }
 
-
-
         if (replaced.equals("")){
-            ComponentBuilder playerNameBuilder = Component.text().content(player.getName()).color(NamedTextColor.WHITE).hoverEvent(HoverEvent.showText(Component.text("Klikni pro zobrazení profilu hráče.").color(NamedTextColor.GRAY)));
-            playerNameBuilder.clickEvent(ClickEvent.suggestCommand("/msg " + player.getName() + " "));
-            ComponentBuilder builder = Component.text()
-                    .append(Component.text(ChatColor.AQUA + level))
-                    .append(Component.text(ChatColor.GRAY + " | " + ChatColor.WHITE + ""))
-                    .append(playerNameBuilder.build())
-                    .append(Component.text(": " + ChatColor.WHITE + e.getMessage()));
-            for (Player players : e.getRecipients()){
-                players.spigot().sendMessage((BaseComponent) builder.build());
-            }
-            e.setCancelled(true);
-            //e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage().replace("%", "%%"));
+            e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + ChatColor.WHITE + player.getName() + ": " + ChatColor.GRAY + e.getMessage().replace("%", "%%"));
         }
         else {
             e.setFormat(ChatColor.AQUA + level + ChatColor.GRAY + " | " + replaced + " " + ChatColor.WHITE + player.getName() + ": " + e.getMessage().replace("%", "%%"));

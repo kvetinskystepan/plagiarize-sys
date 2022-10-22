@@ -59,11 +59,11 @@ public class Rank implements Listener {
             case "Eventer" ->
                     "&x&f&b&f&b&f&b&lE&x&f&b&f&2&f&b&lV&x&f&c&e&9&f&b&lE&x&f&c&e&0&f&b&lN&x&f&c&d&6&f&b&lT&x&f&d&c&d&f&b&lE&x&f&d&c&4&f&b&lR";
             case "Sponzor+" ->
-                    "&x&7&f&e&5&f&bS&x&8&5&e&8&f&2P&x&8&c&e&c&e&9O&x&9&2&e&f&e&0N&x&9&8&f&3&d&8Z&x&9&e&f&6&c&fO&x&a&5&f&a&c&6R&x&a&b&f&d&b&d+";
+                    "&x&7&f&e&5&f&b&lS&x&8&5&e&8&f&2&lP&x&8&c&e&c&e&9&lO&x&9&2&e&f&e&0&lN&x&9&8&f&3&d&8&lZ&x&9&e&f&6&c&f&lO&x&a&5&f&a&c&6&lR&x&a&b&f&d&b&d&l+";
             case "Sponzor" ->
-                    "&x&d&7&e&a&0&6S&x&d&1&d&6&0&7P&x&c&b&c&2&0&8O&x&c&6&a&e&0&9N&x&c&0&9&9&0&aZ&x&b&a&8&5&0&bO&x&b&4&7&1&0&cR";
+                    "&x&d&7&e&a&0&6&lS&x&d&1&d&6&0&7&lP&x&c&b&c&2&0&8&lO&x&c&6&a&e&0&9&lN&x&c&0&9&9&0&a&lZ&x&b&a&8&5&0&bO&x&b&4&7&1&0&c&lR";
             case "VIP" ->
-                    "&x&d&1&e&a&3&9V&x&b&c&c&f&1&dI&x&a&6&b&4&0&0P";
+                    "&x&d&1&e&a&3&9&lV&x&b&c&c&f&1&d&lI&x&a&6&b&4&0&0&lP";
             case "Podporovatel" ->
                     "";
             default -> "";

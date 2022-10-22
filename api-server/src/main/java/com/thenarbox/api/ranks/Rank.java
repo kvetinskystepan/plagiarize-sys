@@ -31,7 +31,7 @@ public class Rank implements Listener {
             case "VIP" ->
                     "L";
             case "Podporovatel" ->
-                    "M";
+                    "N";
             case "Hráč" ->
                     "N";
             default -> "";
@@ -59,11 +59,11 @@ public class Rank implements Listener {
             case "Eventer" ->
                     "&x&f&b&f&b&f&b&lE&x&f&b&f&2&f&b&lV&x&f&c&e&9&f&b&lE&x&f&c&e&0&f&b&lN&x&f&c&d&6&f&b&lT&x&f&d&c&d&f&b&lE&x&f&d&c&4&f&b&lR";
             case "Sponzor+" ->
-                    "";
+                    "&x&7&f&e&5&f&bS&x&8&5&e&8&f&2P&x&8&c&e&c&e&9O&x&9&2&e&f&e&0N&x&9&8&f&3&d&8Z&x&9&e&f&6&c&fO&x&a&5&f&a&c&6R&x&a&b&f&d&b&d+";
             case "Sponzor" ->
-                    "";
+                    "&x&d&7&e&a&0&6S&x&d&1&d&6&0&7P&x&c&b&c&2&0&8O&x&c&6&a&e&0&9N&x&c&0&9&9&0&aZ&x&b&a&8&5&0&bO&x&b&4&7&1&0&cR";
             case "VIP" ->
-                    "";
+                    "&x&d&1&e&a&3&9V&x&b&c&c&f&1&dI&x&a&6&b&4&0&0P";
             case "Podporovatel" ->
                     "";
             default -> "";

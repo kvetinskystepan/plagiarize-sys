@@ -939,7 +939,6 @@ public class Standards {
                         return false;
 
                     final Player player = (Player) sender;
-
                     if (commandLabel.equalsIgnoreCase("heal")){
                         if (player.hasPermission("survival.heal")){
                             if (args.length < 1){

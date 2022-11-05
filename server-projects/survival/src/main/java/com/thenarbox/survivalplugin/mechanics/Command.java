@@ -1,10 +1,15 @@
 package com.thenarbox.survivalplugin.mechanics;
 
 import com.thenarbox.api.ChatNotice;
+import com.thenarbox.survivalplugin.SurvivalPlugin;
 import com.thenarbox.survivalplugin.services.Kits;
 import com.thenarbox.survivalplugin.services.Menus;
 import com.thenarbox.survivalplugin.services.RandomTeleport;
 import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -63,6 +68,81 @@ public class Command implements Listener {
             });
 
         }
+
+       Bukkit.getCommandMap().register("survival", new org.bukkit.command.Command("ranklist") {
+           @Override
+           public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+               Player player = (Player) sender;
+               if (!player.hasPermission("survival.ranklist")) {
+                   ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                   return false;
+               }
+               ChatNotice.info(player, Component.text("Skupiny: majitel, vedení, v.developer, developer, v.helper, helper, v.builder, builder, eventer, sponzor+, sponzor, vip, podporovatel, default"));
+               return false;
+           }
+        });
+
+        Bukkit.getCommandMap().register("survival", new org.bukkit.command.Command("discord") {
+            @Override
+            public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                Player player = (Player) sender;
+                TextComponent mainComponent = new TextComponent( "Náš discord: " );
+                TextComponent subComponent = new TextComponent( "discord.mejs.cz" );
+                subComponent.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT, new ComponentBuilder( "Klikni pro otevření" ).create() ) );
+                subComponent.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL, "https://discord.mejs.cz" ) );
+                mainComponent.addExtra( subComponent );
+                ChatNotice.infoHover(player, mainComponent);
+                return false;
+            }
+        });
+
+        Bukkit.getCommandMap().register("survival", new org.bukkit.command.Command("setrank") {
+            @Override
+            public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+                Player player = (Player) sender;
+                if (!player.hasPermission("survival.setrank")) {
+                    ChatNotice.error(player, Component.text("Minimální hodnost pro použití tohoto příkazu je V.Builder."));
+                    return false;
+                }
+                ;
+                if (args.length < 2) {
+                    ChatNotice.error(player, Component.text("Použití: /setrank <jméno> <skupina> | <doba ve dnech>"));
+                    return false;
+                }
+                if (args.length == 2) {
+                    String name = args[0];
+                    String group = args[1];
+                    if (!group.equalsIgnoreCase("majitel") && !group.equalsIgnoreCase("vedení") && !group.equalsIgnoreCase("v.developer") && !group.equalsIgnoreCase("developer") && !group.equalsIgnoreCase("v.helper") && !group.equalsIgnoreCase("helper") && !group.equalsIgnoreCase("v.builder") && !group.equalsIgnoreCase("builder") && !group.equalsIgnoreCase("eventer") && !group.equalsIgnoreCase("sponzor+") && !group.equalsIgnoreCase("sponzor") && !group.equalsIgnoreCase("vip") && !group.equalsIgnoreCase("podporovatel") && !group.equalsIgnoreCase("default")) {
+                        ChatNotice.error(player, Component.text("Neplatná skupina. Zkus nahlédnout do /ranklist pro více informací."));
+                    } else {
+
+                        SurvivalPlugin.getInstance().getServer().dispatchCommand(SurvivalPlugin.getInstance().getServer().getConsoleSender(), "lp user " + name + " clear");
+                        SurvivalPlugin.getInstance().getServer().dispatchCommand(SurvivalPlugin.getInstance().getServer().getConsoleSender(), "lp user " + name + " parent set " + group);
+                        ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group));
+                    }
+                } else if (args.length == 3) {
+                    String name = args[0];
+                    int time;
+                    String group = args[1];
+                    try {
+                        time = Integer.parseInt(args[2]);
+                    } catch (NumberFormatException e) {
+                        ChatNotice.error(player, Component.text("Doba musí být číslo ve dnech."));
+                        return false;
+                    }
+                    if (!group.equalsIgnoreCase("majitel") && !group.equalsIgnoreCase("vedení") && !group.equalsIgnoreCase("v.developer") && !group.equalsIgnoreCase("developer") && !group.equalsIgnoreCase("v.helper") && !group.equalsIgnoreCase("helper") && !group.equalsIgnoreCase("v.builder") && !group.equalsIgnoreCase("builder") && !group.equalsIgnoreCase("eventer") && !group.equalsIgnoreCase("default")) {
+                        ChatNotice.error(player, Component.text("Neplatná skupina. Zkus nahlédnout do /ranklist pro více informací."));
+                    } else {
+                        SurvivalPlugin.getInstance().getServer().dispatchCommand(SurvivalPlugin.getInstance().getServer().getConsoleSender(), "lp user " + name + " clear");
+                        SurvivalPlugin.getInstance().getServer().dispatchCommand(SurvivalPlugin.getInstance().getServer().getConsoleSender(), "lp user " + name + " parent addtemp " + group + " " + time + "d");
+                        ChatNotice.success(player, Component.text("Uživatel " + name + " byl úspěšně přidán do skupiny " + group + " v délce trvání: " + time + " dnů."));
+                    }
+                } else if (args.length > 3) {
+                    ChatNotice.error(player, Component.text("Použití: /setrank <jméno> <skupina> | <doba ve dnech>"));
+                }
+                return false;
+            }
+        });
 
         {
             Bukkit.getCommandMap().register("survival", new org.bukkit.command.Command("kit") {

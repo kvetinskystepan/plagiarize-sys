@@ -7,6 +7,7 @@ import com.thenarbox.api.colors.ColorAPI;
 import com.thenarbox.api.ranks.Rank;
 import com.thenarbox.survivalplugin.mechanics.Command;
 import com.thenarbox.survivalplugin.services.*;
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -29,6 +30,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -44,9 +46,13 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
     static int cooldownTime = 5;
     ArrayList<String> allowedCommands32 = new ArrayList<>();
 
+    @Getter
+    static Plugin instance;
+
     public void onEnable() {
         log.error("SPRÁVA SURVIVAL MEJS.CZ");
         log.error(" ");
+        instance = this;
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         if(!getServer().getPluginManager().isPluginEnabled("Vault")){
             log.error("Vault is not enabled! Disabling LobbyPlugin...");

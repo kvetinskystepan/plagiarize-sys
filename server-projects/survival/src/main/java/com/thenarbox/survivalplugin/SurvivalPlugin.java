@@ -35,7 +35,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.Consumer;
 
 import static com.thenarbox.api.Standards.vanishPlayers;
 
@@ -147,6 +146,12 @@ public class SurvivalPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
+        if (e.getPlayer().getName().startsWith("MCSTORM") || e.getPlayer().getName().startsWith("MCPOWER")){
+            e.getPlayer().kick();
+            log.error("Player " + e.getPlayer().getName() + " was kicked for using bots or other software to join us.");
+            return;
+        }
+
         Player player = e.getPlayer();
         if (player.getWorld().getName().equals("Spawn")){
             player.teleport(new Location(Bukkit.getWorld("Spawn"), 22.5, 50, 39.5, 90, 0));
